@@ -1,0 +1,3 @@
+In this folder, you should create a series of SQL files that
+contain the DDL statements needed to create the tables necessary
+to represent the miniworld as outlined in your DDL files
