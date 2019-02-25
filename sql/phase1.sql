@@ -33,6 +33,14 @@ CREATE TABLE route (
     PRIMARY KEY (route_id)
 );
 
+CREATE TABLE railline_route (
+  CONSTRAINT Railline_FK
+    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id),
+
+  CONSTRAINT Route_FK
+    FOREIGN KEY (Route_ID) REFERENCES route(route_id)
+);
+
 CREATE TABLE schedule (
  schedule_id      INTEGER,
 
@@ -70,6 +78,14 @@ CREATE TABLE passenger (
 
   CONSTRAINT Passengers_PK
     PRIMARY KEY (passenger_id)
+);
+
+CREATE TABLE train_passenger (
+  CONSTRAINT Train_FK
+    FOREIGN KEY (Train_ID) REFERENCES train(train_id),
+
+  CONSTRAINT Passenger_FK
+    FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
 );
 
 CREATE TABLE stop (
