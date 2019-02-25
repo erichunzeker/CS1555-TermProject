@@ -3,7 +3,7 @@
 CREATE TABLE station (
   station_id      INTEGER,
   address         VARCHAR(100),
-  open            TIME, 
+  open            TIME,
   close           TIME,
 
   CONSTRAINT Station_PK
@@ -67,14 +67,14 @@ CREATE TABLE train (
 CREATE TABLE passenger (
   passenger_id    INTEGER,
   firstname       VARCHAR(30),
-  lastname        VARCHAR(50),
+  lastname        VARCHAR(30),
   phone           VARCHAR(15),
   street          VARCHAR(50),
   city            VARCHAR(50),
-  state           VARCHAR(50),
-  zip             VARCHAR(50),
-  country         VARCHAR(50),
-  email           VARCHAR(50),
+  state           VARCHAR(25),
+  zip             VARCHAR(15),
+  country         VARCHAR(20),
+  email           VARCHAR(35),
 
   CONSTRAINT Passengers_PK
     PRIMARY KEY (passenger_id)
@@ -89,6 +89,7 @@ CREATE TABLE train_passenger (
 );
 
 CREATE TABLE stop (
+
 );
 
 ----------------------------
