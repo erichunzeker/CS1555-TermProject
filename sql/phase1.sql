@@ -3,8 +3,8 @@
 CREATE TABLE station (
   station_id      INTEGER,
   address         VARCHAR(100),
-  open            TIME,
-  close           TIME,
+  opentime        TIME,
+  closetime       TIME,
 
   CONSTRAINT Station_PK
     PRIMARY KEY (station_id)
