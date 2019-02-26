@@ -10,28 +10,37 @@ CREATE TABLE station (
   address         VARCHAR(100),
   opentime        TIME NOT NULL,
   closetime       TIME NOT NULL,
-  PRIMARY KEY(station_id)
+  CONSTRAINT Station_PK
+    PRIMARY KEY(station_id)
 );
 
 CREATE TABLE railline (
   railline_id     INT,
   speedlimit      INT,
-  PRIMARY KEY(railline_id)
+  CONSTRAINT Railline_PK
+    PRIMARY KEY(railline_id)
 );
 
 CREATE TABLE station_railline (
-  PRIMARY KEY(Station_ID, Railline_ID),
-  FOREIGN KEY (Station_ID) REFERENCES station(station_id),
-  FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id)
+  CONSTRAINT Station_Railline_PK
+    PRIMARY KEY(Station_ID, Railline_ID),
+
+  CONSTRAINT Station_FK
+    FOREIGN KEY (Station_ID) REFERENCES station(station_id),
+  CONSTRAINT Railline_FK
+    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id)
 );
 
 CREATE TABLE route (
   route_id        INT,
-  PRIMARY KEY(route_id)
+  CONSTRAINT Route_PK
+    PRIMARY KEY(route_id)
 );
 
 CREATE TABLE railline_route (
-  PRIMARY KEY(Railline_ID, Route_ID),
+  CONSTRAINT Railline_Route_PK
+    PRIMARY KEY(Railline_ID, Route_ID),
+
   FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id),
   FOREIGN KEY (Route_ID) REFERENCES route(route_id)
 );
