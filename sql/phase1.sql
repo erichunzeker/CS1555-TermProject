@@ -1,21 +1,15 @@
 -- insert ddl commands here
 
 CREATE TABLE station (
-  station_id      INTEGER,
+  station_id      INTEGER PRIMARY KEY,
   address         VARCHAR(100),
-  opentime        TIME,
-  closetime       TIME,
-
-  CONSTRAINT Station_PK
-    PRIMARY KEY (station_id)
+  opentime        TIME NOT NULL,
+  closetime       TIME NOT NULL
 );
 
 CREATE TABLE railline (
-  railline_id     INTEGER,
-  speedlimit      INTEGER,
-
-  CONSTRAINT Railline_PK
-    PRIMARY KEY (railline_id)
+  railline_id     INTEGER PRIMARY KEY,
+  speedlimit      INTEGER
 );
 
 CREATE TABLE station_railline (
@@ -27,10 +21,7 @@ CREATE TABLE station_railline (
 );
 
 CREATE TABLE route (
-  route_id        INTEGER,
-
-  CONSTRAINT Route_PK
-    PRIMARY KEY (route_id)
+  route_id        INTEGER PRIMARY KEY
 );
 
 CREATE TABLE railline_route (
@@ -42,10 +33,7 @@ CREATE TABLE railline_route (
 );
 
 CREATE TABLE schedule (
- schedule_id      INTEGER,
-
- CONSTRAINT Schedule_PK
-  PRIMARY KEY (schedule_id),
+ schedule_id      INTEGER PRIMARY KEY,
 
  CONSTRAINT Schedule_Route_FK
   FOREIGN KEY (Route_ID) REFERENCES route(route_id),
@@ -55,17 +43,14 @@ CREATE TABLE schedule (
 );
 
 CREATE TABLE train (
-  train_id        INTEGER,
+  train_id        INTEGER PRIMARY KEY,
   topspeed        INTEGER,
   seats           INTEGER,
-  pricepermile    DECIMAL(4,2),
-
-  CONSTRAINT Train_PK
-    PRIMARY KEY (train_id)
+  pricepermile    DECIMAL(4,2)
 );
 
 CREATE TABLE passenger (
-  passenger_id    INTEGER,
+  passenger_id    INTEGER PRIMARY KEY,
   firstname       VARCHAR(30),
   lastname        VARCHAR(30),
   phone           VARCHAR(15),
