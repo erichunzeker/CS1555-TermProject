@@ -78,7 +78,7 @@ CREATE TABLE train_passenger (
 CREATE TABLE stop (
   FOREIGN KEY (Station_A_ID) REFERENCES station(station_id),
   FOREIGN KEY (Station_B_ID) REFERENCES station(station_id),
-  distancebetween  INT
+  distancebetween  INT,
   PRIMARY KEY(Station_A_ID, Station_B_ID)
 );
 
