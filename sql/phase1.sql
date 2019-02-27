@@ -22,13 +22,16 @@ CREATE TABLE railline (
 );
 
 CREATE TABLE station_railline (
-  CONSTRAINT Station_Railline_PK
-    PRIMARY KEY(Station_ID, Railline_ID),
+  Station_ID      INT,
+  Railline_ID     INT,
 
   CONSTRAINT Station_FK
     FOREIGN KEY (Station_ID) REFERENCES station(station_id),
   CONSTRAINT Railline_FK
-    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id)
+    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id),
+
+  CONSTRAINT Station_Railline_PK
+    PRIMARY KEY(Station_ID, Railline_ID)
 );
 
 CREATE TABLE route (
@@ -38,16 +41,21 @@ CREATE TABLE route (
 );
 
 CREATE TABLE railline_route (
+  Railline_ID     INT,
+  Route_ID        INT,
+
   CONSTRAINT Railline_Route_PK
     PRIMARY KEY(Railline_ID, Route_ID),
-
-  FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id),
-  FOREIGN KEY (Route_ID) REFERENCES route(route_id)
+  CONSTRAINT Railline_FK
+    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id),
+  CONSTRAINT Route_FK
+    FOREIGN KEY (Route_ID) REFERENCES route(route_id)
 );
 
 CREATE TABLE schedule (
  schedule_id      INT,
- PRIMARY KEY (schedule_id),
+ CONSTRAINT Schedule_PK
+  PRIMARY KEY (schedule_id),
 
  CONSTRAINT Schedule_Route_FK
   FOREIGN KEY (Route_ID) REFERENCES route(route_id),
@@ -61,7 +69,9 @@ CREATE TABLE train (
   topspeed        INT,
   seats           INT,
   pricepermile    DECIMAL(4,2),
-  PRIMARY KEY(train_id)
+
+  CONSTRAINT Train_PK
+    PRIMARY KEY(train_id)
 );
 
 CREATE TABLE passenger (
@@ -75,25 +85,43 @@ CREATE TABLE passenger (
   zip             VARCHAR(15),
   country         VARCHAR(20),
   email           VARCHAR(35),
-  PRIMARY KEY(passenger_id)
+
+  CONSTRAINT Passenger_PK
+    PRIMARY KEY(passenger_id)
 );
 
 CREATE TABLE train_passenger (
-  PRIMARY KEY(Train_ID, Passenger_ID)
-  FOREIGN KEY (Train_ID) REFERENCES train(train_id),
-  FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
+  Train_ID        INT,
+  Passenger_ID    INT,
+
+  CONSTRAINT Train_Passenger_PK
+    PRIMARY KEY(Train_ID, Passenger_ID),
+  CONSTRAINT Train_FK
+    FOREIGN KEY (Train_ID) REFERENCES train(train_id),
+  CONSTRAINT Passenger_FK
+    FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
 );
 
 CREATE TABLE stop (
-  FOREIGN KEY (Station_A_ID) REFERENCES station(station_id),
-  FOREIGN KEY (Station_B_ID) REFERENCES station(station_id),
+  CONSTRAINT Station_A_FK
+    FOREIGN KEY (Station_A_ID) REFERENCES station(station_id),
+
+  CONSTRAINT Station_B_FK
+    FOREIGN KEY (Station_B_ID) REFERENCES station(station_id),
+
   distancebetween  INT,
-  PRIMARY KEY(Station_A_ID, Station_B_ID)
+
+  CONSTRAINT Stop_PK
+    PRIMARY KEY(Station_A_ID, Station_B_ID)
 );
 
 CREATE TABLE railline_stop (
-  PRIMARY KEY(StopA_ID, StopB_ID, Railline_ID),
-  FOREIGN KEY (StopA_ID) REFERENCES stop(Station_A_ID),
-  FOREIGN KEY (StopB_ID) REFERENCES railline(Station_B_ID),
-  FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id),
+  CONSTRAINT Railline_Stop_PK
+    PRIMARY KEY(StopA_ID, StopB_ID, Railline_ID),
+  CONSTRAINT Station_A_FK
+    FOREIGN KEY (StopA_ID) REFERENCES stop(Station_A_ID),
+  CONSTRAINT Station_B_FK
+    FOREIGN KEY (StopB_ID) REFERENCES railline(Station_B_ID),
+  CONSTRAINT Railline_FK
+    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id)
 );
