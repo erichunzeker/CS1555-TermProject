@@ -116,6 +116,10 @@ CREATE TABLE stop (
 );
 
 CREATE TABLE railline_stop (
+  StopA_ID          INT,
+  StopB_ID          INT,
+  Railline_ID       INT,
+
   CONSTRAINT Railline_Stop_PK
     PRIMARY KEY(StopA_ID, StopB_ID, Railline_ID),
   CONSTRAINT Station_A_FK
