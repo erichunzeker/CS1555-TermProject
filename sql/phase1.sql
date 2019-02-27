@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS route CASCADE;
 DROP TABLE IF EXISTS schedule CASCADE;
 DROP TABLE IF EXISTS train CASCADE;
 DROP TABLE IF EXISTS passenger CASCADE;
+DROP TABLE IF EXISTS stop CASCADE;
+DROP TABLE IF EXISTS railline_stop CASCADE;
 DROP TABLE IF EXISTS station_railline CASCADE;
 DROP TABLE IF EXISTS railline_route CASCADE;
 DROP TABLE IF EXISTS train_passenger CASCADE;
@@ -110,6 +112,7 @@ CREATE TABLE train_passenger (
 );
 
 CREATE TABLE stop (
+  Stop_ID           INT,
   Station_A_ID      INT,
   Station_B_ID      INT,
 
@@ -122,20 +125,17 @@ CREATE TABLE stop (
   distancebetween  INT,
 
   CONSTRAINT Stop_PK
-    PRIMARY KEY(Station_A_ID, Station_B_ID)
+    PRIMARY KEY(Stop_ID)
 );
 
 CREATE TABLE railline_stop (
-  StopA_ID          INT,
-  StopB_ID          INT,
+  Stop_ID           INT,
   Railline_ID       INT,
 
   CONSTRAINT Railline_Stop_PK
-    PRIMARY KEY(StopA_ID, StopB_ID, Railline_ID),
+    PRIMARY KEY(Stop_ID, Railline_ID),
   CONSTRAINT Station_A_FK
-    FOREIGN KEY (StopA_ID) REFERENCES stop(Station_A_ID),
-  CONSTRAINT Station_B_FK
-    FOREIGN KEY (StopB_ID) REFERENCES railline(Station_B_ID),
+    FOREIGN KEY (Stop_ID) REFERENCES stop(Stop_ID),
   CONSTRAINT Railline_FK
     FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id)
 );
