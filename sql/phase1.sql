@@ -4,6 +4,9 @@ DROP TABLE IF EXISTS route CASCADE;
 DROP TABLE IF EXISTS schedule CASCADE;
 DROP TABLE IF EXISTS train CASCADE;
 DROP TABLE IF EXISTS passenger CASCADE;
+DROP TABLE IF EXISTS station_railline CASCADE;
+DROP TABLE IF EXISTS railline_route CASCADE;
+DROP TABLE IF EXISTS train_passenger CASCADE;
 
 CREATE TABLE station (
   station_id      INT,
@@ -52,8 +55,21 @@ CREATE TABLE railline_route (
     FOREIGN KEY (Route_ID) REFERENCES route(route_id)
 );
 
+CREATE TABLE train (
+  train_id        INT,
+  topspeed        INT,
+  seats           INT,
+  pricepermile    DECIMAL(4,2),
+
+  CONSTRAINT Train_PK
+    PRIMARY KEY(train_id)
+);
+
 CREATE TABLE schedule (
  schedule_id      INT,
+ Route_ID         INT,
+ Train_id         INT,
+
  CONSTRAINT Schedule_PK
   PRIMARY KEY (schedule_id),
 
@@ -64,15 +80,6 @@ CREATE TABLE schedule (
   FOREIGN KEY (Train_ID) REFERENCES train(train_id)
 );
 
-CREATE TABLE train (
-  train_id        INT,
-  topspeed        INT,
-  seats           INT,
-  pricepermile    DECIMAL(4,2),
-
-  CONSTRAINT Train_PK
-    PRIMARY KEY(train_id)
-);
 
 CREATE TABLE passenger (
   passenger_id    SERIAL,
@@ -103,6 +110,9 @@ CREATE TABLE train_passenger (
 );
 
 CREATE TABLE stop (
+  Station_A_ID      INT,
+  Station_B_ID      INT,
+
   CONSTRAINT Station_A_FK
     FOREIGN KEY (Station_A_ID) REFERENCES station(station_id),
 
