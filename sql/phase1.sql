@@ -15,6 +15,7 @@ CREATE TABLE station (
   address         VARCHAR(100),
   opentime        TIME NOT NULL,
   closetime       TIME NOT NULL,
+  distance        INT,
   CONSTRAINT Station_PK
     PRIMARY KEY(station_id)
 );
@@ -41,6 +42,7 @@ CREATE TABLE station_railline (
 
 CREATE TABLE route (
   route_id        INT,
+  description     VARCHAR(50),
   CONSTRAINT Route_PK
     PRIMARY KEY(route_id)
 );
@@ -64,7 +66,10 @@ CREATE TABLE train (
   pricepermile    DECIMAL(4,2),
 
   CONSTRAINT Train_PK
-    PRIMARY KEY(train_id)
+    PRIMARY KEY(train_id),
+
+  CONSTRAINT Train_Schedule_FK
+    FOREIGN KEY (Schedule_ID) REFERENCES schedule(schedule_id)
 );
 
 CREATE TABLE schedule (
@@ -76,10 +81,7 @@ CREATE TABLE schedule (
   PRIMARY KEY (schedule_id),
 
  CONSTRAINT Schedule_Route_FK
-  FOREIGN KEY (Route_ID) REFERENCES route(route_id),
-
- CONSTRAINT Schedule_Train_FK
-  FOREIGN KEY (Train_ID) REFERENCES train(train_id)
+  FOREIGN KEY (Route_ID) REFERENCES route(route_id)
 );
 
 
@@ -128,14 +130,14 @@ CREATE TABLE stop (
     PRIMARY KEY(Stop_ID)
 );
 
-CREATE TABLE railline_stop (
+CREATE TABLE route_stop (
   Stop_ID           INT,
-  Railline_ID       INT,
+  Route_ID          INT,
 
   CONSTRAINT Railline_Stop_PK
-    PRIMARY KEY(Stop_ID, Railline_ID),
+    PRIMARY KEY(Stop_ID, Route_ID),
   CONSTRAINT Station_A_FK
     FOREIGN KEY (Stop_ID) REFERENCES stop(Stop_ID),
   CONSTRAINT Railline_FK
-    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id)
+    FOREIGN KEY (Route_ID) REFERENCES route(Route_ID)
 );

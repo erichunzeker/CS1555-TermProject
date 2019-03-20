@@ -1,0 +1,12 @@
+ER – 
+	*How do you store open and close hours in one attribute for station? 
+	*Do you need to introduce schedule_id or train and route Id will be enough identifier? 
+	*For distance, you might consider distance between start of rail and a particular stop. 
+	*Train schedule : Train is N:1. 
+	*You need also stations per route. I would say you have route has stop instead of rail has stop. 
+	You need a passenger to book a trip as per train schedule, not train. The booking is required to be done by an employee not by the passenger. You do not consider this in your current design.
+	Also, do you consider that the routes have two directions?
+
+SQL – 
+	*You can add description attribute in route in order not to have one attribute table.
+	Incorporate all the things mentioned for the ER diagram into the SQL
