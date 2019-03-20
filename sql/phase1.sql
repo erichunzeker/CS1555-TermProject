@@ -84,6 +84,10 @@ CREATE TABLE schedule (
   FOREIGN KEY (Route_ID) REFERENCES route(route_id)
 );
 
+CREATE TABLE agent (
+  agent_id        INT,
+  name            VARCHAR(30)
+);
 
 CREATE TABLE passenger (
   passenger_id    SERIAL,
@@ -101,14 +105,26 @@ CREATE TABLE passenger (
     PRIMARY KEY(passenger_id)
 );
 
-CREATE TABLE train_passenger (
-  Train_ID        INT,
+CREATE TABLE schedule_passenger (
+  Schedule_ID     INT,
   Passenger_ID    INT,
 
-  CONSTRAINT Train_Passenger_PK
-    PRIMARY KEY(Train_ID, Passenger_ID),
+  CONSTRAINT Schedule_Passenger_PK
+    PRIMARY KEY(Schedule_ID, Passenger_ID),
   CONSTRAINT Train_FK
-    FOREIGN KEY (Train_ID) REFERENCES train(train_id),
+    FOREIGN KEY (Schedule_ID) REFERENCES schedule(schedule_id),
+  CONSTRAINT Passenger_FK
+    FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
+);
+
+CREATE TABLE agent_passenger (
+  Agent_ID        INT,
+  Passenger_ID    INT,
+
+  CONSTRAINT Agent_Passenger_PK
+    PRIMARY KEY(Agent_ID, Passenger_ID),
+  CONSTRAINT Agent_FK
+    FOREIGN KEY (Agent_ID) REFERENCES agent(agent_id),
   CONSTRAINT Passenger_FK
     FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
 );

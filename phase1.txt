@@ -4,7 +4,7 @@ ER –
 	*For distance, you might consider distance between start of rail and a particular stop. 
 	*Train schedule : Train is N:1. 
 	*You need also stations per route. I would say you have route has stop instead of rail has stop. 
-	You need a passenger to book a trip as per train schedule, not train. The booking is required to be done by an employee not by the passenger. You do not consider this in your current design.
+	*You need a passenger to book a trip as per train schedule, not train. The booking is required to be done by an employee not by the passenger. You do not consider this in your current design.
 	Also, do you consider that the routes have two directions?
 
 SQL – 
