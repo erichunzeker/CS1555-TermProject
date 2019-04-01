@@ -89,7 +89,9 @@ CREATE TABLE train (
 
 CREATE TABLE agent (
   agent_id        INT,
-  name            VARCHAR(30)
+  name            VARCHAR(30),
+  CONSTRAINT Agent_PK
+    PRIMARY KEY(agent_id)
 );
 
 CREATE TABLE passenger (
