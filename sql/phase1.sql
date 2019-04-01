@@ -11,7 +11,6 @@ DROP TABLE IF EXISTS schedule_passenger CASCADE;
 DROP TABLE IF EXISTS route_stop CASCADE;
 DROP TABLE IF EXISTS station_railline CASCADE;
 DROP TABLE IF EXISTS railline_route CASCADE;
-DROP TABLE IF EXISTS train_passenger CASCADE;
 
 CREATE TABLE station (
   station_id      INT,
