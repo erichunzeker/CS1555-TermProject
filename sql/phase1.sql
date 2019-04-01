@@ -5,7 +5,10 @@ DROP TABLE IF EXISTS schedule CASCADE;
 DROP TABLE IF EXISTS train CASCADE;
 DROP TABLE IF EXISTS passenger CASCADE;
 DROP TABLE IF EXISTS stop CASCADE;
-DROP TABLE IF EXISTS railline_stop CASCADE;
+DROP TABLE IF EXISTS agent CASCADE;
+DROP TABLE IF EXISTS agent_passenger CASCADE;
+DROP TABLE IF EXISTS schedule_passenger CASCADE;
+DROP TABLE IF EXISTS route_stop CASCADE;
 DROP TABLE IF EXISTS station_railline CASCADE;
 DROP TABLE IF EXISTS railline_route CASCADE;
 DROP TABLE IF EXISTS train_passenger CASCADE;
@@ -59,6 +62,18 @@ CREATE TABLE railline_route (
     FOREIGN KEY (Route_ID) REFERENCES route(route_id)
 );
 
+CREATE TABLE schedule (
+ schedule_id      INT,
+ Route_ID         INT,
+ Train_id         INT,
+
+ CONSTRAINT Schedule_PK
+  PRIMARY KEY (schedule_id),
+
+ CONSTRAINT Schedule_Route_FK
+  FOREIGN KEY (Route_ID) REFERENCES route(route_id)
+);
+
 CREATE TABLE train (
   train_id        INT,
   topspeed        INT,
@@ -72,17 +87,6 @@ CREATE TABLE train (
     FOREIGN KEY (Schedule_ID) REFERENCES schedule(schedule_id)
 );
 
-CREATE TABLE schedule (
- schedule_id      INT,
- Route_ID         INT,
- Train_id         INT,
-
- CONSTRAINT Schedule_PK
-  PRIMARY KEY (schedule_id),
-
- CONSTRAINT Schedule_Route_FK
-  FOREIGN KEY (Route_ID) REFERENCES route(route_id)
-);
 
 CREATE TABLE agent (
   agent_id        INT,
@@ -93,7 +97,7 @@ CREATE TABLE passenger (
   passenger_id    SERIAL,
   firstname       VARCHAR(20),
   lastname        VARCHAR(20),
-  phone           VARCHAR(15),
+  phone           VARCHAR(20),
   street          VARCHAR(50),
   city            VARCHAR(50),
   state           VARCHAR(25),
@@ -150,7 +154,7 @@ CREATE TABLE route_stop (
   Stop_ID           INT,
   Route_ID          INT,
 
-  CONSTRAINT Railline_Stop_PK
+  CONSTRAINT Route_Stop_PK
     PRIMARY KEY(Stop_ID, Route_ID),
   CONSTRAINT Station_A_FK
     FOREIGN KEY (Stop_ID) REFERENCES stop(Stop_ID),
