@@ -64,7 +64,6 @@ CREATE TABLE railline_route (
 CREATE TABLE schedule (
  schedule_id      INT,
  Route_ID         INT,
- Train_id         INT,
 
  CONSTRAINT Schedule_PK
   PRIMARY KEY (schedule_id),
@@ -78,6 +77,7 @@ CREATE TABLE train (
   topspeed        INT,
   seats           INT,
   pricepermile    DECIMAL(4,2),
+  Schedule_ID     INT,
 
   CONSTRAINT Train_PK
     PRIMARY KEY(train_id),
