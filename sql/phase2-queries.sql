@@ -132,6 +132,11 @@ SELECT route_id, description
 
 -- 1.2.4.8. Most total distance
 
+-- 1.2.5. Add Reservation: Book a specified passenger along all legs of the specified route(s) on a given day.
+
+INSERT INTO schedule (weekday, runtime, Route_ID)
+  VALUES ('Wed', '10:00:00', '4')
+  -- route_id is found by asking system 1.2.1 or 1.2.2
 
 
 
