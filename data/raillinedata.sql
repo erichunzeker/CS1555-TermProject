@@ -1,10 +1,5 @@
-INSERT INTO "station" (railline_id,speedlimit) VALUES (1,98);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (2,66);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (3,82);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (4,74);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (5,51);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (6,113);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (7,104);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (8,51);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (9,42);
-INSERT INTO "station" (railline_id,speedlimit) VALUES (10,47);
+INSERT INTO "railline" (railline_id,speedlimit) VALUES (1,98);
+INSERT INTO "railline" (railline_id,speedlimit) VALUES (2,66);
+INSERT INTO "railline" (railline_id,speedlimit) VALUES (3,82);
+INSERT INTO "railline" (railline_id,speedlimit) VALUES (4,74);
+INSERT INTO "railline" (railline_id,speedlimit) VALUES (5,51);
