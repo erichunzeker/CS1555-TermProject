@@ -30,8 +30,8 @@ CREATE TABLE railline (
 );
 
 CREATE TABLE station_railline (
-  Station_ID      INT,
-  Railline_ID     INT,
+  Station_ID      INT NOT NULL,
+  Railline_ID     INT NOT NULL,
 
   CONSTRAINT Station_FK
     FOREIGN KEY (Station_ID) REFERENCES station(station_id),
@@ -50,8 +50,8 @@ CREATE TABLE route (
 );
 
 CREATE TABLE railline_route (
-  Railline_ID     INT,
-  Route_ID        INT,
+  Railline_ID     INT NOT NULL,
+  Route_ID        INT NOT NULL,
 
   CONSTRAINT Railline_Route_PK
     PRIMARY KEY(Railline_ID, Route_ID),
@@ -111,8 +111,8 @@ CREATE TABLE passenger (
 );
 
 CREATE TABLE schedule_passenger (
-  Schedule_ID     INT,
-  Passenger_ID    INT,
+  Schedule_ID     INT NOT NULL,
+  Passenger_ID    INT NOT NULL,
 
   CONSTRAINT Schedule_Passenger_PK
     PRIMARY KEY(Schedule_ID, Passenger_ID),
@@ -123,8 +123,8 @@ CREATE TABLE schedule_passenger (
 );
 
 CREATE TABLE agent_passenger (
-  Agent_ID        INT,
-  Passenger_ID    INT,
+  Agent_ID        INT NOT NULL,
+  Passenger_ID    INT NOT NULL,
 
   CONSTRAINT Agent_Passenger_PK
     PRIMARY KEY(Agent_ID, Passenger_ID),
@@ -152,8 +152,8 @@ CREATE TABLE stop (
 );
 
 CREATE TABLE route_stop (
-  Stop_ID           INT,
-  Route_ID          INT,
+  Stop_ID           INT NOT NULL,
+  Route_ID          INT NOT NULL,
 
   CONSTRAINT Route_Stop_PK
     PRIMARY KEY(Stop_ID, Route_ID),
