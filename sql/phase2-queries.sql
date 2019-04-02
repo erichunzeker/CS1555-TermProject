@@ -28,7 +28,10 @@ SELECT *
       SELECT Stop_ID
       from stop
       WHERE Station_B_ID = 4
-      )
+      )) AND (
+      SELECT Route_ID
+      FROM schedule
+      where weekday = 'Wed'
     )
 -- 1.2.4. For each of the trip search options listed above, the following
 -- sorting options should be allowed. Note that each trip search should produce
