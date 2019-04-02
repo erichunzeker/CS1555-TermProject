@@ -13,8 +13,8 @@ DROP TABLE IF EXISTS station_railline CASCADE;
 DROP TABLE IF EXISTS railline_route CASCADE;
 
 CREATE TABLE station (
-  station_id      INT,
-  address         VARCHAR(100),
+  station_id      SERIAL,
+  address         VARCHAR(100) UNIQUE,
   opentime        TIME NOT NULL,
   closetime       TIME NOT NULL,
   distance        INT,
@@ -23,7 +23,7 @@ CREATE TABLE station (
 );
 
 CREATE TABLE railline (
-  railline_id     INT,
+  railline_id     SERIAL,
   speedlimit      INT,
   CONSTRAINT Railline_PK
     PRIMARY KEY(railline_id)
@@ -43,7 +43,7 @@ CREATE TABLE station_railline (
 );
 
 CREATE TABLE route (
-  route_id        INT,
+  route_id        SERIAL,
   description     VARCHAR(50),
   CONSTRAINT Route_PK
     PRIMARY KEY(route_id)
@@ -62,7 +62,7 @@ CREATE TABLE railline_route (
 );
 
 CREATE TABLE schedule (
- schedule_id      INT,
+ schedule_id      SERIAL,
  Route_ID         INT,
 
  CONSTRAINT Schedule_PK
@@ -73,7 +73,7 @@ CREATE TABLE schedule (
 );
 
 CREATE TABLE train (
-  train_id        INT,
+  train_id        SERIAL,
   topspeed        INT,
   seats           INT,
   pricepermile    DECIMAL(4,2),
@@ -88,7 +88,7 @@ CREATE TABLE train (
 
 
 CREATE TABLE agent (
-  agent_id        INT,
+  agent_id        SERIAL,
   name            VARCHAR(30),
   CONSTRAINT Agent_PK
     PRIMARY KEY(agent_id)
@@ -135,7 +135,7 @@ CREATE TABLE agent_passenger (
 );
 
 CREATE TABLE stop (
-  Stop_ID           INT,
+  Stop_ID           SERIAL,
   Station_A_ID      INT,
   Station_B_ID      INT,
 
