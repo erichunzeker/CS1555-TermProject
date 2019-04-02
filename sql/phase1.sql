@@ -148,7 +148,9 @@ CREATE TABLE stop (
   distancebetween  INT,
 
   CONSTRAINT Stop_PK
-    PRIMARY KEY(Stop_ID)
+    PRIMARY KEY(Stop_ID),
+  CONSTRAINT Unique_Station_Combo
+  	UNIQUE (Station_A_ID, Station_B_ID)
 );
 
 CREATE TABLE route_stop (
