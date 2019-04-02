@@ -39,7 +39,21 @@ SELECT *
 -- at a time, with the option to grab the next 10 if needed).
 
 -- 1.2.4.1. Fewest stops
-SELECT min()
+SELECT route_id, description
+  FROM route
+  WHERE route_id IN (
+    SELECT Route_ID as R
+    FROM route_stop
+    WHERE Stop_ID IN (
+      SELECT Stop_ID
+      FROM stop
+      WHERE Station_A_ID = 1
+      ) AND (
+      SELECT Stop_ID
+      from stop
+      WHERE Station_B_ID = 4
+      ))
+  ORDER BY COUNT(*) DESC
 -- 1.2.4.2. Run through most stations
 -- 1.2.4.3. Lowest price
 SELECT max(temp_lo) FROM weather;
