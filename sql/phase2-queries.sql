@@ -32,7 +32,7 @@ SELECT *
       SELECT Route_ID
       FROM schedule
       where weekday = 'Wed'
-    )
+    );
 -- 1.2.4. For each of the trip search options listed above, the following
 -- sorting options should be allowed. Note that each trip search should produce
 -- a paginated list of results (i.e., each trip search show produce 10 results
@@ -53,7 +53,7 @@ SELECT route_id, description
       from stop
       WHERE Station_B_ID = 4
       ))
-  ORDER BY COUNT(*) DESC
+  ORDER BY COUNT(*) DESC;
 -- 1.2.4.2. Run through most stations
 -- 1.2.4.3. Lowest price
 SELECT max(temp_lo) FROM weather;
@@ -62,7 +62,30 @@ SELECT max(temp_lo) FROM weather;
 -- 1.2.4.5. Least total time
 -- 1.2.4.6. Most total time
 -- 1.2.4.7. Least total distance
+
+SELECT station.distance INTO D1 from station where station_id = 1;
+SELECT station.distance INTO D2 from station where station_id = 4;
+
+SELECT route_id, description
+  FROM route
+  WHERE route_id IN (
+    SELECT Route_ID as R
+    FROM route_stop
+    WHERE Stop_ID IN (
+      SELECT Stop_ID
+      FROM stop
+      WHERE Station_A_ID = 1
+      ) AND (
+      SELECT Stop_ID
+      from stop
+      WHERE Station_B_ID = 4
+      ))
+  ORDER BY SUM(*) ASC;
+
+
+
 -- 1.2.4.8. Most total distance
+
 
 
 
