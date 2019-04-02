@@ -69,6 +69,7 @@ CREATE TABLE schedule (
  -- add train to each schedule
  Route_ID         INT NOT NULL,
  Train_ID         INT,
+ seats_taken      INT,
 
  CONSTRAINT Schedule_PK
   PRIMARY KEY (Route_ID, weekday, runtime),
