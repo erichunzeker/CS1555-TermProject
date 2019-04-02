@@ -63,13 +63,21 @@ CREATE TABLE railline_route (
 
 CREATE TABLE schedule (
  schedule_id      SERIAL,
- Route_ID         INT,
+ weekday          VARCHAR(4) NOT NULL,
+ runtime          TIME NOT NULL
+ -- primary key is route, week, and time
+ -- add train to each schedule
+ Route_ID         INT NOT NULL,
+ Train_ID         INT,
 
  CONSTRAINT Schedule_PK
-  PRIMARY KEY (schedule_id),
+  PRIMARY KEY (Route_ID, weekday, runtime),
 
  CONSTRAINT Schedule_Route_FK
-  FOREIGN KEY (Route_ID) REFERENCES route(route_id)
+  FOREIGN KEY (Route_ID) REFERENCES route(route_id),
+
+ CONSTRAINT Schedule_Train_FK
+  FOREIGN KEY (Train_ID) REFERENCES train(train_id)
 );
 
 CREATE TABLE train (
