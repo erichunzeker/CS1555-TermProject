@@ -138,8 +138,11 @@ INSERT INTO schedule (weekday, runtime, Route_ID)
   VALUES ('Wed', '10:00:00', '4')
   -- route_id is found by asking system 1.2.1 or 1.2.2
 
+-- 1.3.2. Find the routes that travel more than one rail line: Find all routes that travel more than one rail line.
 
-
+SELECT Route_ID
+  FROM railline_route
+  WHERE Route_ID NOT UNIQUE
 
 -- 1.3.8
 -- Find the availability of a route at every stop on a specific day
