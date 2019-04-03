@@ -42,63 +42,6 @@ CREATE TABLE station_railline (
     PRIMARY KEY(Station_ID, Railline_ID)
 );
 
-CREATE TABLE route (
-  route_id        SERIAL,
-  description     VARCHAR(50),
-  Stop_ID         INT,
-
-  CONSTRAINT Route_PK
-    PRIMARY KEY(route_id),
-  CONSTRAINT Stop_FK
-  	FOREIGN KEY (Stop_ID) REFERENCES stop(Stop_ID)
-);
-
-CREATE TABLE railline_route (
-  Railline_ID     INT NOT NULL,
-  Route_ID        INT NOT NULL,
-
-  CONSTRAINT Railline_Route_PK
-    PRIMARY KEY(Railline_ID, Route_ID),
-  CONSTRAINT Railline_FK
-    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id),
-  CONSTRAINT Route_FK
-    FOREIGN KEY (Route_ID) REFERENCES route(route_id)
-);
-
-CREATE TABLE schedule (
- schedule_id      SERIAL,
- weekday          VARCHAR(4) NOT NULL,
- runtime          TIME NOT NULL
- -- primary key is route, week, and time
- -- add train to each schedule
- Route_ID         INT NOT NULL,
- Train_ID         INT,
- seats_taken      INT,
-
- CONSTRAINT Schedule_PK
-  PRIMARY KEY (Route_ID, weekday, runtime),
-
- CONSTRAINT Schedule_Route_FK
-  FOREIGN KEY (Route_ID) REFERENCES route(route_id),
-
- CONSTRAINT Schedule_Train_FK
-  FOREIGN KEY (Train_ID) REFERENCES train(train_id)
-);
-
-CREATE TABLE train (
-  train_id        SERIAL,
-  topspeed        INT,
-  seats           INT,
-  pricepermile    DECIMAL(4,2),
-  Schedule_ID     INT,
-
-  CONSTRAINT Train_PK
-    PRIMARY KEY(train_id),
-
-  CONSTRAINT Train_Schedule_FK
-    FOREIGN KEY (Schedule_ID) REFERENCES schedule(schedule_id)
-);
-
 
 CREATE TABLE agent (
   agent_id        SERIAL,
@@ -121,18 +64,6 @@ CREATE TABLE passenger (
 
   CONSTRAINT Passenger_PK
     PRIMARY KEY(passenger_id)
-);
-
-CREATE TABLE schedule_passenger (
-  Schedule_ID     INT NOT NULL,
-  Passenger_ID    INT NOT NULL,
-
-  CONSTRAINT Schedule_Passenger_PK
-    PRIMARY KEY(Schedule_ID, Passenger_ID),
-  CONSTRAINT Train_FK
-    FOREIGN KEY (Schedule_ID) REFERENCES schedule(schedule_id),
-  CONSTRAINT Passenger_FK
-    FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
 );
 
 CREATE TABLE agent_passenger (
@@ -166,9 +97,67 @@ CREATE TABLE stop (
   	UNIQUE (Station_A_ID, Station_B_ID)
 );
 
+CREATE TABLE route (
+  route_id        SERIAL,
+  description     VARCHAR(50),
+  Stop_ID         INT,
+
+  CONSTRAINT Route_PK
+    PRIMARY KEY(route_id),
+  CONSTRAINT Stop_FK
+    FOREIGN KEY (Stop_ID) REFERENCES stop(Stop_ID)
+);
+
+CREATE TABLE train (
+  train_id        SERIAL,
+  topspeed        INT,
+  seats           INT,
+  pricepermile    DECIMAL(4,2),
+
+  CONSTRAINT Train_PK
+    PRIMARY KEY(train_id)
+);
+
+CREATE TABLE schedule (
+ schedule_id      SERIAL,
+ weekday          VARCHAR(4) NOT NULL,
+ runtime          TIME NOT NULL,
+ -- primary key is route, week, and time
+ -- add train to each schedule
+ Route_ID         INT NOT NULL,
+ Train_ID         INT,
+ seats_taken      INT,
+
+ CONSTRAINT Schedule_PK
+  PRIMARY KEY (schedule_id),
+
+ CONSTRAINT Schedule_Route_FK
+  FOREIGN KEY (Route_ID) REFERENCES route(route_id),
+
+ CONSTRAINT Schedule_Train_FK
+  FOREIGN KEY (Train_ID) REFERENCES train(train_id),
+
+ CONSTRAINT Unique_Schedule
+  UNIQUE (Route_ID, weekday, runtime)
+);
+
+CREATE TABLE railline_route (
+  Railline_ID     INT NOT NULL,
+  Route_ID        INT NOT NULL,
+
+  CONSTRAINT Railline_Route_PK
+    PRIMARY KEY(Railline_ID, Route_ID),
+  CONSTRAINT Railline_FK
+    FOREIGN KEY (Railline_ID) REFERENCES railline(railline_id),
+  CONSTRAINT Route_FK
+    FOREIGN KEY (Route_ID) REFERENCES route(route_id)
+);
+
 CREATE TABLE route_stop (
   Stop_ID           INT NOT NULL,
   Route_ID          INT NOT NULL,
+  Stops_At_A        BOOLEAN,
+  Stops_At_B        BOOLEAN,
 
   CONSTRAINT Route_Stop_PK
     PRIMARY KEY(Stop_ID, Route_ID),
@@ -176,4 +165,16 @@ CREATE TABLE route_stop (
     FOREIGN KEY (Stop_ID) REFERENCES stop(Stop_ID),
   CONSTRAINT Railline_FK
     FOREIGN KEY (Route_ID) REFERENCES route(Route_ID)
+);
+
+CREATE TABLE schedule_passenger (
+  Schedule_ID     INT NOT NULL,
+  Passenger_ID    INT NOT NULL,
+
+  CONSTRAINT Schedule_Passenger_PK
+    PRIMARY KEY(Schedule_ID, Passenger_ID),
+  CONSTRAINT Train_FK
+    FOREIGN KEY (Schedule_ID) REFERENCES schedule(schedule_id),
+  CONSTRAINT Passenger_FK
+    FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
 );
