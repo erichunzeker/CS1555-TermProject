@@ -173,7 +173,7 @@ CREATE TRIGGER update_seats
   EXECUTE PROCEDURE seats();
 
 
----------------- Add one to seats_taken on insert --------------------
+---------------- Make sure track's empty on insert --------------------
 
 DROP TRIGGER IF EXISTS check_times ON schedule;
 
@@ -181,7 +181,10 @@ CREATE OR REPLACE FUNCTION time()
   RETURNS trigger AS
 $$
 BEGIN
-  IF (SELECT runtime from schedule where schedule_id = NEW.schedule_id) = NEW.runtime THEN
+  IF (SELECT runtime from schedule) >= NEW.runtime AND
+    (SELECT runtime + interval '1h' * (distance / (SELECT topspeed from Train where train_id = Train_ID)) from schedule <=
+    (SELECT NEW.runtime + interval '1h' * (NEW.distance / (SELECT topspeed from Train where train_id = NEW.Train_ID))
+  THEN
     RAISE NOTICE 'track is occupied';
     RETURN NULL;
   END IF;
