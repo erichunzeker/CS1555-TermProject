@@ -174,3 +174,25 @@ CREATE TRIGGER update_seats
 
 
 ---------------- Add one to seats_taken on insert --------------------
+
+DROP TRIGGER IF EXISTS check_times ON schedule;
+
+CREATE OR REPLACE FUNCTION time()
+  RETURNS trigger AS
+$$
+BEGIN
+  IF (SELECT runtime from schedule where schedule_id = NEW.schedule_id) = NEW.runtime THEN
+    RAISE NOTICE 'track is occupied';
+    RETURN NULL;
+  END IF;
+
+  RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER check_times
+  BEFORE insert
+  ON schedule
+  FOR EACH ROW
+  EXECUTE PROCEDURE time();
