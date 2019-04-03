@@ -129,6 +129,18 @@ SELECT Route_ID
   GROUP BY Route_ID having count(*) > 1;
 
 -- 1.3.3. Find routes that pass through the same stations but don’t have the same stops: Find seemingly similar routes that differ by at least 1 stop.
+
+SELECT route_id 
+  FROM (SELECT route_id, count(route_id) AS Count, count(CASE WHEN stops_at_b THEN 1 END) AS stopCount FROM route_stop
+    WHERE route_id NOT IN ( SELECT route_id FROM (
+      (SELECT route_id, stop_id FROM (SELECT stop_id FROM route_stop WHERE route_id = 1 ) AS stops CROSS JOIN
+        (SELECT DISTINCT route_id FROM route_stop) AS routes)
+      EXCEPT
+        (SELECT route_id , stop_id FROM route_stop) ) AS existing )
+      GROUP BY route_id) AS temp
+  WHERE temp.count = (SELECT COUNT(*) FROM route_stop where route_id = 1) 
+  AND temp.stopCount <> (SELECT COUNT(CASE WHEN stops_at_b THEN 1 END) FROM route_stop where route_id = 1);
+
 -- 1.3.4. Find any stations through which all trains pass through: Find any stations that all the trains (that are in the system) pass at any time during an entire week.
 -- 1.3.5. Find all the trains that do not stop at a specific station: Find all trains that do not stop at a specified station at any time during an entire week.
 
