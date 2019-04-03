@@ -148,15 +148,3 @@ CREATE TABLE route_stop (
   CONSTRAINT Railline_FK
     FOREIGN KEY (Route_ID) REFERENCES route(Route_ID)
 );
-
-CREATE TABLE schedule_passenger (
-  Schedule_ID     INT NOT NULL,
-  Passenger_ID    INT NOT NULL,
-
-  CONSTRAINT Schedule_Passenger_PK
-    PRIMARY KEY(Schedule_ID, Passenger_ID),
-  CONSTRAINT Train_FK
-    FOREIGN KEY (Schedule_ID) REFERENCES schedule(schedule_id),
-  CONSTRAINT Passenger_FK
-    FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
-);
