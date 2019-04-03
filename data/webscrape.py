@@ -23,14 +23,14 @@ def getStations(tables, toDowntown):
 				if address == '<font color="red"><strong>NOTICE | </strong>This Station now includes motorcycle parking</font>' or address in [d['address'] for d in stations]:
 					break
 				if not toDowntown and address == "16th St. & JFK Blvd. Philadelphia PA 19102":
-					stations.append({'address': address, 'distance': 2 * j, 'open': '9:00', 'close': '5:00'})
+					stations.append({'address': address, 'distance': 2 * j, 'open': '09:00:00', 'close': '05:00:00', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
 					toDowntown = True
 					j += 1
 				elif address == "16th St. & JFK Blvd. Philadelphia PA 19102":
-					stations.append({'address': address, 'distance': 2 * j, 'open': '09:00:00', 'close': '05:00:00'})
+					stations.append({'address': address, 'distance': 2 * j, 'open': '09:00:00', 'close': '05:00:00', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
 					return stations
 				elif toDowntown:
-					stations.append({'address': address, 'distance': 2 * j, 'open': '09:00:00', 'close': '05:00:00'})
+					stations.append({'address': address, 'distance': 2 * j, 'open': '09:00:00', 'close': '05:00:00', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
 					j += 1
 	return stations
 
@@ -52,23 +52,29 @@ for i in url:
 	allRails.append(stations)
 	print("INSERT INTO railline VALUES (" + str(k) + ", 40);")
 	for j in stations:
-		if j['address'] not in allstations:
-			allstations.append(j['address'])
-			print("INSERT INTO station (address, opentime, closetime, distance) VALUES ('" + j['address'] + "', time '09:00:00', time '19:00:00', " + str(j['distance']) + ");")
-		print("INSERT INTO station_railline VALUES ((SELECT station_id FROM station WHERE address = '" + j['address'] + "'), " + str(k) + ");")
+		if j['name'] not in allstations:
+			allstations.append(j['name'])
+			print("INSERT INTO station (address, opentime, closetime, distance, name) VALUES ('" + j['address'] + "', time '09:00:00', time '19:00:00', " + str(j['distance']) + ", '" + j['name'] + "');")
+		print("INSERT INTO station_railline VALUES ((SELECT station_id FROM station WHERE name = '" + j['name'] + "'), " + str(k) + ");")
 	k += 1
 
 # PAIRS OF RAILS BY INDEX: 0,3 4,5 1,2 7,10 8,11 12,13 6,9
 k = 0
+stationPairs = []
 for i in allRails:
-	print("INSERT INTO route VALUES (" + str(k*2 + 1)+ ", 'Every Stop Rail #" + str(k) + " to CC');")
-	print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*2 + 1) + ");")
-	print("INSERT INTO route VALUES (" + str(k*2 + 2)+ ", 'Every Stop Rail #" + str(k) + " from CC');")
-	print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*2 + 2) + ");")
 	for j in range(1, len(i)):
-		# GENERATING 
-		print("INSERT INTO stop (Station_A_ID, Station_B_ID, distancebetween) VALUES ((SELECT station_id FROM station WHERE address = '" + i[j - 1]['address'] + "'), (SELECT station_id FROM station WHERE address = '" + i[j]['address'] + "'), 2);")
-		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE address = '" + i[j - 1]['address'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE address = '" + i[j]['address'] + "')), " + str(k*2 + 1) + ");")
-		print("INSERT INTO stop (Station_A_ID, Station_B_ID, distancebetween) VALUES ((SELECT station_id FROM station WHERE address = '" + i[j]['address'] + "'), (SELECT station_id FROM station WHERE address = '" + i[j - 1]['address'] + "'), 2);")
-		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE address = '" + i[j]['address'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE address = '" + i[j - 1]['address'] + "')), " + str(k*2 + 2) + ");")
+		# GENERATING
+		if str(i[j - 1]['name']) + str(i[j]['name']) not in stationPairs: 
+			print("INSERT INTO stop (Station_A_ID, Station_B_ID, distancebetween) VALUES ((SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "'), (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "'), 2);")
+			print("INSERT INTO stop (Station_A_ID, Station_B_ID, distancebetween) VALUES ((SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "'), (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "'), 2);")
+			stationPairs.append(str(i[j - 1]['name']) + str(i[j]['name']))
+		if j == 1:
+			print("INSERT INTO route VALUES (" + str(k*2 + 1)+ ", 'Every Stop " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
+			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*2 + 1) + ");")
+			print("INSERT INTO route VALUES (" + str(k*2 + 2)+ ", 'Every Stop " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
+			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*2 + 2) + ");")
+		if j == len(i) - 1:
+			print("UPDATE route SET stop_id = (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "') WHERE route_id = " + str(k*2 + 2) + ";")
+		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*2 + 1) + ");")
+		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*2 + 2) + ");")
 	k += 1
