@@ -46,12 +46,7 @@ SELECT *
   ON schedule.Train_ID = train.train_id
   WHERE seats_taken <= seats;
 
--- 1.2.4. For each of the trip search options listed above, the following
--- sorting options should be allowed. Note that each trip search should produce
--- a paginated list of results (i.e., each trip search show produce 10 results
--- at a time, with the option to grab the next 10 if needed).
-
--- 1.2.4.1. Fewest stops ( do pagnation in parameterized query in phase 3 )
+-- 1.2.4.1. Fewest stops ( do pagnation in parameterized query in phase 3 (for all of these 1.2.4.x))
 SELECT route_id, description
   FROM route
   WHERE route_id IN (
@@ -188,6 +183,16 @@ INSERT INTO schedule (weekday, runtime, Route_ID)
 -- 1.3.1. Find all trains that pass through a specific station at a specific day/time combination: Find the trains that pass through a specific station on a specific day and time.
 
 
+SELECT T.train_id
+  FROM schedule S
+  INNER JOIN train T
+  ON S.Train_ID = T.train_id
+  INNER JOIN route_stop RS
+  ON S.Route_ID = RS.Route_ID
+  INNER JOIN stop
+  ON RS.Stop_ID = stop.Stop_ID
+  WHERE
+    Station_A_ID = 1 OR Station_B_ID = 1;
 
 
 -- 1.3.2. Find the routes that travel more than one rail line: Find all routes that travel more than one rail line.
