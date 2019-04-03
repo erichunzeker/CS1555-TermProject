@@ -197,4 +197,4 @@ CREATE TRIGGER check_times
   BEFORE insert
   ON schedule
   FOR EACH ROW
-  EXECUTE PROCEDURE gtime();
+  EXECUTE PROCEDURE checktime();
