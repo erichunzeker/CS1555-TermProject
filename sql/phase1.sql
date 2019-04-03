@@ -148,7 +148,7 @@ CREATE TABLE route_stop (
 
 ---------------- Add one to seats_taken on insert --------------------
 
-DROP TRIGGER IF EXISTS update_seats ON enrollment;
+DROP TRIGGER IF EXISTS update_seats ON schedule;
 
 CREATE OR REPLACE FUNCTION seats()
   RETURNS trigger AS
@@ -171,3 +171,6 @@ CREATE TRIGGER update_seats
   ON schedule
   FOR EACH ROW
   EXECUTE PROCEDURE seats();
+
+
+---------------- Add one to seats_taken on insert --------------------
