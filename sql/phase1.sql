@@ -182,8 +182,8 @@ CREATE OR REPLACE FUNCTION checktime()
 $$
 BEGIN
   IF (SELECT runtime from schedule) >= NEW.runtime AND
-    (SELECT runtime + interval '1h' * (distance / (SELECT topspeed from Train where train_id = Train_ID)) from schedule) <=
-    (SELECT NEW.runtime + interval '1h' * (NEW.distance / (SELECT topspeed from Train where train_id = NEW.Train_ID))) THEN
+    (SELECT runtime + interval '1h' * ((SELECT distance from route where route_id = Route_ID)  / (SELECT topspeed from train where train_id = Train_ID)) from schedule) <=
+    (SELECT NEW.runtime + interval '1h' * ((SELECT distance from route where route_id = NEW.Route_ID) / (SELECT topspeed from train where train_id = NEW.Train_ID))) THEN
     RAISE NOTICE 'track is occupied';
     RETURN NULL;
   END IF;
