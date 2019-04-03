@@ -148,3 +148,29 @@ CREATE TABLE route_stop (
   CONSTRAINT Railline_FK
     FOREIGN KEY (Route_ID) REFERENCES route(Route_ID)
 );
+
+---------------- Add one to seats_taken on insert --------------------
+
+DROP TRIGGER IF EXISTS update_seats ON enrollment;
+
+CREATE OR REPLACE FUNCTION seats()
+  RETURNS trigger AS
+$$
+BEGIN
+  IF (SELECT seats_taken from schedule where schedule_id = NEW.schedule_id) + 1 >= (SELECT seats from train where train_id = NEW.Train_ID) THEN
+    RAISE NOTICE 'train is full';
+    RETURN NULL;
+  ELSE
+    update schedule set seats_taken = (SELECT seats_taken from schedule where schedule_id = NEW.schedule_id) + 1 where schedule_id = NEW.schedule_id;
+  END IF;
+
+  RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER update_seats
+  BEFORE insert
+  ON schedule
+  FOR EACH ROW
+  EXECUTE PROCEDURE seats();
