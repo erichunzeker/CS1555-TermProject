@@ -18,6 +18,7 @@ CREATE TABLE station (
   opentime        TIME NOT NULL,
   closetime       TIME NOT NULL,
   distance        INT,
+  name            VARCHAR(50) UNIQUE,
   CONSTRAINT Station_PK
     PRIMARY KEY(station_id)
 );
