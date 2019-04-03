@@ -45,8 +45,12 @@ CREATE TABLE station_railline (
 CREATE TABLE route (
   route_id        SERIAL,
   description     VARCHAR(50),
+  Stop_ID         INT,
+
   CONSTRAINT Route_PK
-    PRIMARY KEY(route_id)
+    PRIMARY KEY(route_id),
+  CONSTRAINT Stop_FK
+  	FOREIGN KEY (Stop_ID) REFERENCES stop(Stop_ID)
 );
 
 CREATE TABLE railline_route (
