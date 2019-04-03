@@ -62,12 +62,13 @@ SELECT route_id, description
       SELECT Stop_ID
       FROM stop
       WHERE Station_A_ID = 1
-      ) AND (
+      ) UNION ALL (
       SELECT Stop_ID
       from stop
       WHERE Station_B_ID = 4
       ))
-  ORDER BY COUNT(*) CASCADE;
+  GROUP BY route_id
+  ORDER BY COUNT(*) ASC;
 
 -- 1.2.4.2. Run through most stations
 SELECT route_id, description
@@ -125,11 +126,23 @@ INSERT INTO schedule (weekday, runtime, Route_ID)
 
 SELECT Route_ID
   FROM railline_route
-  WHERE Route_ID NOT UNIQUE;
+  GROUP BY Route_ID having count(*) > 1;
 
 -- 1.3.3. Find routes that pass through the same stations but don’t have the same stops: Find seemingly similar routes that differ by at least 1 stop.
 -- 1.3.4. Find any stations through which all trains pass through: Find any stations that all the trains (that are in the system) pass at any time during an entire week.
 -- 1.3.5. Find all the trains that do not stop at a specific station: Find all trains that do not stop at a specified station at any time during an entire week.
+
+SELECT *
+  FROM schedule S
+  INNER JOIN train T
+  ON S.Train_ID = T.train_id
+  INNER JOIN route_stop RS
+  ON S.Route_ID = RS.Route_ID
+  INNER JOIN stop
+  ON RS.Stop_ID = stop.Stop_ID
+  WHERE
+    Station_A_ID <> 2 AND Station_B_ID <> 2;
+
 -- 1.3.6. Find routes that stop at least at XX% of the Stations they visit: Find routes where they stop at least in XX% (where XX number from 10 to 90) of the stations from which they pass (e.g., if a route passes through 5 stations and stops at at least 3 of them, it will be returned as a result for a 50% search).
 
 
