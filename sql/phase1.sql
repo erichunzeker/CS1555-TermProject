@@ -43,14 +43,6 @@ CREATE TABLE station_railline (
     PRIMARY KEY(Station_ID, Railline_ID)
 );
 
-
-CREATE TABLE agent (
-  agent_id        SERIAL,
-  name            VARCHAR(30),
-  CONSTRAINT Agent_PK
-    PRIMARY KEY(agent_id)
-);
-
 CREATE TABLE passenger (
   passenger_id    SERIAL,
   firstname       VARCHAR(20),
@@ -61,22 +53,10 @@ CREATE TABLE passenger (
   state           VARCHAR(25),
   zip             VARCHAR(15),
   country         VARCHAR(20),
-  email           VARCHAR(35),
+  email           VARCHAR(75),
 
   CONSTRAINT Passenger_PK
     PRIMARY KEY(passenger_id)
-);
-
-CREATE TABLE agent_passenger (
-  Agent_ID        INT NOT NULL,
-  Passenger_ID    INT NOT NULL,
-
-  CONSTRAINT Agent_Passenger_PK
-    PRIMARY KEY(Agent_ID, Passenger_ID),
-  CONSTRAINT Agent_FK
-    FOREIGN KEY (Agent_ID) REFERENCES agent(agent_id),
-  CONSTRAINT Passenger_FK
-    FOREIGN KEY (Passenger_ID) REFERENCES passenger(passenger_id)
 );
 
 CREATE TABLE stop (
