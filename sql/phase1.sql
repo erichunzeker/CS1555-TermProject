@@ -101,6 +101,7 @@ CREATE TABLE route (
   route_id        SERIAL,
   description     VARCHAR(50),
   Stop_ID         INT,
+  distance        INT,
 
   CONSTRAINT Route_PK
     PRIMARY KEY(route_id),
