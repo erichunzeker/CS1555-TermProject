@@ -125,7 +125,7 @@ CREATE TABLE schedule (
  -- primary key is route, week, and time
  -- add train to each schedule
  Route_ID         INT NOT NULL,
- Train_ID         INT,
+ Train_ID         INT NOT NULL,
  seats_taken      INT,
 
  CONSTRAINT Schedule_PK

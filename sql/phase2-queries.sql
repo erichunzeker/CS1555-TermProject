@@ -58,7 +58,9 @@ SELECT route_id, description
   WHERE route_id IN (
     SELECT Route_ID as R
     FROM route_stop
-    WHERE Stop_ID IN (
+    WHERE (Stops_At_A = TRUE
+    OR Stops_At_B = TRUE)
+    AND Stop_ID IN (
       SELECT Stop_ID
       FROM stop
       WHERE Station_A_ID = 1
@@ -80,12 +82,13 @@ SELECT route_id, description
       SELECT Stop_ID
       FROM stop
       WHERE Station_A_ID = 1
-      ) AND (
+      ) UNION ALL (
       SELECT Stop_ID
       from stop
       WHERE Station_B_ID = 4
       ))
-  ORDER BY COUNT(*) ASC;
+  GROUP BY route_id
+  ORDER BY COUNT(*) DESC;
 
 -- 1.2.4.3. Lowest price
 -- 1.2.4.4. Highest price
@@ -146,6 +149,8 @@ SELECT *
 -- 1.3.6. Find routes that stop at least at XX% of the Stations they visit: Find routes where they stop at least in XX% (where XX number from 10 to 90) of the stations from which they pass (e.g., if a route passes through 5 stations and stops at at least 3 of them, it will be returned as a result for a 50% search).
 
 
+
+
 -- 1.3.7 Display the schedule of a route: For a specified route, list the days of departure, departure hours and trains that run it.
 SELECT weekday, runtime, Train_ID
   FROM schedule
@@ -153,3 +158,11 @@ SELECT weekday, runtime, Train_ID
 
 
 -- 1.3.8 Find the availability of a route at every stop on a specific day and time: Find the number of available seats at each stop of a route for the day and time given as parameters.
+
+SELECT T.seats - S.seats_taken
+  FROM schedule S
+  INNER JOIN train T
+  on S.TRAIN_ID = T.train_id
+  WHERE S.Route_ID = 1 AND S.weekday = 'Wed' AND S.runtime = '10:00:00';
+
+--------
