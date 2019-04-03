@@ -75,6 +75,6 @@ for i in allRails:
 			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*2 + 2) + ");")
 		if j == len(i) - 1:
 			print("UPDATE route SET stop_id = (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "') WHERE route_id = " + str(k*2 + 2) + ";")
-		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*2 + 1) + ");")
-		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*2 + 2) + ");")
+		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*2 + 1) + ", True, True);")
+		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*2 + 2) + ", True, True);")
 	k += 1
