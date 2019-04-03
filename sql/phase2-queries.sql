@@ -35,24 +35,7 @@ SELECT *
     );
 
 -- 1.2.2 Combination Route Trip Search
-SELECT *
-  FROM route
-  WHERE route_id IN (
-    SELECT Route_ID as R
-    FROM route_stop
-    WHERE Stop_ID IN (
-      SELECT Stop_ID
-      FROM stop
-      WHERE Station_A_ID = 1
-      ) OR (
-      SELECT Stop_ID
-      from stop
-      WHERE Station_B_ID = 4
-      )) AND (
-      SELECT Route_ID
-      FROM schedule
-      where weekday = 'Wed'
-    );
+-- implement in application layer
 
 -- 1.2.3. Note that all trip searches must account for available seats, and only
 -- show results for trains that have available seats.
@@ -135,20 +118,25 @@ SELECT route_id, description
 -- 1.2.5. Add Reservation: Book a specified passenger along all legs of the specified route(s) on a given day.
 
 INSERT INTO schedule (weekday, runtime, Route_ID)
-  VALUES ('Wed', '10:00:00', '4')
+  VALUES ('Wed', '10:00:00', '4');
   -- route_id is found by asking system 1.2.1 or 1.2.2
 
 -- 1.3.2. Find the routes that travel more than one rail line: Find all routes that travel more than one rail line.
 
 SELECT Route_ID
   FROM railline_route
-  WHERE Route_ID NOT UNIQUE
+  WHERE Route_ID NOT UNIQUE;
 
--- 1.3.8
--- Find the availability of a route at every stop on a specific day
--- and time: Find the number of available seats at each stop of a
--- route for the day and time given as parameters.
+-- 1.3.3. Find routes that pass through the same stations but don’t have the same stops: Find seemingly similar routes that differ by at least 1 stop.
+-- 1.3.4. Find any stations through which all trains pass through: Find any stations that all the trains (that are in the system) pass at any time during an entire week.
+-- 1.3.5. Find all the trains that do not stop at a specific station: Find all trains that do not stop at a specified station at any time during an entire week.
+-- 1.3.6. Find routes that stop at least at XX% of the Stations they visit: Find routes where they stop at least in XX% (where XX number from 10 to 90) of the stations from which they pass (e.g., if a route passes through 5 stations and stops at at least 3 of them, it will be returned as a result for a 50% search).
 
--- 1.3.7
--- Display the schedule of a route: For a specified route, list the days of
--- departure, departure hours and trains that run it.
+
+-- 1.3.7 Display the schedule of a route: For a specified route, list the days of departure, departure hours and trains that run it.
+SELECT weekday, runtime, Train_ID
+  FROM schedule
+  WHERE Route_ID = 1;
+
+
+-- 1.3.8 Find the availability of a route at every stop on a specific day and time: Find the number of available seats at each stop of a route for the day and time given as parameters.
