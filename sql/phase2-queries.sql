@@ -286,7 +286,7 @@ INSERT INTO schedule (weekday, runtime, Route_ID)
   -- route_id is found by asking system 1.2.1 or 1.2.2
 
 -- 1.3.1. Find all trains that pass through a specific station at a specific day/time combination: Find the trains that pass through a specific station on a specific day and time.
-SELECT T.train_id
+SELECT distinct T.train_id
   FROM schedule S
   INNER JOIN train T
   ON S.Train_ID = T.train_id
@@ -295,7 +295,8 @@ SELECT T.train_id
   INNER JOIN stop
   ON RS.Stop_ID = stop.Stop_ID
   WHERE
-    Station_A_ID = 1 OR Station_B_ID = 1 AND weekday = 'WED' AND runtime = '11:00:00' ;
+    (Station_A_ID = 11 OR Station_B_ID = 11) AND weekday = 'Wed' AND runtime = '10:00:00'
+  ORDER BY T.train_id ASC;
 
 
 -- 1.3.2. Find the routes that travel more than one rail line: Find all routes that travel more than one rail line.
