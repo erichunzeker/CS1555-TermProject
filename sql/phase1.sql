@@ -114,8 +114,7 @@ CREATE TABLE schedule (
   FOREIGN KEY (Route_ID) REFERENCES route(route_id),
 
  CONSTRAINT Schedule_Train_FK
-  FOREIGN KEY (Train_ID) REFERENCES train(train_id),
-
+  FOREIGN KEY (Train_ID) REFERENCES train(train_id)
 );
 
 CREATE TABLE railline_route (
@@ -155,8 +154,6 @@ BEGIN
   IF (SELECT seats_taken from schedule where schedule_id = NEW.schedule_id) + 1 >= (SELECT seats from train where train_id = NEW.Train_ID) THEN
     RAISE NOTICE 'train is full';
     RETURN NULL;
-  ELSE
-    update schedule set seats_taken = (SELECT seats_taken from schedule where schedule_id = NEW.schedule_id) + 1 where schedule_id = NEW.schedule_id;
   END IF;
 
   RETURN NEW;
