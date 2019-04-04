@@ -24,26 +24,20 @@ SELECT *
       SELECT Stop_ID
       FROM stop
       WHERE Station_A_ID = 1
-      ) AND (
+      ) UNION ALL (
       SELECT Stop_ID
       from stop
       WHERE Station_B_ID = 4
-      )) AND (
-      SELECT Route_ID
-      FROM schedule
-      where weekday = 'Wed'
-    );
-
-5 4 3 2
+      )) AND weekday = 'Wed';
 
 
 -- USE SOMETHING LIKE THIS TO SORT THEM???
 WITH RECURSIVE sortroute(route_id, stops_at_a, stops_at_b, stop_id, station_a_id, station_b_id) AS (
-    SELECT route_id, stops_at_a, stops_at_b, stop.stop_id AS stop_id, station_a_id, station_b_id 
-    FROM route_stop, stop 
+    SELECT route_id, stops_at_a, stops_at_b, stop.stop_id AS stop_id, station_a_id, station_b_id
+    FROM route_stop, stop
     WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 4) AND route_id = 4
   UNION ALL
-    SELECT rs.route_id, rs.stops_at_a, rs.stops_at_b, s.stop_id, s.station_a_id, s.station_b_id 
+    SELECT rs.route_id, rs.stops_at_a, rs.stops_at_b, s.stop_id, s.station_a_id, s.station_b_id
     FROM sortroute sr, route_stop rs, stop s
     WHERE (rs.stop_id = s.stop_id AND rs.route_id = sr.route_id AND sr.station_b_id = s.station_a_id)
 )
@@ -62,24 +56,16 @@ SELECT *
   WHERE seats_taken <= seats;
 
 -- 1.2.4.1. Fewest stops ( do pagnation in parameterized query in phase 3 (for all of these 1.2.4.x))
-SELECT route_id, description
-  FROM route
-  WHERE route_id IN (
-    SELECT Route_ID as R
-    FROM route_stop
-    WHERE (Stops_At_A = TRUE
-    OR Stops_At_B = TRUE)
-    AND Stop_ID IN (
-      SELECT Stop_ID
-      FROM stop
-      WHERE Station_A_ID = 1
-      ) UNION ALL (
-      SELECT Stop_ID
-      from stop
-      WHERE Station_B_ID = 4
-      ))
-  GROUP BY route_id
-  ORDER BY COUNT(*) ASC;
+
+SELECT R.route_id, R.description, count(R.route_id) as stop_count
+  FROM route R
+  INNER JOIN route_stop RS
+  ON R.route_id = RS.Route_ID
+  INNER JOIN stop S
+  ON R.Stop_ID = S.Stop_ID
+    WHERE Station_A_ID = 1
+  GROUP BY R.route_id
+  ORDER BY stop_count ASC;
 
 -- 1.2.4.2. Run through most stations
 SELECT route_id, description
@@ -261,10 +247,10 @@ SELECT *
 -- 1.3.6. Find routes that stop at least at XX% of the Stations they visit: Find routes where they stop at least in XX% (where XX number from 10 to 90) of the stations from which they pass (e.g., if a route passes through 5 stations and stops at at least 3 of them, it will be returned as a result for a 50% search).
 
 SELECT stats.route_id FROM (
-  SELECT route_id, COUNT(route_id) + 1 AS stations, COUNT(CASE WHEN stops_at_b THEN 1 END) + 1 AS stops 
-    FROM route_stop 
-    GROUP BY route_id) 
-  AS stats 
+  SELECT route_id, COUNT(route_id) + 1 AS stations, COUNT(CASE WHEN stops_at_b THEN 1 END) + 1 AS stops
+    FROM route_stop
+    GROUP BY route_id)
+  AS stats
   WHERE stats.stops / stats.stations >= .80;
 
 
