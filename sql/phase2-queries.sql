@@ -218,7 +218,11 @@ SELECT *
     (SELECT count())= (SELECT count(*) FROM train); */
 
 -- 1.3.5. Find all the trains that do not stop at a specific station: Find all trains that do not stop at a specified station at any time during an entire week.
-SELECT DISTINCT S.Train_ID
+
+SELECT DISTINCT train_id as id
+	FROM schedule
+EXCEPT
+	SELECT DISTINCT S.Train_ID as id
   FROM schedule S
   INNER JOIN train T
   ON S.Train_ID = T.train_id
@@ -227,7 +231,7 @@ SELECT DISTINCT S.Train_ID
   INNER JOIN stop
   ON RS.Stop_ID = stop.Stop_ID
   WHERE
-    (Station_A_ID <> 2 AND Station_B_ID <> 2) OR (Stops_At_A = TRUE AND Stops_At_B = FALSE);
+    (Station_A_ID = 57 AND Stops_At_A = TRUE) OR (Station_B_ID = 57 AND Stops_At_A = TRUE);
 
 -- 1.3.6. Find routes that stop at least at XX% of the Stations they visit: Find routes where they stop at least in XX% (where XX number from 10 to 90) of the stations from which they pass (e.g., if a route passes through 5 stations and stops at at least 3 of them, it will be returned as a result for a 50% search).
 SELECT stats.route_id FROM (
