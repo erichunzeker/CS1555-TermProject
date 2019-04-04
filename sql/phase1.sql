@@ -116,8 +116,6 @@ CREATE TABLE schedule (
  CONSTRAINT Schedule_Train_FK
   FOREIGN KEY (Train_ID) REFERENCES train(train_id),
 
- CONSTRAINT Unique_Schedule
-  UNIQUE (Route_ID, weekday, runtime)
 );
 
 CREATE TABLE railline_route (
@@ -167,7 +165,7 @@ $$
 LANGUAGE 'plpgsql';
 
 CREATE TRIGGER update_seats
-  BEFORE insert
+  BEFORE update
   ON schedule
   FOR EACH ROW
   EXECUTE PROCEDURE seats();
