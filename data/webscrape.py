@@ -69,19 +69,19 @@ for i in allRails:
 			print("INSERT INTO stop (Station_A_ID, Station_B_ID, distancebetween) VALUES ((SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "'), (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "'), 2);")
 			stationPairs.append(str(i[j - 1]['name']) + str(i[j]['name']))
 		if j == 1:
-			print("INSERT INTO route VALUES (" + str(k*6 + 1)+ ", 'Every Stop " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
+			print("INSERT INTO route (description, stop_id) VALUES ('Every Stop " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
 			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 1) + ");")
-			print("INSERT INTO route VALUES (" + str(k*6 + 2)+ ", 'Every Stop " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
+			print("INSERT INTO route (description, stop_id) VALUES ('Every Stop " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
 			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 2) + ");")
 
-			print("INSERT INTO route VALUES (" + str(k*6 + 3)+ ", 'Local " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
+			print("INSERT INTO route (description, stop_id) VALUES ('Local " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
 			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 3) + ");")
-			print("INSERT INTO route VALUES (" + str(k*6 + 4)+ ", 'Local " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
+			print("INSERT INTO route (description, stop_id) VALUES ('Local " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
 			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 4) + ");")
 
-			print("INSERT INTO route VALUES (" + str(k*6 + 5)+ ", 'Express " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
+			print("INSERT INTO route (description, stop_id) VALUES ('Express " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
 			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 5) + ");")
-			print("INSERT INTO route VALUES (" + str(k*6 + 6)+ ", 'Express " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
+			print("INSERT INTO route (description, stop_id) VALUES ('Express " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
 			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 6) + ");")
 		if j == len(i) - 1:
 			print("UPDATE route SET stop_id = (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "') WHERE route_id = " + str(k*6 + 2) + ";")
@@ -103,7 +103,7 @@ for i in allRails:
 		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*6 + 2) + ", True, True);")
 	k += 1
 
-east = {}
+print("UPDATE route SET distance = update.distance FROM (SELECT route_stop.route_id AS route_id, SUM(stop.distancebetween) AS DISTANCE FROM route_stop, stop WHERE route_stop.stop_id = stop.stop_id GROUP BY route_stop.route_id) update WHERE route.route_id = update.route_id;")
 
 for i in range(1, 51):
 	print("INSERT INTO train (topspeed, seats, pricepermile) VALUES (120, 5, 2);")
