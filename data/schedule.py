@@ -1,8 +1,8 @@
 # insert into schedule (weekday, runtime, route_id, train_id, seats_taken) values ('Wed', time '09:00:00', 1, 1, 0);
 w = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
 r = -1
-R = 148
-T = 8
+R = 0
+T = 0
 S = 0
 min = '55'
 
@@ -35,7 +35,7 @@ for i in range(0, 2000):
     if i % 84 == 0:
         r += 1
 
-    if i % 5 == 0:
+    if i % 4 == 0:
         R += 1
 
     if i % 6 == 0:
