@@ -301,9 +301,10 @@ SELECT distinct T.train_id
 
 -- 1.3.2. Find the routes that travel more than one rail line: Find all routes that travel more than one rail line.
 
-SELECT Route_ID
+SELECT Route_ID,
   FROM railline_route
-  GROUP BY Route_ID having count(*) > 1;
+  GROUP BY Route_ID having count(*) > 1
+  ORDER BY Route_ID ASC;
 
 -- 1.3.3. Find routes that pass through the same stations but don’t have the same stops: Find seemingly similar routes that differ by at least 1 stop.
 -- Assuming this is supposed to only be in the same direction
@@ -342,7 +343,7 @@ SELECT DISTINCT S.Train_ID
   INNER JOIN stop
   ON RS.Stop_ID = stop.Stop_ID
   WHERE
-    (Station_A_ID <> 2 AND Station_B_ID <> 2) OR (Stops_At_A = TRUE AND Stops_At_B = FALSE);
+    (Station_A_ID <> 30 AND Station_B_ID <> 30) OR (Stops_At_A = TRUE AND Stops_At_B = FALSE);
 
 -- 1.3.6. Find routes that stop at least at XX% of the Stations they visit: Find routes where they stop at least in XX% (where XX number from 10 to 90) of the stations from which they pass (e.g., if a route passes through 5 stations and stops at at least 3 of them, it will be returned as a result for a 50% search).
 SELECT stats.route_id FROM (
@@ -350,7 +351,7 @@ SELECT stats.route_id FROM (
     FROM route_stop
     GROUP BY route_id)
   AS stats
-  WHERE stats.stops / stats.stations >= .20;
+  WHERE stats.stops / stats.stations >= .2;
 
 
 -- 1.3.7 Display the schedule of a route: For a specified route, list the days of departure, departure hours and trains that run it.
