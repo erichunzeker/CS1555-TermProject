@@ -231,11 +231,11 @@ SELECT DISTINCT S.Train_ID
 
 -- 1.3.6. Find routes that stop at least at XX% of the Stations they visit: Find routes where they stop at least in XX% (where XX number from 10 to 90) of the stations from which they pass (e.g., if a route passes through 5 stations and stops at at least 3 of them, it will be returned as a result for a 50% search).
 SELECT stats.route_id FROM (
-  SELECT route_id, COUNT(route_id) + 1 AS stations, COUNT(CASE WHEN stops_at_b THEN 1 END) + 1 AS stops
+  SELECT route_id, COUNT(route_id) + 1 AS stations, (COUNT(CASE WHEN stops_at_b THEN 1 END) + 1) * 100 AS stops
     FROM route_stop
     GROUP BY route_id)
   AS stats
-  WHERE stats.stops / stats.stations >= .20;
+  WHERE stats.stops / stats.stations >= (.20 * 100)  order by route_id asc;
 
 
 -- 1.3.7 Display the schedule of a route: For a specified route, list the days of departure, departure hours and trains that run it.
