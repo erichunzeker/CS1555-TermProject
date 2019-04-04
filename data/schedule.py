@@ -41,8 +41,6 @@ for i in range(0, 2000):
     if i % 6 == 0:
         T += 1
 
-
-
     values = '(\'' + w[i % 7] + '\', time \'' + str(r) + ':' + min + ':00\', ' + str(R) + ', ' + str(T) + ', 0);'
 
     statement = 'insert into schedule (weekday, runtime, Route_ID, Train_ID, seats_taken) values ' + values
