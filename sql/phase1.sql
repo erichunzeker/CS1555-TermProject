@@ -181,9 +181,30 @@ CREATE OR REPLACE FUNCTION checktime()
   RETURNS trigger AS
 $$
 BEGIN
-  IF (SELECT runtime from schedule) >= NEW.runtime AND
-    (SELECT runtime + interval '1h' * ((SELECT distance from route where route_id = Route_ID)  / (SELECT topspeed from train where train_id = Train_ID)) from schedule) <=
-    (SELECT NEW.runtime + interval '1h' * ((SELECT distance from route where route_id = NEW.Route_ID) / (SELECT topspeed from train where train_id = NEW.Train_ID))) THEN
+
+  IF (SELECT count(*)
+        FROM schedule S
+        INNER JOIN Route R
+        ON S.Route_ID = R.route_id
+        INNER JOIN Train T
+        ON S.Train_ID = T.train_id
+        where runtime >= NEW.runtime) > 0
+    AND
+    (SELECT count(*)
+        FROM schedule S
+        INNER JOIN Route R
+        ON S.Route_ID = R.route_id
+        INNER JOIN Train T
+        ON S.Train_ID = T.train_id
+        where (runtime + interval '1h' * (distance)  / (topspeed) >= (NEW.runtime + interval '1h' * ((SELECT distance from route where route_id = NEW.Route_ID) / (SELECT topspeed from train where train_id = NEW.Train_ID)))) > 0
+    THEN
+
+  /* IF (((SELECT count(*) from schedule where
+    runtime >= NEW.runtime) > 0) AND
+  ((SELECT count(*) from schedule where
+    (runtime + interval '1h' * ((SELECT distance from route where route_id = OLD.Route_ID)  / (SELECT topspeed from train where train_id = OLD.Train_ID))) <=
+      (SELECT NEW.runtime + interval '1h' * ((SELECT distance from route where route_id = NEW.Route_ID) / (SELECT topspeed from train where train_id = NEW.Train_ID)))
+  ) > 0)) THEN */
     RAISE NOTICE 'track is occupied';
     RETURN NULL;
   END IF;
