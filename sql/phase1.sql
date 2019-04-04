@@ -182,7 +182,7 @@ IF (SELECT count(*) from ((SELECT schedule_id
      INTERSECT
      (SELECT schedule_id
           FROM schedule S
-          where runtime + (1 * interval '1 minute') <= NEW.runtime + (1 * interval '1 minute') AND weekday = NEW.weekday)) AS A) > 0
+          where runtime + ((((select distance from route where route_id = S.Route_ID) / (select topspeed from train where train_id = S.Train_id))) * 60 * interval '1 minute') <= NEW.runtime + (((((select distance from route where route_id = NEW.Route_ID) / (select topspeed from train where train_id = NEW.Train_id)))) * 60 * interval '1 minute') AND weekday = NEW.weekday)) AS A) > 0
      THEN
     RAISE NOTICE 'track is in use';
     RETURN NULL;
