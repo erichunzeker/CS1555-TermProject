@@ -23,14 +23,14 @@ def getStations(tables, toDowntown):
 				if address == '<font color="red"><strong>NOTICE | </strong>This Station now includes motorcycle parking</font>' or address in [d['address'] for d in stations]:
 					break
 				if not toDowntown and address == "16th St. & JFK Blvd. Philadelphia PA 19102":
-					stations.append({'address': address, 'distance': 2 * j, 'open': '09:00:00', 'close': '05:00:00', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
+					stations.append({'address': address, 'distance': 2 * j, 'open': '00:00:00', 'close': '23:59:59', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
 					toDowntown = True
 					j += 1
 				elif address == "16th St. & JFK Blvd. Philadelphia PA 19102":
-					stations.append({'address': address, 'distance': 2 * j, 'open': '09:00:00', 'close': '05:00:00', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
+					stations.append({'address': address, 'distance': 2 * j, 'open': '00:00:00', 'close': '23:59:59', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
 					return stations
 				elif toDowntown:
-					stations.append({'address': address, 'distance': 2 * j, 'open': '09:00:00', 'close': '05:00:00', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
+					stations.append({'address': address, 'distance': 2 * j, 'open': '00:00:00', 'close': '23:59:59', 'name': str(i).split('.html">', 1)[1].split("</a>", 1)[0].replace("&amp;", "&")})
 					j += 1
 	return stations
 
@@ -50,11 +50,11 @@ for i in url:
 		toDowntown = True
 	stations = getStations(tables, toDowntown)
 	allRails.append(stations)
-	print("INSERT INTO railline VALUES (" + str(k) + ", 40);")
+	print("INSERT INTO railline VALUES (" + str(k) + ", 500);")
 	for j in stations:
 		if j['name'] not in allstations:
 			allstations.append(j['name'])
-			print("INSERT INTO station (address, opentime, closetime, distance, name) VALUES ('" + j['address'] + "', time '09:00:00', time '19:00:00', " + str(j['distance']) + ", '" + j['name'] + "');")
+			print("INSERT INTO station (address, opentime, closetime, distance, name) VALUES ('" + j['address'] + "', time '00:00:00', time '23:59:59', " + str(j['distance']) + ", '" + j['name'] + "');")
 		print("INSERT INTO station_railline VALUES ((SELECT station_id FROM station WHERE name = '" + j['name'] + "'), " + str(k) + ");")
 	k += 1
 
@@ -102,6 +102,69 @@ for i in allRails:
 		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*6 + 1) + ", True, True);")
 		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*6 + 2) + ", True, True);")
 	k += 1
+
+east = {"CHE": 2, "FOX": 5, "GLN": 6, "LAN": 7, "NOR": 8, "WAR": 12, "WTR": 13}
+west = {"AIR": 1, "CHW": 3, "CYN": 4, "MED": 9, "PAO": 10, "TRE": 11, "WIL": 14}
+
+for i in east:
+	for j in west:
+		# ONLY ONE STOP IN BOTH DIRECTION
+		print("INSERT INTO route (description, stop_id) VALUES ('ONE STOP " + i + " -> " + j + "', 10);")
+		print("INSERT INTO route_stop VALUES (10, (SELECT route_id FROM route WHERE description = 'ONE STOP " + i + " -> " + j + "'), True, True);")
+		print("INSERT INTO route_stop VALUES (1, (SELECT route_id FROM route WHERE description = 'ONE STOP " + i + " -> " + j + "'), True, True);")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = 'ONE STOP " + i + " -> " + j + "'));")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = 'ONE STOP " + i + " -> " + j + "'));")
+
+		print("INSERT INTO route (description, stop_id) VALUES ('ONE STOP " + j + " -> " + i + "', 2);")
+		print("INSERT INTO route_stop VALUES (2, (SELECT route_id FROM route WHERE description = 'ONE STOP " + j + " -> " + i + "'), True, True);")
+		print("INSERT INTO route_stop VALUES (9, (SELECT route_id FROM route WHERE description = 'ONE STOP " + j + " -> " + i + "'), True, True);")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = 'ONE STOP " + j + " -> " + i + "'));")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = 'ONE STOP " + j + " -> " + i + "'));")
+
+		# ALL STOPS IN BOTH DIRECTIONS
+		print("INSERT INTO route (description, stop_id) VALUES ('" + i + " -> " + j + "', (SELECT stop_id FROM route WHERE description = 'Every Stop " + i + " to CC'));")
+		print("INSERT INTO route_stop SELECT stop_id, (SELECT route_id FROM route WHERE description = '" + i + " -> " + j +"') AS route_id, stops_at_a, stops_at_b FROM route_stop where route_id = (SELECT route_id FROM route WHERE description = 'Every Stop " + i + " to CC') OR route_id = (SELECT route_id FROM route WHERE description = 'Every Stop " + j + " from CC');")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = '" + i + " -> " + j + "'));")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = '" + i + " -> " + j + "'));")
+
+		print("INSERT INTO route (description, stop_id) VALUES ('" + j + " -> " + i + "', (SELECT stop_id FROM route WHERE description = 'Every Stop " + j + " to CC'));")
+		print("INSERT INTO route_stop SELECT stop_id, (SELECT route_id FROM route WHERE description = '" + j + " -> " + i +"') AS route_id, stops_at_a, stops_at_b FROM route_stop where route_id = (SELECT route_id FROM route WHERE description = 'Every Stop " + j + " to CC') OR route_id = (SELECT route_id FROM route WHERE description = 'Every Stop " + i + " from CC');")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = '" + j + " -> " + i + "'));")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = '" + j + " -> " + i + "'));")
+
+		# LOCAL STOPS IN BOTH DIRECTIONS
+		print("INSERT INTO route (description, stop_id) VALUES ('" + i + " Local -> " + j + " Local', (SELECT stop_id FROM route WHERE description = 'Local " + i + " to CC'));")
+		print("INSERT INTO route_stop SELECT stop_id, (SELECT route_id FROM route WHERE description = '" + i + " Local -> " + j +" Local') AS route_id, stops_at_a, stops_at_b FROM route_stop where route_id = (SELECT route_id FROM route WHERE description = 'Local " + i + " to CC') OR route_id = (SELECT route_id FROM route WHERE description = 'Local " + j + " from CC');")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = '" + i + " Local -> " + j + " Local'));")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = '" + i + " Local -> " + j + " Local'));")
+
+		print("INSERT INTO route (description, stop_id) VALUES ('" + j + " Local -> " + i + " Local', (SELECT stop_id FROM route WHERE description = 'Local " + j + " to CC'));")
+		print("INSERT INTO route_stop SELECT stop_id, (SELECT route_id FROM route WHERE description = '" + j + " Local -> " + i +" Local') AS route_id, stops_at_a, stops_at_b FROM route_stop where route_id = (SELECT route_id FROM route WHERE description = 'Local " + j + " to CC') OR route_id = (SELECT route_id FROM route WHERE description = 'Local " + i + " from CC');")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = '" + j + " Local -> " + i + " Local'));")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = '" + j + " Local -> " + i + " Local'));")
+
+		# ONE WAY LOCAL ONE WAY EVERY
+		print("INSERT INTO route (description, stop_id) VALUES ('" + i + " Local -> " + j + "', (SELECT stop_id FROM route WHERE description = 'Local " + i + " to CC'));")
+		print("INSERT INTO route_stop SELECT stop_id, (SELECT route_id FROM route WHERE description = '" + i + " Local -> " + j +"') AS route_id, stops_at_a, stops_at_b FROM route_stop where route_id = (SELECT route_id FROM route WHERE description = 'Local " + i + " to CC') OR route_id = (SELECT route_id FROM route WHERE description = 'Every Stop " + j + " from CC');")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = '" + i + " Local -> " + j + "'));")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = '" + i + " Local -> " + j + "'));")
+		
+		print("INSERT INTO route (description, stop_id) VALUES ('" + j + " -> " + i + " Local', (SELECT stop_id FROM route WHERE description = 'Every Stop " + j + " to CC'));")
+		print("INSERT INTO route_stop SELECT stop_id, (SELECT route_id FROM route WHERE description = '" + j + " -> " + i +" Local') AS route_id, stops_at_a, stops_at_b FROM route_stop where route_id = (SELECT route_id FROM route WHERE description = 'Local " + i + " from CC') OR route_id = (SELECT route_id FROM route WHERE description = 'Every Stop " + j + " to CC');")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = '" + j + " -> " + i + " Local'));")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = '" + j + " -> " + i + " Local'));")
+
+
+		print("INSERT INTO route (description, stop_id) VALUES ('" + j + " Local -> " + i + "', (SELECT stop_id FROM route WHERE description = 'Local " + j + " to CC'));")
+		print("INSERT INTO route_stop SELECT stop_id, (SELECT route_id FROM route WHERE description = '" + j + " Local -> " + i +"') AS route_id, stops_at_a, stops_at_b FROM route_stop where route_id = (SELECT route_id FROM route WHERE description = 'Local " + j + " to CC') OR route_id = (SELECT route_id FROM route WHERE description = 'Every Stop " + i + " from CC');")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = '" + j + " Local -> " + i + "'));")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = '" + j + " Local -> " + i + "'));")
+
+		print("INSERT INTO route (description, stop_id) VALUES ('" + i + " -> " + j + " Local', (SELECT stop_id FROM route WHERE description = 'Every Stop " + i + " to CC'));")
+		print("INSERT INTO route_stop SELECT stop_id, (SELECT route_id FROM route WHERE description = '" + i + " -> " + j +" Local') AS route_id, stops_at_a, stops_at_b FROM route_stop where route_id = (SELECT route_id FROM route WHERE description = 'Local " + j + " from CC') OR route_id = (SELECT route_id FROM route WHERE description = 'Every Stop " + i + " to CC');")
+		print("INSERT INTO railline_route VALUES (" + str(west[j]) + ", (SELECT route_id FROM route WHERE description = '" + i + " -> " + j + " Local'));")
+		print("INSERT INTO railline_route VALUES (" + str(east[i]) + ", (SELECT route_id FROM route WHERE description = '" + i + " -> " + j + " Local'));")
+
 
 print("UPDATE route SET distance = update.distance FROM (SELECT route_stop.route_id AS route_id, SUM(stop.distancebetween) AS DISTANCE FROM route_stop, stop WHERE route_stop.stop_id = stop.stop_id GROUP BY route_stop.route_id) update WHERE route.route_id = update.route_id;")
 
