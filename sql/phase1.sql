@@ -169,3 +169,32 @@ CREATE TRIGGER update_seats
 
 
 ---------------- Make sure track's empty on insert --------------------
+
+DROP TRIGGER IF EXISTS check_track ON schedule;
+
+CREATE OR REPLACE FUNCTION track()
+  RETURNS trigger AS
+$$
+BEGIN
+IF (SELECT count(*) from ((SELECT schedule_id
+     FROM schedule S
+     where runtime >= NEW.runtime AND weekday = NEW.weekday)
+     INTERSECT
+     (SELECT schedule_id
+          FROM schedule S
+          where runtime + (1 * interval '1 minute') <= NEW.runtime + (1 * interval '1 minute') AND weekday = NEW.weekday)) AS A) > 0
+     THEN
+    RAISE NOTICE 'track is in use';
+    RETURN NULL;
+  END IF;
+
+  RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER check_track
+  BEFORE insert
+  ON schedule
+  FOR EACH ROW
+  EXECUTE PROCEDURE track();
