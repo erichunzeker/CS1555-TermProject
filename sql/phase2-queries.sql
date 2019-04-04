@@ -35,7 +35,7 @@ SELECT *
 WITH RECURSIVE sortroute(route_id, stops_at_a, stops_at_b, stop_id, station_a_id, station_b_id) AS (
     SELECT route_id, stops_at_a, stops_at_b, stop.stop_id AS stop_id, station_a_id, station_b_id
     FROM route_stop, stop
-    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 4) AND route_id = 4
+    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 83) AND route_id = 83
   UNION ALL
     SELECT rs.route_id, rs.stops_at_a, rs.stops_at_b, s.stop_id, s.station_a_id, s.station_b_id
     FROM sortroute sr, route_stop rs, stop s
@@ -63,27 +63,20 @@ SELECT R.route_id, R.description, count(R.route_id) as stop_count
   ON R.route_id = RS.Route_ID
   INNER JOIN stop S
   ON R.Stop_ID = S.Stop_ID
-    WHERE Station_A_ID = 1
+    WHERE Station_A_ID = 1 AND Station_B_ID = 2 AND Stops_At_B = TRUE
   GROUP BY R.route_id
   ORDER BY stop_count ASC;
 
 -- 1.2.4.2. Run through most stations
-SELECT route_id, description
-  FROM route
-  WHERE route_id IN (
-    SELECT Route_ID as R
-    FROM route_stop
-    WHERE Stop_ID IN (
-      SELECT Stop_ID
-      FROM stop
-      WHERE Station_A_ID = 1
-      ) UNION ALL (
-      SELECT Stop_ID
-      from stop
-      WHERE Station_B_ID = 4
-      ))
-  GROUP BY route_id
-  ORDER BY COUNT(*) DESC;
+SELECT R.route_id, R.description, count(R.route_id) as stop_count
+  FROM route R
+  INNER JOIN route_stop RS
+  ON R.route_id = RS.Route_ID
+  INNER JOIN stop S
+  ON R.Stop_ID = S.Stop_ID
+    WHERE Station_A_ID = 1 AND Station_B_ID = 2
+  GROUP BY R.route_id
+  ORDER BY stop_count DESC;
 
 -- 1.2.4.3. Lowest price
 
