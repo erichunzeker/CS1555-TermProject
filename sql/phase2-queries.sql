@@ -46,11 +46,14 @@ SELECT * FROM sortroute;
 
 -- 1.2.3. Note that all trip searches must account for available seats, and only
 -- show results for trains that have available seats.
+
+-- add 'WHERE seats_taken < seats;' to any query searching for trips to get available seats 
+
 SELECT *
   FROM schedule
   INNER JOIN train
   ON schedule.Train_ID = train.train_id
-  WHERE seats_taken <= seats;
+  WHERE seats_taken < seats;
 
 -- 1.2.4.1. Fewest stops ( do pagnation in parameterized query in phase 3 (for all of these 1.2.4.x))
 SELECT R.route_id, R.description, count(R.route_id) as stop_count
