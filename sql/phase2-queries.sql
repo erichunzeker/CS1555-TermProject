@@ -6,7 +6,7 @@ INSERT INTO passenger (firstname, lastname, phone, street, city, state, zip, cou
 -- 1.1.1: Edit Customer
 UPDATE passenger SET
   (firstname, lastname, phone, street, city, state, zip, country, email) = ('first', 'last', 'tel', 'street', 'city', 'state', 'zip', 'country', 'email')
-  WHERE passenger_id = 1
+  WHERE passenger_id =200
   RETURNING passenger_id;
 
 -- 1.1.1: View Customer
@@ -62,7 +62,7 @@ SELECT R.route_id, R.description, count(R.route_id) as stop_count
   ON R.route_id = RS.Route_ID
   INNER JOIN stop S
   ON R.Stop_ID = S.Stop_ID
-    WHERE Station_A_ID = 1 AND Station_B_ID = 2 AND Stops_At_B = TRUE
+    WHERE Station_A_ID = 1 AND Station_B_ID = 5 AND Stops_At_B = TRUE
   GROUP BY R.route_id
   ORDER BY stop_count ASC;
 
@@ -188,6 +188,7 @@ SELECT Route_ID
   GROUP BY Route_ID having count(*) > 1;
 
 -- 1.3.3. Find routes that pass through the same stations but don’t have the same stops: Find seemingly similar routes that differ by at least 1 stop.
+-- Assuming this is supposed to only be in the same direction
 
 SELECT route_id
   FROM (SELECT route_id, count(route_id) AS Count, count(CASE WHEN stops_at_b THEN 1 END) AS stopCount FROM route_stop
