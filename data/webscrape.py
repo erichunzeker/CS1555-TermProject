@@ -34,8 +34,8 @@ def getStations(tables, toDowntown):
 					j += 1
 	return stations
 
-#url = raw_input("Enter a SEPTA Schedule URL (http://www.septa.org/schedules/rail/w/WAR_1.html): ")
-url = ["http://www.septa.org/schedules/rail/w/AIR_1.html", "http://www.septa.org/schedules/rail/w/CHE_1.html", "http://www.septa.org/schedules/rail/w/CHW_1.html", "http://www.septa.org/schedules/rail/w/CYN_1.html", "http://www.septa.org/schedules/rail/w/FOX_1.html", "http://www.septa.org/schedules/rail/w/GLN_1.html", "http://www.septa.org/schedules/rail/w/LAN_1.html", "http://www.septa.org/schedules/rail/w/NOR_1.html", "http://www.septa.org/schedules/rail/w/MED_1.html", "http://www.septa.org/schedules/rail/w/PAO_1.html", "http://www.septa.org/schedules/rail/w/TRE_1.html", "http://www.septa.org/schedules/rail/w/WAR_1.html", "http://www.septa.org/schedules/rail/w/WTR_1.html", "http://www.septa.org/schedules/rail/w/WIL_1.html"]
+#url = raw_input("Enter a SEPTA Schedule URL (http://www.septa.org/schedules/rail/w/WAR_0.html): ")
+url = ["http://www.septa.org/schedules/rail/w/AIR_0.html", "http://www.septa.org/schedules/rail/w/CHE_0.html", "http://www.septa.org/schedules/rail/w/CHW_0.html", "http://www.septa.org/schedules/rail/w/CYN_0.html", "http://www.septa.org/schedules/rail/w/FOX_0.html", "http://www.septa.org/schedules/rail/w/GLN_0.html", "http://www.septa.org/schedules/rail/w/LAN_0.html", "http://www.septa.org/schedules/rail/w/NOR_0.html", "http://www.septa.org/schedules/rail/w/MED_0.html", "http://www.septa.org/schedules/rail/w/PAO_0.html", "http://www.septa.org/schedules/rail/w/TRE_0.html", "http://www.septa.org/schedules/rail/w/WAR_0.html", "http://www.septa.org/schedules/rail/w/WTR_0.html", "http://www.septa.org/schedules/rail/w/WIL_0.html"]
 
 allstations = []
 allRails = []
@@ -69,14 +69,38 @@ for i in allRails:
 			print("INSERT INTO stop (Station_A_ID, Station_B_ID, distancebetween) VALUES ((SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "'), (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "'), 2);")
 			stationPairs.append(str(i[j - 1]['name']) + str(i[j]['name']))
 		if j == 1:
-			print("INSERT INTO route VALUES (" + str(k*2 + 1)+ ", 'Every Stop " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
-			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*2 + 1) + ");")
-			print("INSERT INTO route VALUES (" + str(k*2 + 2)+ ", 'Every Stop " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
-			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*2 + 2) + ");")
+			print("INSERT INTO route VALUES (" + str(k*6 + 1)+ ", 'Every Stop " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
+			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 1) + ");")
+			print("INSERT INTO route VALUES (" + str(k*6 + 2)+ ", 'Every Stop " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
+			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 2) + ");")
+
+			print("INSERT INTO route VALUES (" + str(k*6 + 3)+ ", 'Local " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
+			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 3) + ");")
+			print("INSERT INTO route VALUES (" + str(k*6 + 4)+ ", 'Local " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
+			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 4) + ");")
+
+			print("INSERT INTO route VALUES (" + str(k*6 + 5)+ ", 'Express " + url[k][38:41] + " from CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j - 1]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j]['name'] + "'));")
+			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 5) + ");")
+			print("INSERT INTO route VALUES (" + str(k*6 + 6)+ ", 'Express " + url[k][38:41] + " to CC', (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "'));")
+			print("INSERT INTO railline_route VALUES (" + str(k + 1) + ", " + str(k*6 + 6) + ");")
 		if j == len(i) - 1:
-			print("UPDATE route SET stop_id = (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "') WHERE route_id = " + str(k*2 + 2) + ";")
-		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*2 + 1) + ", True, True);")
-		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*2 + 2) + ", True, True);")
+			print("UPDATE route SET stop_id = (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "') WHERE route_id = " + str(k*6 + 2) + ";")
+		if j == len(i) / 2:
+			print("UPDATE route SET stop_id = (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "') WHERE route_id = " + str(k*6 + 4) + ";")
+		if j <= len(i) / 2:
+			print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*6 + 3) + ", True, True);")
+			print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*6 + 4) + ", True, True);")
+		if j % 2 == 0:
+			print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*6 + 5) + ", False, True);")
+			print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*6 + 6) + ", False, True);")
+			if j >= len(i) - 2:
+				print("UPDATE route SET stop_id = (SELECT stop.stop_id FROM stop, station station1, station station2 WHERE stop.Station_A_ID = station1.station_id AND station1.name = '" + i[j]['name'] + "'  AND stop.Station_B_ID = station2.station_id AND station2.name = '" + i[j - 1]['name'] + "') WHERE route_id = " + str(k*6 + 6) + ";")			
+		else:
+			print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*6 + 5) + ", True, False);")
+			print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*6 + 6) + ", True, False);")
+		
+		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "')), " + str(k*6 + 1) + ", True, True);")
+		print("INSERT INTO route_stop VALUES ((SELECT stop_id FROM stop WHERE Station_A_ID = (SELECT station_id FROM station WHERE name = '" + i[j]['name'] + "') AND Station_B_ID = (SELECT station_id FROM station WHERE name = '" + i[j - 1]['name'] + "')), " + str(k*6 + 2) + ", True, True);")
 	k += 1
 
 for i in range(1, 51):
