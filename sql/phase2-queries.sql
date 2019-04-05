@@ -338,16 +338,12 @@ SELECT route_id
 
 -- 1.3.4. Find any stations through which all trains pass through: Find any stations that all the trains (that are in the system) pass at any time during an entire week.
 
-SELECT *
-  FROM schedule S
-  INNER JOIN train T
-  ON S.Train_ID = T.train_id
-  INNER JOIN route_stop RS
-  ON S.Route_ID = RS.Route_ID
-  INNER JOIN stop
-  ON RS.Stop_ID = stop.Stop_ID
-  WHERE
-    (SELECT count(*) from train) = (SELECT (*) FROM train);
+SELECT station_id FROM (
+	SELECT station_id, COUNT(train_id) FROM (
+		SELECT DISTINCT train_id, station_a_id AS station_id from schedule, stop, route_stop WHERE schedule.route_id = route_stop.route_id AND route_stop.stop_id = stop.stop_id UNION SELECT DISTINCT train_id, station_b_id AS station_id from schedule, stop, route_stop WHERE schedule.route_id = route_stop.route_id AND route_stop.stop_id = stop.stop_id
+		) AS temp
+	GROUP BY station_id) AS amount
+	WHERE count = (SELECT COUNT(*) FROM train);
 
 -- 1.3.5. Find all the trains that do not stop at a specific station: Find all trains that do not stop at a specified station at any time during an entire week.
 SELECT DISTINCT S.Train_ID
