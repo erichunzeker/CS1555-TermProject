@@ -16,24 +16,40 @@ SELECT *
 
 -- 1.2.1 Single Route Trip Search
 SELECT *
-  FROM schedule S
-  INNER JOIN train T
-  ON S.Train_ID = T.train_id
-  INNER JOIN route_stop RS
-  ON S.Route_ID = RS.Route_ID
-  INNER JOIN stop
-  ON RS.Stop_ID = stop.Stop_ID
-  INNER JOIN route R
-  ON RS.Route_ID = R.route_id
-  WHERE
-    Station_A_ID = 1 AND Station_B_ID = 2 AND Stops_At_B = TRUE AND weekday = 'Wed';
+  FROM (SELECT R.route_id, weekday
+    FROM schedule S
+    INNER JOIN train T
+    ON S.Train_ID = T.train_id
+    INNER JOIN route_stop RS
+    ON S.Route_ID = RS.Route_ID
+    INNER JOIN stop
+    ON RS.Stop_ID = stop.Stop_ID
+    INNER JOIN route R
+    ON RS.Route_ID = R.route_id
+    WHERE
+      Station_A_ID = 1 AND Stops_At_A = TRUE
+      INTERSECT
+    SELECT R.route_id, weekday
+      FROM schedule S
+      INNER JOIN train T
+      ON S.Train_ID = T.train_id
+      INNER JOIN route_stop RS
+      ON S.Route_ID = RS.Route_ID
+      INNER JOIN stop
+      ON RS.Stop_ID = stop.Stop_ID
+      INNER JOIN route R
+      ON RS.Route_ID = R.route_id
+      WHERE
+        Station_B_ID = 3 AND Stops_At_B = TRUE
+    ) as A
+    WHERE A.weekday = 'Wed';
 
 
 -- USE SOMETHING LIKE THIS TO SORT THEM???
 WITH RECURSIVE sortroute(route_id, stops_at_a, stops_at_b, stop_id, station_a_id, station_b_id) AS (
     SELECT route_id, stops_at_a, stops_at_b, stop.stop_id AS stop_id, station_a_id, station_b_id
     FROM route_stop, stop
-    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 207) AND route_id = 207
+    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 89) AND route_id = 89
   UNION ALL
     SELECT rs.route_id, rs.stops_at_a, rs.stops_at_b, s.stop_id, s.station_a_id, s.station_b_id
     FROM sortroute sr, route_stop rs, stop s
