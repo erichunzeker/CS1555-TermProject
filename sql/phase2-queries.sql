@@ -130,7 +130,7 @@ SELECT MIN(pricepermile * distance)
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_A_ID = 11
+      Station_A_ID = 11 AND Stops_At_A = TRUE
       INTERSECT
     SELECT R.route_id, pricepermile, distance
       FROM schedule S
@@ -143,7 +143,7 @@ SELECT MIN(pricepermile * distance)
       INNER JOIN route R
       ON RS.Route_ID = R.route_id
       WHERE
-        Station_B_ID = 30
+        Station_B_ID = 30 AND Stops_At_B = TRUE
     ) as A;
 
 
@@ -162,7 +162,7 @@ SELECT MAX(pricepermile * distance)
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_A_ID = 11
+      Station_A_ID = 11 AND Stops_At_A = TRUE
       INTERSECT
     SELECT R.route_id, pricepermile, distance
       FROM schedule S
@@ -175,7 +175,7 @@ SELECT MAX(pricepermile * distance)
       INNER JOIN route R
       ON RS.Route_ID = R.route_id
       WHERE
-        Station_B_ID = 30
+        Station_B_ID = 30 AND Stops_At_B = TRUE
     ) as A;
 
 -- 1.2.4.5. Least total time
@@ -191,7 +191,7 @@ FROM (SELECT R.route_id, pricepermile, distance, topspeed
   INNER JOIN route R
   ON RS.Route_ID = R.route_id
   WHERE
-    Station_A_ID = 11
+    Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
   SELECT R.route_id, pricepermile, distance, topspeed
     FROM schedule S
@@ -204,7 +204,7 @@ FROM (SELECT R.route_id, pricepermile, distance, topspeed
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_B_ID = 30
+      Station_B_ID = 30 AND Stops_At_B = TRUE
   ) as A;
 
 
@@ -221,7 +221,7 @@ FROM (SELECT R.route_id, pricepermile, distance, topspeed
   INNER JOIN route R
   ON RS.Route_ID = R.route_id
   WHERE
-    Station_A_ID = 11
+    Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
   SELECT R.route_id, pricepermile, distance, topspeed
     FROM schedule S
@@ -234,7 +234,7 @@ FROM (SELECT R.route_id, pricepermile, distance, topspeed
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_B_ID = 30
+      Station_B_ID = 30 AND Stops_At_B = TRUE
   ) as A;
 
 -- 1.2.4.7. Least total distance
@@ -250,7 +250,7 @@ FROM (SELECT R.route_id, distance
   INNER JOIN route R
   ON RS.Route_ID = R.route_id
   WHERE
-    Station_A_ID = 11
+    Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
   SELECT R.route_id, distance
     FROM schedule S
@@ -263,7 +263,7 @@ FROM (SELECT R.route_id, distance
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_B_ID = 30
+      Station_B_ID = 30 AND Stops_At_B = TRUE
   ) as A;
 
 
@@ -280,7 +280,7 @@ FROM (SELECT R.route_id, distance
   INNER JOIN route R
   ON RS.Route_ID = R.route_id
   WHERE
-    Station_A_ID = 11
+    Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
   SELECT R.route_id, distance
     FROM schedule S
@@ -293,7 +293,7 @@ FROM (SELECT R.route_id, distance
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_B_ID = 30
+      Station_B_ID = 30 AND Stops_At_A = TRUE
   ) as A;
 
 -- 1.2.5. Add Reservation: Book a specified passenger along all legs of the specified route(s) on a given day.
