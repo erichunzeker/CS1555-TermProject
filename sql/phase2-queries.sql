@@ -147,8 +147,6 @@ SELECT MIN(pricepermile * distance)
     ) as A;
 
 
-
-
 -- 1.2.4.4. Highest price
 SELECT MAX(pricepermile * distance)
   FROM (SELECT R.route_id, pricepermile, distance
