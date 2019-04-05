@@ -295,11 +295,14 @@ FROM (SELECT R.route_id, distance
   ) as A;
 
 -- 1.2.5. Add Reservation: Book a specified passenger along all legs of the specified route(s) on a given day.
-INSERT INTO schedule (weekday, runtime, Route_ID)
-  VALUES ('Wed', '10:00:00', '4');
+
+UPDATE schedule SET seats_taken = seats_taken
+	WHERE weekday = 'Wed' AND runtime = time'10:00:00' AND Route_ID = 211;
+
   -- route_id is found by asking system 1.2.1 or 1.2.2
 
 -- 1.3.1. Find all trains that pass through a specific station at a specific day/time combination: Find the trains that pass through a specific station on a specific day and time.
+
 SELECT distinct T.train_id
   FROM schedule S
   INNER JOIN train T
@@ -315,7 +318,7 @@ SELECT distinct T.train_id
 
 -- 1.3.2. Find the routes that travel more than one rail line: Find all routes that travel more than one rail line.
 
-SELECT Route_ID,
+SELECT Route_ID
   FROM railline_route
   GROUP BY Route_ID having count(*) > 1
   ORDER BY Route_ID ASC;
