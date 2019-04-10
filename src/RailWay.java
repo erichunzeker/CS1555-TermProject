@@ -84,8 +84,33 @@ public class RailWay {
                         ResultSet rs = statement.executeQuery();
                     }
 
+                }  else if(mainChoice == 2) {
+                    System.out.println("1.) Single Route Trip Search\n2.) Combination Route Trip Search\n" +
+                            "3.) More\n4.) back");
+                    int secondChoice = scanner.nextInt();
+                    if(secondChoice == 1) {
+                        statement = connection.prepareStatement(p.singleRoute);
+                    } else if(secondChoice == 2) {}
+                    else if(secondChoice == 3) {
+                        System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
+                                "3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
+                                "7.) Least total distance\n8.) Most total distance\n 9.) back");
+                        int thirdChoice = scanner.nextInt();
+
+
+                    }
+                    System.out.println("\nEnter station 1 id\n");
+                    String station1 = scanner.nextLine();
+                    statement.setString(1, station1);
+                    System.out.println("\nEnter station 2 id\n");
+                    String station2 = scanner.nextLine();
+                    statement.setString(2, station2);
+                    System.out.println("\nEnter weekday id\n");
+                    String weekday = scanner.nextLine();
+                    statement.setString(3, weekday);
+                    ResultSet rs = statement.executeQuery();
+
                 }
-                else if(mainChoice == 2) {}
                 else if(mainChoice == 3) {}
                 else if(mainChoice == 4) {
                     System.out.println("1.) Import Database\n2.) Export Database\n" +
