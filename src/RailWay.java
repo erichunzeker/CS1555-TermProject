@@ -92,7 +92,11 @@ public class RailWay {
                             "3.) Delete Database\n4.) back");
                     int secondChoice = scanner.nextInt();
                     if(secondChoice == 1) {
-                        
+                        //run phase1.sql then data file
+                    } else if(secondChoice == 2) {
+                        // idk
+                    } else if(secondChoice == 3) {
+                        //drop all tables
                     }
                 }
                 else if(mainChoice == 5) {
