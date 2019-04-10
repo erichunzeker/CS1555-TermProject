@@ -29,7 +29,7 @@ public class RailWay {
                         statement.setString(1, pID);
                         ResultSet rs = statement.executeQuery();
 
-                    } else {
+                    } else if(secondChoice == 2 || secondChoice == 1){
 
                         if(secondChoice == 1)
                             statement = connection.prepareStatement(p.addCustomer);
@@ -41,7 +41,6 @@ public class RailWay {
                         }
 
                         //firstname, lastname, phone, street, city, state, zip, country, email
-
 
                         String firstname, lastname, phone, street, city, state, zip, country, email;
 
@@ -86,19 +85,31 @@ public class RailWay {
 
                 }  else if(mainChoice == 2) {
                     System.out.println("1.) Single Route Trip Search\n2.) Combination Route Trip Search\n" +
-                            "3.) More\n4.) back");
+                            "3.) Add Reservation\n4.) More\n5.) back");
                     int secondChoice = scanner.nextInt();
+
                     if(secondChoice == 1) {
                         statement = connection.prepareStatement(p.singleRoute);
-                    } else if(secondChoice == 2) {}
-                    else if(secondChoice == 3) {
+                    } else if(secondChoice == 2) {
+                        //combination
+                    } else if(secondChoice == 3) {
+                        statement = connection.prepareStatement(p.addReservation);
+                    } else if(secondChoice == 4) {
                         System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
                                 "3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
                                 "7.) Least total distance\n8.) Most total distance\n 9.) back");
                         int thirdChoice = scanner.nextInt();
-
+                        if(thirdChoice == 1) {}
+                        else if(thirdChoice == 2) {}
+                        else if(thirdChoice == 3) {}
+                        else if(thirdChoice == 4) {}
+                        else if(thirdChoice == 5) {}
+                        else if(thirdChoice == 6) {}
+                        else if(thirdChoice == 7) {}
+                        else if(thirdChoice == 8) {}
 
                     }
+
                     System.out.println("\nEnter station 1 id\n");
                     String station1 = scanner.nextLine();
                     statement.setString(1, station1);
@@ -111,7 +122,18 @@ public class RailWay {
                     ResultSet rs = statement.executeQuery();
 
                 }
-                else if(mainChoice == 3) {}
+                else if(mainChoice == 3) {
+                    System.out.println("1.) Find all trains that pass through a specific station at a specific\n" +
+                            "day/time combination\n2.) Find the routes that travel more than one rail line\n" +
+                            "3.) Find routes that pass through the same stations but don’t have\n" +
+                            "the same stops\n4.) Find any stations through which all trains pass through" +
+                            "\n5.) Find all the trains that do not stop at a specific station\n6.) Find routes that stop at least at XX% of the Stations they visit" +
+                            "\n7.) Display the schedule of a route\n" +
+                            "8.) Find the availability of a route at every stop on a specific day and time\n9.) back");
+                    int secondChoice = scanner.nextInt();
+
+
+                }
                 else if(mainChoice == 4) {
                     System.out.println("1.) Import Database\n2.) Export Database\n" +
                             "3.) Delete Database\n4.) back");

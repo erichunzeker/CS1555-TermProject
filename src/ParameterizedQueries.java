@@ -1,7 +1,7 @@
 public class ParameterizedQueries {
 
     public String addCustomer, editCustomer, viewCustomer;
-    public String singleRoute, addPassenger;
+    public String singleRoute, addReservation;
     public String specificStationDayTime, moreThanOneRail, sameStationDifferentStop, allTrainsPass, doNotStopAtStation, percentStops, routeSchedule, availableDayTime;
 
     public ParameterizedQueries() {
@@ -49,7 +49,7 @@ public class ParameterizedQueries {
                 "    ) as A\n" +
                 "    WHERE A.weekday = '?';";
 
-        addPassenger = "UPDATE schedule SET seats_taken = seats_taken\n" +
+        addReservation = "UPDATE schedule SET seats_taken = seats_taken\n" +
                 "\tWHERE weekday = '?' AND runtime = time'?' AND Route_ID = ?;";
 
         //advanced searches
