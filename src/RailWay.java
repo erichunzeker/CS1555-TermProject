@@ -45,7 +45,7 @@ public class RailWay {
                             statement = connection.prepareStatement(p.addCustomer);
                         else {
                             statement = connection.prepareStatement(p.editCustomer);
-                            System.out.println("Enter passenger ID to edit: \n");
+                            System.out.println("Enter passenger ID to edit: ");
                             int pID = scanner.nextInt();
                             scanner.nextLine();
                             statement.setInt(1, pID);
@@ -165,6 +165,17 @@ public class RailWay {
 
                     if(secondChoice == 1) {
                         statement = connection.prepareStatement(p.specificStationDayTime);
+                        System.out.println("Enter station id");
+                        int station = scanner.nextInt();
+                        scanner.nextLine();
+                        statement.setInt(1, station);
+                        System.out.println("Enter weekday");
+                        String weekday = scanner.nextLine();
+                        statement.setString(2, weekday);
+                        System.out.println("Enter time (xx:xx:xx)");
+                        String time = scanner.next();
+                        Time t = Time.valueOf(time);
+                        statement.setTime(3, t);
                     }
                     else if(secondChoice == 2) {
                         statement = connection.prepareStatement(p.moreThanOneRail);
@@ -181,9 +192,17 @@ public class RailWay {
                     }
                     else if(secondChoice == 5) {
                         statement = connection.prepareStatement(p.doNotStopAtStation);
+                        System.out.println("Enter station id");
+                        int station = scanner.nextInt();
+                        scanner.nextLine();
+                        statement.setInt(1, station);
                     }
                     else if(secondChoice == 6) {
                         statement = connection.prepareStatement(p.percentStops);
+                        System.out.println("Enter a percentage (0 - 1)");
+                        double per = scanner.nextDouble();
+                        scanner.nextLine();
+                        statement.setDouble(1, per);
                     }
                     else if(secondChoice == 7) {
                         statement = connection.prepareStatement(p.routeSchedule);
@@ -206,6 +225,8 @@ public class RailWay {
                         Time t = Time.valueOf(time);
                         statement.setTime(3, t);
                     }
+                    else
+                        break;
                     ResultSet rs = statement.executeQuery();
                     ResultSetMetaData rsmd = rs.getMetaData();
                     printResults(rs, rsmd);
@@ -216,6 +237,7 @@ public class RailWay {
                     System.out.println("1.) Import Database\n2.) Export Database\n" +
                             "3.) Delete Database\n4.) back");
                     int secondChoice = scanner.nextInt();
+                    scanner.nextLine();
                     if(secondChoice == 1) {
                         //run phase1.sql then data file
                     } else if(secondChoice == 2) {
@@ -238,9 +260,7 @@ public class RailWay {
     }
 
     public static void printResults(ResultSet rs, ResultSetMetaData rsmd) {
-
         try {
-
             rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
 
