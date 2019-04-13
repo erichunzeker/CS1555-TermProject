@@ -273,7 +273,14 @@ public class RailWay {
                         }
                         System.out.println("All tables exported to ./Database/");
                     } else if(secondChoice == 3) {
-                        statement.executeQuery(p.dropAllTables);
+                        for(int i = tables.length - 1 ; i >= 0; i--){
+                            System.out.println("Deleting " + tables[i]);
+                            Statement stmt = connection.createStatement();
+
+                            stmt.executeUpdate("DELETE FROM " + tables[i]);
+                        }
+                        //System.out.println(p.deleteDatabase);
+                        //statement.executeUpdate(p.deleteDatabase);
                     }
                 }
                 else if(mainChoice == 5) {
