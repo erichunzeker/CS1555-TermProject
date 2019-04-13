@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.Scanner;
 import java.io.*;
+import java.util.ArrayList;
 
 public class RailWay {
     public static void main (String args[]) {
@@ -248,21 +249,29 @@ public class RailWay {
                             new File("Database").mkdirs();
                         }
                         for(int i = 0; i < tables.length; i ++){
+                            System.out.println("Exporting " + tables[i]);
+                            ArrayList<String> dump = new ArrayList<>();
                             try{
-                                statement = connection.prepareStatement(p.exportTable);
-                                statement.setString(1, tables[i]);
-                                Path currentRelativePath = Paths.get("");
-                                String path = currentRelativePath.toAbsoluetPath().toString() + "Database/" + tables[i] + ".csv";
-                                statement.setString(2, path);
-                                //output = new File("Database/" + tables[i] + ".csv");
-                                //BufferedWriter writer = new BufferedWriter(new FileWriter("Database/" + tables[i] + ".csv"));
-                                //String results = statement.executeQuery();
-                                //writer.write("THIS\nIS\nA\nTEST");
-                                //writer.close();
+                                Statement stmt = connection.createStatement();
+                                ResultSet rs = stmt.executeQuery("SELECT * FROM " + tables[i]);
+                                int numCols = rs.getMetaData().getColumnCount();
+                                while(rs.next()){
+                                    StringBuilder sb = new StringBuilder();
+                                    for(int j = 1; j <= numCols; j++){
+                                        sb.append(String.format(String.valueOf(rs.getString(j))) + "|");
+                                    }
+                                    dump.add(sb.toString());
+                                }
+                                FileWriter writer = new FileWriter(new File("Database/" + tables[i] + ".csv"));
+
+                                for(String entry : dump){
+                                    writer.write(entry + "\n");
+                                }
                             }catch(IOException e){
                                 e.printStackTrace();
                             }
                         }
+                        System.out.println("All tables exported to ./Database/");
                     } else if(secondChoice == 3) {
                         statement.executeQuery(p.dropAllTables);
                     }

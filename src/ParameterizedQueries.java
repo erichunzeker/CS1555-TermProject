@@ -131,7 +131,5 @@ public class ParameterizedQueries {
                 "  INNER JOIN train T\n" +
                 "  on S.TRAIN_ID = T.train_id\n" +
                 "  WHERE S.Route_ID = ? AND S.weekday = ? AND S.runtime = ?;";
-
-        exportTable = "\\copy ? TO ?"
     }
 }
