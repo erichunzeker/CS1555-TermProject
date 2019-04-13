@@ -6,11 +6,15 @@ public class RailWay {
         System.out.println("Welcome to the SEPTA command line tool");
         Scanner scanner = new Scanner(System.in);
         ParameterizedQueries p = new ParameterizedQueries();
+        final String url = "jdbc:postgresql://localhost:5432/";
+        final String user = "emh128";
+        final String password = "cs1555";
 
-        System.out.println(p.addCustomer);
         try {
             Connection connection = null;
             PreparedStatement statement = null;
+            connection = DriverManager.getConnection(url, user, password);
+
 
             while(true) {
                 System.out.println("1.) Update customer list\n2.) Find a trip between two stations\n" +
@@ -131,6 +135,41 @@ public class RailWay {
                             "\n7.) Display the schedule of a route\n" +
                             "8.) Find the availability of a route at every stop on a specific day and time\n9.) back");
                     int secondChoice = scanner.nextInt();
+
+                    // specificStationDayTime -     station_id, weekday, time
+                    // moreThanOneRail -            no params
+                    // sameStationDifferentStop -   route_ID
+                    // allTrainsPass -              no params
+                    // doNotStopAtStation -         station_id
+                    // percentStops -               0 >= percentage <= 1
+                    // routeSchedule -              route_id
+                    // availableDayTime -           route_id, weekday, time
+
+
+                    if(secondChoice == 1) {
+                        statement = connection.prepareStatement(p.specificStationDayTime);
+                    }
+                    else if(secondChoice == 2) {
+                        statement = connection.prepareStatement(p.moreThanOneRail);
+                    }
+                    else if(secondChoice == 3) {
+                        statement = connection.prepareStatement(p.sameStationDifferentStop);
+                    }
+                    else if(secondChoice == 4) {
+                        statement = connection.prepareStatement(p.allTrainsPass);
+                    }
+                    else if(secondChoice == 5) {
+                        statement = connection.prepareStatement(p.doNotStopAtStation);
+                    }
+                    else if(secondChoice == 6) {
+                        statement = connection.prepareStatement(p.percentStops);
+                    }
+                    else if(secondChoice == 7) {
+                        statement = connection.prepareStatement(p.routeSchedule);
+                    }
+                    else if(secondChoice == 8) {
+                        statement = connection.prepareStatement(p.availableDayTime);
+                    }
 
 
                 }
