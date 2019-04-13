@@ -37,15 +37,7 @@ public class RailWay {
                         ResultSet rs = statement.executeQuery();
                         ResultSetMetaData rsmd = rs.getMetaData();
 
-                        int columnsNumber = rsmd.getColumnCount();
-                        while (rs.next()) {
-                            for (int i = 1; i <= columnsNumber; i++) {
-                                if (i > 1) System.out.print("  ");
-                                String columnValue = rs.getString(i);
-                                System.out.print(columnValue);
-                            }
-                            System.out.println("");
-                        }
+                        printResults(rs, rsmd);
 
                     } else if(secondChoice == 2 || secondChoice == 1){
 
@@ -54,8 +46,9 @@ public class RailWay {
                         else {
                             statement = connection.prepareStatement(p.editCustomer);
                             System.out.println("Enter passenger ID to edit: \n");
-                            String pID = scanner.nextLine();
-                            statement.setString(10, pID);
+                            int pID = scanner.nextInt();
+                            scanner.nextLine();
+                            statement.setInt(1, pID);
                         }
 
                         //firstname, lastname, phone, street, city, state, zip, country, email
@@ -99,12 +92,16 @@ public class RailWay {
                         statement.setString(9, email);
 
                         ResultSet rs = statement.executeQuery();
+                        ResultSetMetaData rsmd = rs.getMetaData();
+
+                        printResults(rs, rsmd);
                     }
 
                 }  else if(mainChoice == 2) {
                     System.out.println("1.) Single Route Trip Search\n2.) Combination Route Trip Search\n" +
                             "3.) Add Reservation\n4.) More\n5.) back");
                     int secondChoice = scanner.nextInt();
+                    scanner.nextLine();
 
                     if(secondChoice == 1) {
                         statement = connection.prepareStatement(p.singleRoute);
@@ -128,16 +125,21 @@ public class RailWay {
 
                     }
 
-                    System.out.println("\nEnter station 1 id\n");
-                    String station1 = scanner.nextLine();
-                    statement.setString(1, station1);
-                    System.out.println("\nEnter station 2 id\n");
-                    String station2 = scanner.nextLine();
-                    statement.setString(2, station2);
-                    System.out.println("\nEnter weekday id\n");
+                    System.out.println("Enter station 1 id");
+                    int station1 = scanner.nextInt();
+                    scanner.nextLine();
+                    statement.setInt(1, station1);
+                    System.out.println("Enter station 2 id");
+                    int station2 = scanner.nextInt();
+                    scanner.nextLine();
+                    statement.setInt(2, station2);
+                    System.out.println("Enter weekday id");
                     String weekday = scanner.nextLine();
                     statement.setString(3, weekday);
                     ResultSet rs = statement.executeQuery();
+                    ResultSetMetaData rsmd = rs.getMetaData();
+
+                    printResults(rs, rsmd);
 
                 }
                 else if(mainChoice == 3) {
@@ -211,5 +213,25 @@ public class RailWay {
             e.printStackTrace();
         }
 
+    }
+
+    public static void printResults(ResultSet rs, ResultSetMetaData rsmd) {
+
+        try {
+
+            rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print("  ");
+                    String columnValue = rs.getString(i);
+                    System.out.print(columnValue);
+                }
+                System.out.println("");
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -47,7 +47,7 @@ public class ParameterizedQueries {
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n" +
-                "    WHERE A.weekday = '?';";
+                "    WHERE A.weekday = ?;";
 
         addReservation = "UPDATE schedule SET seats_taken = seats_taken\n" +
                 "\tWHERE weekday = '?' AND runtime = time'?' AND Route_ID = ?;";
