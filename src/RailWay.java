@@ -151,6 +151,7 @@ public class RailWay {
                             "\n7.) Display the schedule of a route\n" +
                             "8.) Find the availability of a route at every stop on a specific day and time\n9.) back");
                     int secondChoice = scanner.nextInt();
+                    scanner.nextLine();
 
                     // specificStationDayTime -     station_id, weekday, time
                     // moreThanOneRail -            no params
@@ -170,6 +171,10 @@ public class RailWay {
                     }
                     else if(secondChoice == 3) {
                         statement = connection.prepareStatement(p.sameStationDifferentStop);
+                        System.out.println("Enter route id");
+                        int route = scanner.nextInt();
+                        scanner.nextLine();
+                        statement.setInt(1, route);
                     }
                     else if(secondChoice == 4) {
                         statement = connection.prepareStatement(p.allTrainsPass);
@@ -182,11 +187,28 @@ public class RailWay {
                     }
                     else if(secondChoice == 7) {
                         statement = connection.prepareStatement(p.routeSchedule);
+                        System.out.println("Enter route id");
+                        int route = scanner.nextInt();
+                        scanner.nextLine();
+                        statement.setInt(1, route);
                     }
                     else if(secondChoice == 8) {
                         statement = connection.prepareStatement(p.availableDayTime);
+                        System.out.println("Enter route id");
+                        int route = scanner.nextInt();
+                        scanner.nextLine();
+                        statement.setInt(1, route);
+                        System.out.println("Enter weekday");
+                        String weekday = scanner.nextLine();
+                        statement.setString(2, weekday);
+                        System.out.println("Enter time (xx:xx:xx)");
+                        String time = scanner.next();
+                        Time t = Time.valueOf(time);
+                        statement.setTime(3, t);
                     }
                     ResultSet rs = statement.executeQuery();
+                    ResultSetMetaData rsmd = rs.getMetaData();
+                    printResults(rs, rsmd);
 
 
                 }
