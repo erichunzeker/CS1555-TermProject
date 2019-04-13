@@ -251,11 +251,14 @@ public class RailWay {
                             try{
                                 statement = connection.prepareStatement(p.exportTable);
                                 statement.setString(1, tables[i]);
+                                Path currentRelativePath = Paths.get("");
+                                String path = currentRelativePath.toAbsoluetPath().toString() + "Database/" + tables[i] + ".csv";
+                                statement.setString(2, path);
                                 //output = new File("Database/" + tables[i] + ".csv");
-                                BufferedWriter writer = new BufferedWriter(new FileWriter("Database/" + tables[i] + ".csv"));
-                                String results = statement.executeQuery();
-                                writer.write("THIS\nIS\nA\nTEST");
-                                writer.close();
+                                //BufferedWriter writer = new BufferedWriter(new FileWriter("Database/" + tables[i] + ".csv"));
+                                //String results = statement.executeQuery();
+                                //writer.write("THIS\nIS\nA\nTEST");
+                                //writer.close();
                             }catch(IOException e){
                                 e.printStackTrace();
                             }
