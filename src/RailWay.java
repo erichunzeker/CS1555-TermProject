@@ -6,7 +6,7 @@ public class RailWay {
         System.out.println("Welcome to the SEPTA command line tool");
         Scanner scanner = new Scanner(System.in);
         ParameterizedQueries p = new ParameterizedQueries();
-        final String url = "jdbc:postgresql://localhost:5432/";
+        final String url = "jdbc:postgresql://localhost:5432/emh128?currentSchema=railproject";
         final String user = "emh128";
         final String password = "cs1555";
 
@@ -20,18 +20,32 @@ public class RailWay {
                 System.out.println("1.) Update customer list\n2.) Find a trip between two stations\n" +
                         "3.) Advanced searches\n4.) Database Administrator Operations\n5.) quit\n");
                 int mainChoice = scanner.nextInt();
+                scanner.nextLine();
 
                 if(mainChoice == 1) {
                     System.out.println("1.) Add Customer\n2.) Edit Customer\n" +
                             "3.) View Customer\n4.) back");
                     int secondChoice = scanner.nextInt();
+                    scanner.nextLine();
 
                     if(secondChoice == 3) {
                         statement = connection.prepareStatement(p.viewCustomer);
-                        System.out.println("\nEnter passenger id\n");
-                        String pID = scanner.nextLine();
-                        statement.setString(1, pID);
+                        System.out.println("Enter passenger id");
+                        int pID = scanner.nextInt();
+                        scanner.nextLine();
+                        statement.setInt(1, pID);
                         ResultSet rs = statement.executeQuery();
+                        ResultSetMetaData rsmd = rs.getMetaData();
+
+                        int columnsNumber = rsmd.getColumnCount();
+                        while (rs.next()) {
+                            for (int i = 1; i <= columnsNumber; i++) {
+                                if (i > 1) System.out.print("  ");
+                                String columnValue = rs.getString(i);
+                                System.out.print(columnValue);
+                            }
+                            System.out.println("");
+                        }
 
                     } else if(secondChoice == 2 || secondChoice == 1){
 
@@ -170,6 +184,7 @@ public class RailWay {
                     else if(secondChoice == 8) {
                         statement = connection.prepareStatement(p.availableDayTime);
                     }
+                    ResultSet rs = statement.executeQuery();
 
 
                 }
