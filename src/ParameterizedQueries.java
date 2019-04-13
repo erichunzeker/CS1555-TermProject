@@ -1,11 +1,23 @@
 public class ParameterizedQueries {
 
+    public String dropAllTables;
     public String addCustomer, editCustomer, viewCustomer;
     public String singleRoute, addReservation;
     public String specificStationDayTime, moreThanOneRail, sameStationDifferentStop, allTrainsPass, doNotStopAtStation, percentStops, routeSchedule, availableDayTime;
 
     public ParameterizedQueries() {
         //Update customer list
+        dropAllTables = "DROP TABLE IF EXISTS station CASCADE;\n" +
+                "DROP TABLE IF EXISTS railline CASCADE;\n" +
+                "DROP TABLE IF EXISTS route CASCADE;\n" +
+                "DROP TABLE IF EXISTS schedule CASCADE;\n" +
+                "DROP TABLE IF EXISTS train CASCADE;\n" +
+                "DROP TABLE IF EXISTS passenger CASCADE;\n" +
+                "DROP TABLE IF EXISTS stop CASCADE;\n" +
+                "DROP TABLE IF EXISTS route_stop CASCADE;\n" +
+                "DROP TABLE IF EXISTS station_railline CASCADE;\n" +
+                "DROP TABLE IF EXISTS railline_route CASCADE;";
+
         addCustomer = "INSERT INTO passenger (firstname, lastname, phone, street, city, state, zip, country, email)\n" +
                 "  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING passenger_id;";
 

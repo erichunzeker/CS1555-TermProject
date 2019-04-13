@@ -243,7 +243,7 @@ public class RailWay {
                     } else if(secondChoice == 2) {
                         // idk
                     } else if(secondChoice == 3) {
-                        //drop all tables
+                        statement.executeQuery(p.dropAllTables);
                     }
                 }
                 else if(mainChoice == 5) {
@@ -251,7 +251,7 @@ public class RailWay {
                     System.exit(0);
                 }
                 else
-                    System.out.println("pick a valid number, asshole");
+                    System.out.println("pick a valid number");
             }
         } catch (SQLException e) {
             e.printStackTrace();
