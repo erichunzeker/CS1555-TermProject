@@ -10,7 +10,7 @@ public class ParameterizedQueries {
                 "  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING passenger_id;";
 
         editCustomer = "UPDATE passenger SET\n" +
-                "  (firstname, lastname, phone, street, city, state, zip, country, email) = ('?', '?', '?', '?', '?', '?', '?', '?', '?')\n" +
+                "  (firstname, lastname, phone, street, city, state, zip, country, email) = (?, ?, ?, ?, ?, ?, ?, ?, ?)\n" +
                 "  WHERE passenger_id =?\n" +
                 "  RETURNING passenger_id;";
 
@@ -50,7 +50,7 @@ public class ParameterizedQueries {
                 "    WHERE A.weekday = ?;";
 
         addReservation = "UPDATE schedule SET seats_taken = seats_taken\n" +
-                "\tWHERE weekday = '?' AND runtime = time'?' AND Route_ID = ?;";
+                "\tWHERE weekday = ? AND runtime = time ? AND Route_ID = ?;";
 
         //advanced searches
 
@@ -63,7 +63,7 @@ public class ParameterizedQueries {
                 "  INNER JOIN stop\n" +
                 "  ON RS.Stop_ID = stop.Stop_ID\n" +
                 "  WHERE\n" +
-                "    (Station_A_ID = ? OR Station_B_ID = ?) AND weekday = '?' AND runtime = '?'\n" +
+                "    (Station_A_ID = ? OR Station_B_ID = ?) AND weekday = ? AND runtime = ?\n" +
                 "  ORDER BY T.train_id ASC;\n";
 
         moreThanOneRail = "SELECT Route_ID\n" +
@@ -118,6 +118,6 @@ public class ParameterizedQueries {
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
                 "  on S.TRAIN_ID = T.train_id\n" +
-                "  WHERE S.Route_ID = ? AND S.weekday = '?' AND S.runtime = '?';";
+                "  WHERE S.Route_ID = ? AND S.weekday = ? AND S.runtime = ?;";
     }
 }
