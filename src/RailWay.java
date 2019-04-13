@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.Scanner;
+import java.io.*;
 
 public class RailWay {
     public static void main (String args[]) {
@@ -9,6 +10,8 @@ public class RailWay {
         final String url = "jdbc:postgresql://localhost:5432/emh128?currentSchema=railproject";
         final String user = "emh128";
         final String password = "cs1555";
+
+        final String[] tables = {"passenger", "railline", "station", "train", "stop", "route", "route_stop", "schedule", "railline_route", "station_railline"};
 
         try {
             Connection connection = null;
@@ -241,7 +244,22 @@ public class RailWay {
                     if(secondChoice == 1) {
                         //run phase1.sql then data file
                     } else if(secondChoice == 2) {
-                        // idk
+                        if(!new File("Database").exists()){
+                            new File("Database").mkdirs();
+                        }
+                        for(int i = 0; i < tables.length; i ++){
+                            try{
+                                statement = connection.prepareStatement(p.exportTable);
+                                statement.setString(1, tables[i]);
+                                //output = new File("Database/" + tables[i] + ".csv");
+                                BufferedWriter writer = new BufferedWriter(new FileWriter("Database/" + tables[i] + ".csv"));
+                                String results = statement.executeQuery();
+                                writer.write("THIS\nIS\nA\nTEST");
+                                writer.close();
+                            }catch(IOException e){
+                                e.printStackTrace();
+                            }
+                        }
                     } else if(secondChoice == 3) {
                         statement.executeQuery(p.dropAllTables);
                     }
