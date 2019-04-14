@@ -2,6 +2,9 @@ import java.sql.*;
 import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
+import java.nio.file.*;
+import java.nio.charset.*;
+import java.util.List;
 
 public class RailWay {
     public static void main (String args[]) {
@@ -243,7 +246,39 @@ public class RailWay {
                     int secondChoice = scanner.nextInt();
                     scanner.nextLine();
                     if(secondChoice == 1) {
-                        //run phase1.sql then data file
+                        // MAY WANT TO CHECK FOR BACKUP FIRST
+                        boolean error = false;
+                        if(!new File("Database").exists()){
+                            System.out.println("Database directory missing");
+                            error = true;
+                        }
+                        for(int i = 0; i < tables.length; i++){
+                            if(!new File("Database/" + tables[i] + ".csv").exists()){
+                                System.out.println("Database/" + tables[i] + ".csv missing");
+                                error = true;
+                            }
+                        }
+                        if(!error){
+                            //CLEAR DATABASE
+                            for(int i = tables.length - 1 ; i >= 0; i--){
+                                Statement stmt = connection.createStatement();
+                                stmt.executeUpdate("DELETE FROM " + tables[i]);
+                            }
+                            // RESTORE FROM BACKUP
+                            for(int i = 0; i < tables.length; i++){
+                                try{
+                                    List<String> create = Files.readAllLines(Paths.get("Database/" + tables[i] + ".csv"), StandardCharsets.UTF_8);
+                                    System.out.println(create);
+                                    Statement stmt = connection.createStatement();
+                                    stmt.executeUpdate("INSERT INTO " + tables[i] + " VALUES " + create.get(0));
+
+                                }catch(IOException e){
+                                    e.printStackTrace();
+                                }
+                            
+                            }
+                        }
+
                     } else if(secondChoice == 2) {
                         if(!new File("Database").exists()){
                             new File("Database").mkdirs();
@@ -257,16 +292,36 @@ public class RailWay {
                                 int numCols = rs.getMetaData().getColumnCount();
                                 while(rs.next()){
                                     StringBuilder sb = new StringBuilder();
+                                    sb.append("(");
                                     for(int j = 1; j <= numCols; j++){
-                                        sb.append(String.format(String.valueOf(rs.getString(j))) + "|");
+                                        String type = rs.getMetaData().getColumnTypeName(j);
+                                        if(type.equals("time") || type.equals("varchar")){
+                                            sb.append("'" + String.format(String.valueOf(rs.getString(j))) + "'");
+                                        }else if(type.equals("bool")){ 
+                                            if(String.valueOf(rs.getString(j)).equals("t")){
+                                                sb.append("True");
+                                            }else{
+                                                sb.append("False");
+                                            }
+                                        }else{
+                                            sb.append(String.format(String.valueOf(rs.getString(j))) );
+                                        }
+                                        if(j != numCols){
+                                            sb.append(",");
+                                        }else{
+                                            sb.append("),");
+                                        }
                                     }
                                     dump.add(sb.toString());
                                 }
+                                String last = dump.get(dump.size() - 1);
+                                dump.remove(dump.size() - 1);
+                                dump.add(last.substring(0, last.length() - 1));
                                 FileWriter writer = new FileWriter(new File("Database/" + tables[i] + ".csv"));
-
                                 for(String entry : dump){
-                                    writer.write(entry + "\n");
+                                    writer.write(entry);
                                 }
+                                writer.close();
                             }catch(IOException e){
                                 e.printStackTrace();
                             }
@@ -279,8 +334,6 @@ public class RailWay {
 
                             stmt.executeUpdate("DELETE FROM " + tables[i]);
                         }
-                        //System.out.println(p.deleteDatabase);
-                        //statement.executeUpdate(p.deleteDatabase);
                     }
                 }
                 else if(mainChoice == 5) {
