@@ -104,9 +104,8 @@ public class RailWay {
 	                scanner.nextLine();
 	                statement.setInt(1, pID);
 	                ResultSet rs = statement.executeQuery();
-	                ResultSetMetaData rsmd = rs.getMetaData();
 
-	                printResults(rs, rsmd);
+	                printResults(rs);
 	    			break;
 	    		case 4: //BACK
 	    			return;
@@ -165,9 +164,8 @@ public class RailWay {
 	        statement.setString(9, email);
 
 	        ResultSet rs = statement.executeQuery();
-	        ResultSetMetaData rsmd = rs.getMetaData();
 
-	        printResults(rs, rsmd);
+	        printResults(rs);
 	    } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -218,9 +216,8 @@ public class RailWay {
 	        String weekday = scanner.nextLine();
 	        statement.setString(3, weekday);
 	        ResultSet rs = statement.executeQuery();
-	        ResultSetMetaData rsmd = rs.getMetaData();
 
-	        printResults(rs, rsmd);
+	        printResults(rs);
 	    } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -359,8 +356,7 @@ public class RailWay {
 	    			return;
 	    	}
 	    	ResultSet rs = statement.executeQuery();
-	        ResultSetMetaData rsmd = rs.getMetaData();
-	        printResults(rs, rsmd);
+	        printResults(rs);
 	    } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -475,9 +471,9 @@ public class RailWay {
         }
     }
 
-    public static void printResults(ResultSet rs, ResultSetMetaData rsmd) {
+    public static void printResults(ResultSet rs) {
         try {
-            rsmd = rs.getMetaData();
+            ResultSetMetaData rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
 
             while (rs.next()) {
