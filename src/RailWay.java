@@ -89,6 +89,7 @@ public class RailWay {
 	    	switch (selection){
 	    		case 1: //ADD CUSTOMER
 	    			statement = connection.prepareStatement(p.addCustomer);
+	    			updateOrAddCustomer(statement);
 	    			break;
 	    		case 2: //EDIT CUSTOMER
 	    			statement = connection.prepareStatement(p.editCustomer);
@@ -96,6 +97,7 @@ public class RailWay {
 	                pID = scanner.nextInt();
 	                scanner.nextLine();
 	                statement.setInt(1, pID);
+	                updateOrAddCustomer(statement);
 	    			break;
 	    		case 3: //VIEW CUSTOMER
 	    			statement = connection.prepareStatement(p.viewCustomer);
@@ -104,7 +106,6 @@ public class RailWay {
 	                scanner.nextLine();
 	                statement.setInt(1, pID);
 	                ResultSet rs = statement.executeQuery();
-
 	                printResults(rs);
 	    			break;
 	    		case 4: //BACK
@@ -123,7 +124,7 @@ public class RailWay {
         }
     }
 
-    public static void updateCustomer(PreparedStatement statement){
+    public static void updateOrAddCustomer(PreparedStatement statement){
     	try{
 	    	String firstname, lastname, phone, street, city, state, zip, country, email;
 
