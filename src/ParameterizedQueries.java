@@ -1,7 +1,7 @@
 public class ParameterizedQueries {
 
     public String addCustomer, editCustomer, viewCustomer;
-    public String singleRoute, addReservation;
+    public String singleRoute, fewestStops, mostStations, lowestPrice, highestPrice, leastTime, mostTime, leastDistance, mostDistance, addReservation;
     public String specificStationDayTime, moreThanOneRail, sameStationDifferentStop, allTrainsPass, doNotStopAtStation, percentStops, routeSchedule, availableDayTime;
 
     public ParameterizedQueries() {
@@ -46,8 +46,269 @@ public class ParameterizedQueries {
                 "      ON RS.Route_ID = R.route_id\n" +
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
+                "    ) as A\n " +
+                "    INNER JOIN schedule\n" +
+                "      ON schedule.Route_ID = A.route_id\n" +
+                "    INNER JOIN train\n" +
+                "      ON schedule.Train_ID = train.train_id\n" +
+                "    WHERE A.weekday = ? AND seats_taken < seats;";
+
+        //begin aggregate functions
+
+        fewestStops = "SELECT A.route_id, count(Stop_ID) as stop_count, schedule.weekday, schedule.runtime\n" +
+                "  FROM\n" +
+                "  (SELECT R.route_id, R.description\n" +
+                "  FROM route R\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON R.route_id = RS.Route_ID\n" +
+                "  INNER JOIN stop S\n" +
+                "  ON RS.Stop_ID = S.Stop_ID\n" +
+                "    WHERE Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "    INTERSECT\n" +
+                "  SELECT R.route_id, R.description\n" +
+                "  FROM route R\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON R.route_id = RS.Route_ID\n" +
+                "  INNER JOIN stop S\n" +
+                "  ON RS.Stop_ID = S.Stop_ID\n" +
+                "    WHERE Station_B_ID = ? AND Stops_At_B = TRUE) AS A\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON RS.Route_ID = A.route_id\n" +
+                "  INNER JOIN schedule\n" +
+                "  ON schedule.Route_ID = A.route_id\n" +
+                "  INNER JOIN train\n" +
+                "  ON schedule.Train_ID = train.train_id\n" +
+                "  WHERE seats_taken < seats\n" +
+                "  GROUP BY A.route_id, schedule.weekday, schedule.runtime\n" +
+                "  ORDER BY stop_count ASC;";
+
+        mostStations = "SELECT A.route_id, count(Stop_ID) as stop_count, schedule.weekday, schedule.runtime\n" +
+                "  FROM\n" +
+                "  (SELECT R.route_id, R.description\n" +
+                "  FROM route R\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON R.route_id = RS.Route_ID\n" +
+                "  INNER JOIN stop S\n" +
+                "  ON RS.Stop_ID = S.Stop_ID\n" +
+                "    WHERE Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "    INTERSECT\n" +
+                "  SELECT R.route_id, R.description\n" +
+                "  FROM route R\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON R.route_id = RS.Route_ID\n" +
+                "  INNER JOIN stop S\n" +
+                "  ON RS.Stop_ID = S.Stop_ID\n" +
+                "    WHERE Station_B_ID = ? AND Stops_At_B = TRUE) AS A\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON RS.Route_ID = A.route_id\n" +
+                "  INNER JOIN schedule\n" +
+                "  ON schedule.Route_ID = A.route_id\n" +
+                "  INNER JOIN train\n" +
+                "  ON schedule.Train_ID = train.train_id\n" +
+                "  WHERE seats_taken < seats\n" +
+                "  GROUP BY A.route_id, schedule.weekday, schedule.runtime\n" +
+                "  ORDER BY stop_count DESC;";
+
+        lowestPrice = "SELECT MIN(A.pricepermile * A.distance)\n" +
+                "  FROM (SELECT R.route_id, pricepermile, distance\n" +
+                "    FROM schedule S\n" +
+                "    INNER JOIN train T\n" +
+                "    ON S.Train_ID = T.train_id\n" +
+                "    INNER JOIN route_stop RS\n" +
+                "    ON S.Route_ID = RS.Route_ID\n" +
+                "    INNER JOIN stop\n" +
+                "    ON RS.Stop_ID = stop.Stop_ID\n" +
+                "    INNER JOIN route R\n" +
+                "    ON RS.Route_ID = R.route_id\n" +
+                "    WHERE\n" +
+                "      Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "      INTERSECT\n" +
+                "    SELECT R.route_id, pricepermile, distance\n" +
+                "      FROM schedule S\n" +
+                "      INNER JOIN train T\n" +
+                "      ON S.Train_ID = T.train_id\n" +
+                "      INNER JOIN route_stop RS\n" +
+                "      ON S.Route_ID = RS.Route_ID\n" +
+                "      INNER JOIN stop\n" +
+                "      ON RS.Stop_ID = stop.Stop_ID\n" +
+                "      INNER JOIN route R\n" +
+                "      ON RS.Route_ID = R.route_id\n" +
+                "      WHERE\n" +
+                "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n" +
-                "    WHERE A.weekday = ?;";
+                "    INNER JOIN schedule\n" +
+                "      ON schedule.Route_ID = A.route_id\n" +
+                "    INNER JOIN train\n" +
+                "      ON schedule.Train_ID = train.train_id\n" +
+                "    WHERE seats_taken < seats;";
+
+        highestPrice = "SELECT MAX(A.pricepermile * A.distance)\n" +
+                "  FROM (SELECT R.route_id, pricepermile, distance\n" +
+                "    FROM schedule S\n" +
+                "    INNER JOIN train T\n" +
+                "    ON S.Train_ID = T.train_id\n" +
+                "    INNER JOIN route_stop RS\n" +
+                "    ON S.Route_ID = RS.Route_ID\n" +
+                "    INNER JOIN stop\n" +
+                "    ON RS.Stop_ID = stop.Stop_ID\n" +
+                "    INNER JOIN route R\n" +
+                "    ON RS.Route_ID = R.route_id\n" +
+                "    WHERE\n" +
+                "      Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "      INTERSECT\n" +
+                "    SELECT R.route_id, pricepermile, distance\n" +
+                "      FROM schedule S\n" +
+                "      INNER JOIN train T\n" +
+                "      ON S.Train_ID = T.train_id\n" +
+                "      INNER JOIN route_stop RS\n" +
+                "      ON S.Route_ID = RS.Route_ID\n" +
+                "      INNER JOIN stop\n" +
+                "      ON RS.Stop_ID = stop.Stop_ID\n" +
+                "      INNER JOIN route R\n" +
+                "      ON RS.Route_ID = R.route_id\n" +
+                "      WHERE\n" +
+                "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
+                "    ) as A\n" +
+                "    INNER JOIN schedule\n" +
+                "      ON schedule.Route_ID = A.route_id\n" +
+                "    INNER JOIN train\n" +
+                "      ON schedule.Train_ID = train.train_id\n" +
+                "    WHERE seats_taken < seats;";
+
+        leastTime = "SELECT MIN((A.distance * 60)/A.topspeed)\n" +
+                "FROM (SELECT R.route_id, pricepermile, distance, topspeed\n" +
+                "  FROM schedule S\n" +
+                "  INNER JOIN train T\n" +
+                "  ON S.Train_ID = T.train_id\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON S.Route_ID = RS.Route_ID\n" +
+                "  INNER JOIN stop\n" +
+                "  ON RS.Stop_ID = stop.Stop_ID\n" +
+                "  INNER JOIN route R\n" +
+                "  ON RS.Route_ID = R.route_id\n" +
+                "  WHERE\n" +
+                "    Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "    INTERSECT\n" +
+                "  SELECT R.route_id, pricepermile, distance, topspeed\n" +
+                "    FROM schedule S\n" +
+                "    INNER JOIN train T\n" +
+                "    ON S.Train_ID = T.train_id\n" +
+                "    INNER JOIN route_stop RS\n" +
+                "    ON S.Route_ID = RS.Route_ID\n" +
+                "    INNER JOIN stop\n" +
+                "    ON RS.Stop_ID = stop.Stop_ID\n" +
+                "    INNER JOIN route R\n" +
+                "    ON RS.Route_ID = R.route_id\n" +
+                "    WHERE\n" +
+                "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
+                "  ) as A\n" +
+                "  INNER JOIN schedule\n" +
+                "    ON schedule.Route_ID = A.route_id\n" +
+                "  INNER JOIN train\n" +
+                "    ON schedule.Train_ID = train.train_id\n" +
+                "  WHERE seats_taken < seats;";
+
+        mostTime = "SELECT MAX((A.distance * 60)/A.topspeed)\n" +
+                "FROM (SELECT R.route_id, pricepermile, distance, topspeed\n" +
+                "  FROM schedule S\n" +
+                "  INNER JOIN train T\n" +
+                "  ON S.Train_ID = T.train_id\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON S.Route_ID = RS.Route_ID\n" +
+                "  INNER JOIN stop\n" +
+                "  ON RS.Stop_ID = stop.Stop_ID\n" +
+                "  INNER JOIN route R\n" +
+                "  ON RS.Route_ID = R.route_id\n" +
+                "  WHERE\n" +
+                "    Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "    INTERSECT\n" +
+                "  SELECT R.route_id, pricepermile, distance, topspeed\n" +
+                "    FROM schedule S\n" +
+                "    INNER JOIN train T\n" +
+                "    ON S.Train_ID = T.train_id\n" +
+                "    INNER JOIN route_stop RS\n" +
+                "    ON S.Route_ID = RS.Route_ID\n" +
+                "    INNER JOIN stop\n" +
+                "    ON RS.Stop_ID = stop.Stop_ID\n" +
+                "    INNER JOIN route R\n" +
+                "    ON RS.Route_ID = R.route_id\n" +
+                "    WHERE\n" +
+                "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
+                "  ) as A\n" +
+                "  INNER JOIN schedule\n" +
+                "    ON schedule.Route_ID = A.route_id\n" +
+                "  INNER JOIN train\n" +
+                "    ON schedule.Train_ID = train.train_id\n" +
+                "  WHERE seats_taken < seats;";
+
+        leastDistance = "SELECT MIN(distance)\n" +
+                "FROM (SELECT R.route_id, distance\n" +
+                "  FROM schedule S\n" +
+                "  INNER JOIN train T\n" +
+                "  ON S.Train_ID = T.train_id\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON S.Route_ID = RS.Route_ID\n" +
+                "  INNER JOIN stop\n" +
+                "  ON RS.Stop_ID = stop.Stop_ID\n" +
+                "  INNER JOIN route R\n" +
+                "  ON RS.Route_ID = R.route_id\n" +
+                "  WHERE\n" +
+                "    Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "    INTERSECT\n" +
+                "  SELECT R.route_id, distance\n" +
+                "    FROM schedule S\n" +
+                "    INNER JOIN train T\n" +
+                "    ON S.Train_ID = T.train_id\n" +
+                "    INNER JOIN route_stop RS\n" +
+                "    ON S.Route_ID = RS.Route_ID\n" +
+                "    INNER JOIN stop\n" +
+                "    ON RS.Stop_ID = stop.Stop_ID\n" +
+                "    INNER JOIN route R\n" +
+                "    ON RS.Route_ID = R.route_id\n" +
+                "    WHERE\n" +
+                "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
+                "  ) as A\n" +
+                "  INNER JOIN schedule\n" +
+                "    ON schedule.Route_ID = A.route_id\n" +
+                "  INNER JOIN train\n" +
+                "    ON schedule.Train_ID = train.train_id\n" +
+                "  WHERE seats_taken < seats;";
+
+        mostDistance = "SELECT MAX(distance)\n" +
+                "FROM (SELECT R.route_id, distance\n" +
+                "  FROM schedule S\n" +
+                "  INNER JOIN train T\n" +
+                "  ON S.Train_ID = T.train_id\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON S.Route_ID = RS.Route_ID\n" +
+                "  INNER JOIN stop\n" +
+                "  ON RS.Stop_ID = stop.Stop_ID\n" +
+                "  INNER JOIN route R\n" +
+                "  ON RS.Route_ID = R.route_id\n" +
+                "  WHERE\n" +
+                "    Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "    INTERSECT\n" +
+                "  SELECT R.route_id, distance\n" +
+                "    FROM schedule S\n" +
+                "    INNER JOIN train T\n" +
+                "    ON S.Train_ID = T.train_id\n" +
+                "    INNER JOIN route_stop RS\n" +
+                "    ON S.Route_ID = RS.Route_ID\n" +
+                "    INNER JOIN stop\n" +
+                "    ON RS.Stop_ID = stop.Stop_ID\n" +
+                "    INNER JOIN route R\n" +
+                "    ON RS.Route_ID = R.route_id\n" +
+                "    WHERE\n" +
+                "      Station_B_ID = ? AND Stops_At_A = TRUE\n" +
+                "  ) as A\n" +
+                "  INNER JOIN schedule\n" +
+                "    ON schedule.Route_ID = A.route_id\n" +
+                "  INNER JOIN train\n" +
+                "    ON schedule.Train_ID = train.train_id\n" +
+                "  WHERE seats_taken < seats;";
+
+        //end aggregate functions
+
 
         addReservation = "UPDATE schedule SET seats_taken = seats_taken + 1\n" +
                 "\tWHERE weekday = ? AND runtime = ? AND Route_ID = ?;";

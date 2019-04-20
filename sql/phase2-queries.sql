@@ -42,7 +42,11 @@ SELECT *
       WHERE
         Station_B_ID = 30 AND Stops_At_B = TRUE
     ) as A
-    WHERE A.weekday = 'Sun';
+    INNER JOIN schedule
+      ON schedule.Route_ID = A.route_id
+    INNER JOIN train
+      ON schedule.Train_ID = train.train_id
+    WHERE A.weekday = 'Sun' AND seats_taken < seats;
 
 
 -- USE SOMETHING LIKE THIS TO SORT THEM???
