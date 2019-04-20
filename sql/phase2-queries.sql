@@ -27,7 +27,7 @@ SELECT *
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_A_ID = 1 AND Stops_At_A = TRUE
+      Station_A_ID = 2 AND Stops_At_A = TRUE
       INTERSECT
     SELECT R.route_id, weekday
       FROM schedule S
@@ -40,16 +40,16 @@ SELECT *
       INNER JOIN route R
       ON RS.Route_ID = R.route_id
       WHERE
-        Station_B_ID = 3 AND Stops_At_B = TRUE
+        Station_B_ID = 4 AND Stops_At_B = TRUE
     ) as A
-    WHERE A.weekday = 'Wed';
+    WHERE A.weekday = 'Sun';
 
 
 -- USE SOMETHING LIKE THIS TO SORT THEM???
 WITH RECURSIVE sortroute(route_id, stops_at_a, stops_at_b, stop_id, station_a_id, station_b_id) AS (
     SELECT route_id, stops_at_a, stops_at_b, stop.stop_id AS stop_id, station_a_id, station_b_id
     FROM route_stop, stop
-    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 89) AND route_id = 89
+    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 5) AND route_id = 5
   UNION ALL
     SELECT rs.route_id, rs.stops_at_a, rs.stops_at_b, s.stop_id, s.station_a_id, s.station_b_id
     FROM sortroute sr, route_stop rs, stop s
@@ -296,7 +296,7 @@ FROM (SELECT R.route_id, distance
 
 -- 1.2.5. Add Reservation: Book a specified passenger along all legs of the specified route(s) on a given day.
 
-UPDATE schedule SET seats_taken = ((SELECT seats_taken from schedule where weekday = 'Wed' AND runtime = time'10:00:00' AND Route_ID = 211) + 1)
+UPDATE schedule SET seats_taken = seats_taken + 1
 	WHERE weekday = 'Wed' AND runtime = time'10:00:00' AND Route_ID = 211;
 
   -- route_id is found by asking system 1.2.1 or 1.2.2
@@ -372,7 +372,7 @@ SELECT stats.route_id FROM (
 -- 1.3.7 Display the schedule of a route: For a specified route, list the days of departure, departure hours and trains that run it.
 SELECT weekday, runtime, Train_ID
   FROM schedule
-  WHERE Route_ID = 211;
+  WHERE Route_ID = 310;
 
 
 -- 1.3.8 Find the availability of a route at every stop on a specific day and time: Find the number of available seats at each stop of a route for the day and time given as parameters.
