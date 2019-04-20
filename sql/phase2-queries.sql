@@ -72,7 +72,7 @@ SELECT *
   WHERE seats_taken < seats;
 
 -- 1.2.4.1. Fewest stops ( do pagnation in parameterized query in phase 3 (for all of these 1.2.4.x))
-SELECT A.route_id, count(Stop_ID) as stop_count
+SELECT A.route_id, count(Stop_ID) as stop_count, schedule.weekday, schedule.runtime
   FROM
   (SELECT R.route_id, R.description
   FROM route R
@@ -91,11 +91,16 @@ SELECT A.route_id, count(Stop_ID) as stop_count
     WHERE Station_B_ID = 30 AND Stops_At_B = TRUE) AS A
   INNER JOIN route_stop RS
   ON RS.Route_ID = A.route_id
-  GROUP BY A.route_id
+  INNER JOIN schedule
+  ON schedule.Route_ID = A.route_id
+  INNER JOIN train
+  ON schedule.Train_ID = train.train_id
+  WHERE seats_taken < seats
+  GROUP BY A.route_id, schedule.weekday, schedule.runtime
   ORDER BY stop_count ASC;
 
 -- 1.2.4.2. Run through most stations
-SELECT A.route_id, count(Stop_ID) as stop_count
+SELECT A.route_id, count(Stop_ID) as stop_count, schedule.weekday, schedule.runtime
   FROM
   (SELECT R.route_id, R.description
   FROM route R
@@ -103,7 +108,7 @@ SELECT A.route_id, count(Stop_ID) as stop_count
   ON R.route_id = RS.Route_ID
   INNER JOIN stop S
   ON RS.Stop_ID = S.Stop_ID
-    WHERE Station_A_ID = 11
+    WHERE Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
   SELECT R.route_id, R.description
   FROM route R
@@ -111,14 +116,19 @@ SELECT A.route_id, count(Stop_ID) as stop_count
   ON R.route_id = RS.Route_ID
   INNER JOIN stop S
   ON RS.Stop_ID = S.Stop_ID
-    WHERE Station_B_ID = 30) AS A
+    WHERE Station_B_ID = 30 AND Stops_At_B = TRUE) AS A
   INNER JOIN route_stop RS
   ON RS.Route_ID = A.route_id
-  GROUP BY A.route_id
+  INNER JOIN schedule
+  ON schedule.Route_ID = A.route_id
+  INNER JOIN train
+  ON schedule.Train_ID = train.train_id
+  WHERE seats_taken < seats
+  GROUP BY A.route_id, schedule.weekday, schedule.runtime
   ORDER BY stop_count DESC;
 
 -- 1.2.4.3. Lowest price
-SELECT MIN(pricepermile * distance)
+SELECT MIN(A.pricepermile * A.distance)
   FROM (SELECT R.route_id, pricepermile, distance
     FROM schedule S
     INNER JOIN train T
@@ -144,11 +154,16 @@ SELECT MIN(pricepermile * distance)
       ON RS.Route_ID = R.route_id
       WHERE
         Station_B_ID = 30 AND Stops_At_B = TRUE
-    ) as A;
+    ) as A
+    INNER JOIN schedule
+      ON schedule.Route_ID = A.route_id
+    INNER JOIN train
+      ON schedule.Train_ID = train.train_id
+    WHERE seats_taken < seats;
 
 
 -- 1.2.4.4. Highest price
-SELECT MAX(pricepermile * distance)
+SELECT MAX(A.pricepermile * A.distance)
   FROM (SELECT R.route_id, pricepermile, distance
     FROM schedule S
     INNER JOIN train T
@@ -174,7 +189,12 @@ SELECT MAX(pricepermile * distance)
       ON RS.Route_ID = R.route_id
       WHERE
         Station_B_ID = 30 AND Stops_At_B = TRUE
-    ) as A;
+    ) as A
+    INNER JOIN schedule
+      ON schedule.Route_ID = A.route_id
+    INNER JOIN train
+      ON schedule.Train_ID = train.train_id
+    WHERE seats_taken < seats;
 
 -- 1.2.4.5. Least total time
 SELECT MIN((distance * 60)/topspeed)
