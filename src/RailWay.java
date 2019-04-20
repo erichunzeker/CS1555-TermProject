@@ -180,6 +180,9 @@ public class RailWay {
 	    	switch (selection){
 	    		case 1: //SINGLE ROUTE TRIP SEARCH
 	    			statement = connection.prepareStatement(p.singleRoute);
+					System.out.println("Enter weekday");
+					String weekday = scanner.nextLine();
+					statement.setString(3, weekday);
 	    			break;
 	    		case 2: //COMBINATION ROUTE TRIP SEARCH
 	    			//combination
@@ -211,7 +214,32 @@ public class RailWay {
 	                    "3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
 	                    "7.) Least total distance\n8.) Most total distance\n 9.) back");
 	                int thirdChoice = scanner.nextInt();
-	                findTripsSubMenuExtra(thirdChoice);
+	                switch (thirdChoice) {
+						case 1:
+							statement = connection.prepareStatement(p.fewestStops);
+							break;
+						case 2:
+							statement = connection.prepareStatement(p.mostStations);
+							break;
+						case 3:
+							statement = connection.prepareStatement(p.lowestPrice);
+							break;
+						case 4:
+							statement = connection.prepareStatement(p.highestPrice);
+							break;
+						case 5:
+							statement = connection.prepareStatement(p.leastTime);
+							break;
+						case 6:
+							statement = connection.prepareStatement(p.mostTime);
+							break;
+						case 7:
+							statement = connection.prepareStatement(p.leastDistance);
+							break;
+						case 8:
+							statement = connection.prepareStatement(p.mostDistance);
+							break;
+					}
 	    			break;
 	    		case 5: //BACK
 	    			return;
@@ -238,6 +266,7 @@ public class RailWay {
 	        ResultSet rs = statement.executeQuery();
 
 	        printResults(rs);
+	        return;
 	    } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -247,6 +276,7 @@ public class RailWay {
     	PreparedStatement statement;
     	switch (selection){
     		case 1: //FEWEST STOPS
+				statement = connection.prepareStatement(p.singleRoute)
     			break;
     		case 2: //RUN THROUGH MOST STATIONS
     			break;
@@ -278,6 +308,18 @@ public class RailWay {
                 findTripsSubMenuExtra(thirdChoice);
     			return;
     	}
+		System.out.println("Enter station 1 id");
+		int station1 = scanner.nextInt();
+		scanner.nextLine();
+		statement.setInt(1, station1);
+		System.out.println("Enter station 2 id");
+		int station2 = scanner.nextInt();
+		scanner.nextLine();
+		statement.setInt(2, station2);
+		System.out.println("Enter weekday");
+		String weekday = scanner.nextLine();
+		statement.setString(3, weekday);
+		ResultSet rs = statement.executeQuery();
     }
 
     public static void advancedSearchesSubMenu(int selection){
