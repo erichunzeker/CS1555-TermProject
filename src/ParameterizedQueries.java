@@ -49,8 +49,8 @@ public class ParameterizedQueries {
                 "    ) as A\n" +
                 "    WHERE A.weekday = ?;";
 
-        addReservation = "UPDATE schedule SET seats_taken = seats_taken\n" +
-                "\tWHERE weekday = ? AND runtime = time ? AND Route_ID = ?;";
+        addReservation = "UPDATE schedule SET seats_taken = ((SELECT seats_taken from schedule where weekday = ? AND runtime = ? AND Route_ID = ?) + 1)\n" +
+                "\tWHERE weekday = ? AND runtime = ? AND Route_ID = ?;";
 
         //advanced searches
 

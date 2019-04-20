@@ -186,7 +186,28 @@ public class RailWay {
 	    			break;
 	    		case 3: //ADD RESERVATION
 	    			statement = connection.prepareStatement(p.addReservation);
-	    			break;
+
+					System.out.println("Enter weekday");
+					String weekday = scanner.nextLine();
+					statement.setString(1, weekday);
+					statement.setString(4, weekday);
+
+					System.out.println("Enter time (xx:xx:xx)");
+					String time = scanner.next();
+					Time t = Time.valueOf(time);
+					statement.setTime(2, t);
+					statement.setTime(5, t);
+
+					System.out.println("Enter route id");
+					int route_id = scanner.nextInt();
+					scanner.nextLine();
+					statement.setInt(3, route_id);
+					statement.setInt(6, route_id);
+
+					ResultSet rs = statement.executeQuery();
+					printResults(rs);
+
+					break;
 	    		case 4: //MORE
 	    			System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
 	                    "3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
@@ -213,7 +234,7 @@ public class RailWay {
 	        int station2 = scanner.nextInt();
 	        scanner.nextLine();
 	        statement.setInt(2, station2);
-	        System.out.println("Enter weekday id");
+	        System.out.println("Enter weekday");
 	        String weekday = scanner.nextLine();
 	        statement.setString(3, weekday);
 	        ResultSet rs = statement.executeQuery();
