@@ -296,7 +296,7 @@ FROM (SELECT R.route_id, distance
 
 -- 1.2.5. Add Reservation: Book a specified passenger along all legs of the specified route(s) on a given day.
 
-UPDATE schedule SET seats_taken = seats_taken
+UPDATE schedule SET seats_taken = ((SELECT seats_taken from schedule where weekday = 'Wed' AND runtime = time'10:00:00' AND Route_ID = 211) + 1)
 	WHERE weekday = 'Wed' AND runtime = time'10:00:00' AND Route_ID = 211;
 
   -- route_id is found by asking system 1.2.1 or 1.2.2

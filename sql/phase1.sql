@@ -151,11 +151,10 @@ CREATE OR REPLACE FUNCTION seats()
   RETURNS trigger AS
 $$
 BEGIN
-  IF (SELECT seats_taken from schedule where schedule_id = NEW.schedule_id) + 1 >= (SELECT seats from train where train_id = NEW.Train_ID) THEN
+  IF (SELECT seats_taken from schedule where schedule_id = NEW.schedule_id) + 1 > (SELECT seats from train where train_id = NEW.Train_ID) THEN
     RAISE NOTICE 'train is full';
     RETURN NULL;
   END IF;
-
   RETURN NEW;
 END;
 $$
