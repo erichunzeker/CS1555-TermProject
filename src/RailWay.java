@@ -175,13 +175,14 @@ public class RailWay {
     public static void findTripSubMenu(int selection){
     	try{
 	    	PreparedStatement statement;
+	    	String weekday;
 	    	//NEXT LINE NOT NEEDED
 	    	statement = connection.prepareStatement(p.singleRoute);
 	    	switch (selection){
 	    		case 1: //SINGLE ROUTE TRIP SEARCH
 	    			statement = connection.prepareStatement(p.singleRoute);
 					System.out.println("Enter weekday");
-					String weekday = scanner.nextLine();
+					weekday = scanner.nextLine();
 					statement.setString(3, weekday);
 	    			break;
 	    		case 2: //COMBINATION ROUTE TRIP SEARCH
@@ -191,7 +192,7 @@ public class RailWay {
 	    			statement = connection.prepareStatement(p.addReservation);
 
 					System.out.println("Enter weekday");
-					String weekday = scanner.nextLine();
+					weekday = scanner.nextLine();
 					statement.setString(1, weekday);
 
 					System.out.println("Enter time (xx:xx:xx)");
@@ -213,33 +214,8 @@ public class RailWay {
 	    			System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
 	                    "3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
 	                    "7.) Least total distance\n8.) Most total distance\n 9.) back");
-	                int thirdChoice = scanner.nextInt();
-	                switch (thirdChoice) {
-						case 1:
-							statement = connection.prepareStatement(p.fewestStops);
-							break;
-						case 2:
-							statement = connection.prepareStatement(p.mostStations);
-							break;
-						case 3:
-							statement = connection.prepareStatement(p.lowestPrice);
-							break;
-						case 4:
-							statement = connection.prepareStatement(p.highestPrice);
-							break;
-						case 5:
-							statement = connection.prepareStatement(p.leastTime);
-							break;
-						case 6:
-							statement = connection.prepareStatement(p.mostTime);
-							break;
-						case 7:
-							statement = connection.prepareStatement(p.leastDistance);
-							break;
-						case 8:
-							statement = connection.prepareStatement(p.mostDistance);
-							break;
-					}
+					int thirdChoice = scanner.nextInt();
+					findTripsSubMenuExtra(thirdChoice);
 	    			break;
 	    		case 5: //BACK
 	    			return;
@@ -260,9 +236,7 @@ public class RailWay {
 	        int station2 = scanner.nextInt();
 	        scanner.nextLine();
 	        statement.setInt(2, station2);
-	        System.out.println("Enter weekday");
-	        String weekday = scanner.nextLine();
-	        statement.setString(3, weekday);
+
 	        ResultSet rs = statement.executeQuery();
 
 	        printResults(rs);
@@ -273,53 +247,67 @@ public class RailWay {
     }
 
     public static void findTripsSubMenuExtra(int selection){
-    	PreparedStatement statement;
-    	switch (selection){
-    		case 1: //FEWEST STOPS
-				statement = connection.prepareStatement(p.singleRoute)
-    			break;
-    		case 2: //RUN THROUGH MOST STATIONS
-    			break;
-    		case 3: //LOWEST PRICE
-    			break;
-    		case 4: //HIGHEST PRICE
-    			break;
-    		case 5: //LEAST TOTAL TIME
-    			break;
-    		case 6: //MOST TOTAL TIME
-    			break;
-    		case 7: //LEAST TOTAL DISTANCE
-    			break;
-    		case 8: //MOST TOTAL DISTANCE
-    			break;
-    		case 9:	//BACK TO findTripsSubMenu
-    			System.out.println("1.) Single Route Trip Search\n2.) Combination Route Trip Search\n" +
-                	"3.) Add Reservation\n4.) More\n5.) back");
-            	int choice = scanner.nextInt();
-            	scanner.nextLine();
-        		findTripSubMenu(choice);
-        		return;
-    		default: //INVALID INPUT
-    			System.out.println("Pick a valid number\n");
-    			System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
-                    "3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
-                    "7.) Least total distance\n8.) Most total distance\n 9.) back");
-                int thirdChoice = scanner.nextInt();
-                findTripsSubMenuExtra(thirdChoice);
-    			return;
-    	}
-		System.out.println("Enter station 1 id");
-		int station1 = scanner.nextInt();
-		scanner.nextLine();
-		statement.setInt(1, station1);
-		System.out.println("Enter station 2 id");
-		int station2 = scanner.nextInt();
-		scanner.nextLine();
-		statement.setInt(2, station2);
-		System.out.println("Enter weekday");
-		String weekday = scanner.nextLine();
-		statement.setString(3, weekday);
-		ResultSet rs = statement.executeQuery();
+    	try {
+			PreparedStatement statement;
+			switch (selection) {
+				case 1: //FEWEST STOPS
+					statement = connection.prepareStatement(p.fewestStops);
+					break;
+				case 2: //RUN THROUGH MOST STATIONS
+					statement = connection.prepareStatement(p.mostStations);
+					break;
+				case 3: //LOWEST PRICE
+					statement = connection.prepareStatement(p.lowestPrice);
+					break;
+				case 4: //HIGHEST PRICE
+					statement = connection.prepareStatement(p.highestPrice);
+					break;
+				case 5: //LEAST TOTAL TIME
+					statement = connection.prepareStatement(p.leastTime);
+					break;
+				case 6: //MOST TOTAL TIME
+					statement = connection.prepareStatement(p.mostTime);
+					break;
+				case 7: //LEAST TOTAL DISTANCE
+					statement = connection.prepareStatement(p.leastDistance);
+					break;
+				case 8: //MOST TOTAL DISTANCE
+					statement = connection.prepareStatement(p.mostDistance);
+					break;
+				case 9:    //BACK TO findTripsSubMenu
+					System.out.println("1.) Single Route Trip Search\n2.) Combination Route Trip Search\n" +
+							"3.) Add Reservation\n4.) More\n5.) back");
+					int choice = scanner.nextInt();
+					scanner.nextLine();
+					findTripSubMenu(choice);
+					return;
+				default: //INVALID INPUT
+					System.out.println("Pick a valid number\n");
+					System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
+							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
+							"7.) Least total distance\n8.) Most total distance\n 9.) back");
+					int thirdChoice = scanner.nextInt();
+					findTripsSubMenuExtra(thirdChoice);
+					return;
+			}
+			System.out.println("Enter station 1 id");
+			int station1 = scanner.nextInt();
+			scanner.nextLine();
+			statement.setInt(1, station1);
+			System.out.println("Enter station 2 id");
+			int station2 = scanner.nextInt();
+			scanner.nextLine();
+			statement.setInt(2, station2);
+			System.out.println("Enter weekday");
+			String weekday = scanner.nextLine();
+			statement.setString(3, weekday);
+			ResultSet rs = statement.executeQuery();
+
+			printResults(rs);
+			return;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
     }
 
     public static void advancedSearchesSubMenu(int selection){
