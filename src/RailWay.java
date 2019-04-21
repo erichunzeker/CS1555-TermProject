@@ -43,7 +43,7 @@ public class RailWay {
                 		break;
                 	case 2:	
                 		System.out.println("1.) Single Route Trip Search\n2.) Combination Route Trip Search\n" +
-                            "3.) Add Reservation\n4.) More\n5.) back");
+                            "3.) Add Reservation\n4.) Back");
                     	secondChoice = scanner.nextInt();
                     	scanner.nextLine();
                 		findTripSubMenu(secondChoice);
@@ -180,11 +180,17 @@ public class RailWay {
 	    	statement = connection.prepareStatement(p.singleRoute);
 	    	switch (selection){
 	    		case 1: //SINGLE ROUTE TRIP SEARCH
-	    			statement = connection.prepareStatement(p.singleRoute);
+	    			/*statement = connection.prepareStatement(p.singleRoute);
 					System.out.println("Enter weekday");
 					weekday = scanner.nextLine();
 					statement.setString(3, weekday);
-	    			break;
+	    			break;*/
+					System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
+							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
+							"7.) Least total distance\n8.) Most total distance\n 9.) back");
+					int thirdChoice = scanner.nextInt();
+					findTripsSubMenuExtra(thirdChoice);
+					break;
 	    		case 2: //COMBINATION ROUTE TRIP SEARCH
 	    			//combination
 	    			break;
@@ -223,14 +229,14 @@ public class RailWay {
 					printResults(rs);
 
 					return;
-	    		case 4: //MORE
+	    		/*case 4: //MORE
 	    			System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
 	                    "3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
 	                    "7.) Least total distance\n8.) Most total distance\n 9.) back");
 					int thirdChoice = scanner.nextInt();
 					findTripsSubMenuExtra(thirdChoice);
-	    			break;
-	    		case 5: //BACK
+	    			break;*/
+	    		case 4: //BACK
 	    			return;
 	    		default: //INVALID INPUT
 	    			System.out.println("Pick a valid number\n");
