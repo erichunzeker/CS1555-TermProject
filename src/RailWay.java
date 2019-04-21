@@ -340,15 +340,17 @@ public class RailWay {
 	                station = scanner.nextInt();
 	                scanner.nextLine();
 	                statement.setInt(1, station);
-	                System.out.println("Enter weekday");
+					statement.setInt(2, station);
+
+					System.out.println("Enter weekday");
 	                weekday = scanner.nextLine();
-	                statement.setString(2, weekday);
+	                statement.setString(3, weekday);
 	                System.out.println("Enter time (xx:xx:xx)");
 	                time = scanner.next();
 	                t = Time.valueOf(time);
-	                statement.setTime(3, t);
+	                statement.setTime(4, t);
 	    			break;
-	    		case 2: //FIND ATHE ROUTES THAT TRAVEL MORE THAN ONE RAIL LINE
+	    		case 2: //FIND ALL THE ROUTES THAT TRAVEL MORE THAN ONE RAIL LINE
 	    			statement = connection.prepareStatement(p.moreThanOneRail);
 	    			break;
 	    		case 3: //FIND ROTES THAT PASS THROUGH THE SAME STATIONS BUT DON'T HAVE THE SAME STOPS
@@ -357,7 +359,11 @@ public class RailWay {
 	                route = scanner.nextInt();
 	                scanner.nextLine();
 	                statement.setInt(1, route);
-	    			break;
+					statement.setInt(2, route);
+
+					statement.setInt(3, route);
+
+					break;
 	    		case 4: //FIND ANY STATIONS THROUGH WHICH ALL TRANS PASS THROUGH
 	    			statement = connection.prepareStatement(p.allTrainsPass);
 	    			break;

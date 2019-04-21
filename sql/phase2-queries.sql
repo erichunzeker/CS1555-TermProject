@@ -53,7 +53,7 @@ SELECT *
 WITH RECURSIVE sortroute(route_id, stops_at_a, stops_at_b, stop_id, station_a_id, station_b_id) AS (
     SELECT route_id, stops_at_a, stops_at_b, stop.stop_id AS stop_id, station_a_id, station_b_id
     FROM route_stop, stop
-    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 211) AND route_id = 211
+    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = 1) AND route_id = 1
   UNION ALL
     SELECT rs.route_id, rs.stops_at_a, rs.stops_at_b, s.stop_id, s.station_a_id, s.station_b_id
     FROM sortroute sr, route_stop rs, stop s
@@ -373,13 +373,13 @@ SELECT Route_ID
 SELECT route_id
   FROM (SELECT route_id, count(route_id) AS Count, count(CASE WHEN stops_at_b THEN 1 END) AS stopCount FROM route_stop
     WHERE route_id NOT IN ( SELECT route_id FROM (
-      (SELECT route_id, stop_id FROM (SELECT stop_id FROM route_stop WHERE route_id = 1 ) AS stops CROSS JOIN
+      (SELECT route_id, stop_id FROM (SELECT stop_id FROM route_stop WHERE route_id = 5 ) AS stops CROSS JOIN
         (SELECT DISTINCT route_id FROM route_stop) AS routes)
       EXCEPT
         (SELECT route_id , stop_id FROM route_stop) ) AS existing )
       GROUP BY route_id) AS temp
-  WHERE temp.count = (SELECT COUNT(*) FROM route_stop where route_id = 1)
-  AND temp.stopCount <> (SELECT COUNT(CASE WHEN stops_at_b THEN 1 END) FROM route_stop where route_id = 1);
+  WHERE temp.count = (SELECT COUNT(*) FROM route_stop where route_id = 5)
+  AND temp.stopCount <> (SELECT COUNT(CASE WHEN stops_at_b THEN 1 END) FROM route_stop where route_id = 5);
 
 -- 1.3.4. Find any stations through which all trains pass through: Find any stations that all the trains (that are in the system) pass at any time during an entire week.
 
