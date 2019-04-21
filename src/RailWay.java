@@ -177,7 +177,7 @@ public class RailWay {
 	    	PreparedStatement statement;
 	    	String weekday;
 	    	//NEXT LINE NOT NEEDED
-	    	statement = connection.prepareStatement(p.singleRoute);
+	    	//statement = connection.prepareStatement(p.singleRoute);
 	    	switch (selection){
 	    		case 1: //SINGLE ROUTE TRIP SEARCH
 	    			/*statement = connection.prepareStatement(p.singleRoute);
@@ -187,10 +187,11 @@ public class RailWay {
 	    			break;*/
 					System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
 							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
-							"7.) Least total distance\n8.) Most total distance\n 9.) back");
+							"7.) Least total distance\n8.) Most total distance\n9.) back");
 					int thirdChoice = scanner.nextInt();
+					scanner.nextLine();
 					findTripsSubMenuExtra(thirdChoice);
-					break;
+					return;
 	    		case 2: //COMBINATION ROUTE TRIP SEARCH
 	    			//combination
 	    			break;
@@ -212,21 +213,10 @@ public class RailWay {
 					statement.setInt(3, route_id);
 
 					ResultSet rs = statement.executeQuery();
-					SQLWarning warning = rs.getWarnings();
-					if (warning != null)
-					{
-						System.out.println("\n---Warning---\n");
-						while (warning != null)
-						{
-							System.out.println("Message: " + warning.getMessage());
-									System.out.println("SQLState: " + warning.getSQLState());
-											System.out.print("Vendor error code: ");
-													System.out.println(warning.getErrorCode());
-							System.out.println();
-									warning = warning.getNextWarning();
-						}
-					}
-					printResults(rs);
+					if (!rs.next())
+						System.out.println("Train is full or non existent");
+					else
+						printResults(rs);
 
 					return;
 	    		/*case 4: //MORE
@@ -247,18 +237,18 @@ public class RailWay {
 	        		findTripSubMenu(choice);
 	        		return;
 	    	}
-	    	System.out.println("Enter station 1 id");
-	        int station1 = scanner.nextInt();
-	        scanner.nextLine();
-	        statement.setInt(1, station1);
-	        System.out.println("Enter station 2 id");
-	        int station2 = scanner.nextInt();
-	        scanner.nextLine();
-	        statement.setInt(2, station2);
-
-	        ResultSet rs = statement.executeQuery();
-
-	        printResults(rs);
+//	    	System.out.println("Enter station 1 id");
+//	        int station1 = scanner.nextInt();
+//	        scanner.nextLine();
+//	        statement.setInt(1, station1);
+//	        System.out.println("Enter station 2 id");
+//	        int station2 = scanner.nextInt();
+//	        scanner.nextLine();
+//	        statement.setInt(2, station2);
+//
+//	        ResultSet rs = statement.executeQuery();
+//
+//	        printResults(rs);
 	        return;
 	    } catch (SQLException e) {
             e.printStackTrace();
@@ -542,17 +532,16 @@ public class RailWay {
 
     public static void printResults(ResultSet rs) {
         try {
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
-
-            while (rs.next()) {
-                for (int i = 1; i <= columnsNumber; i++) {
-                    if (i > 1) System.out.print("  ");
-                    String columnValue = rs.getString(i);
-                    System.out.print(columnValue);
-                }
-                System.out.println("");
-            }
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int i = 1; i <= columnsNumber; i++) {
+					if (i > 1) System.out.print(",  ");
+					String columnValue = rs.getString(i);
+					System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
+				}
+				System.out.println("");
+			}
         } catch(SQLException e) {
             e.printStackTrace();
         }
