@@ -213,10 +213,8 @@ public class RailWay {
 					statement.setInt(3, route_id);
 
 					ResultSet rs = statement.executeQuery();
-					if (!rs.next())
-						System.out.println("Train is full or non existent");
-					else
-						printResults(rs);
+
+					printResults(rs);
 
 					return;
 	    		/*case 4: //MORE
@@ -534,13 +532,19 @@ public class RailWay {
         try {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
-			while (rs.next()) {
-				for (int i = 1; i <= columnsNumber; i++) {
-					if (i > 1) System.out.print(",  ");
-					String columnValue = rs.getString(i);
-					System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
-				}
-				System.out.println("");
+
+			if (!rs.next())
+				System.out.println("Train is full or route is non existent");
+
+			else {
+				do {
+					for (int i = 1; i <= columnsNumber; i++) {
+						if (i > 1) System.out.print(",  ");
+						String columnValue = rs.getString(i);
+						System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
+					}
+					System.out.println("");
+				} while (rs.next());
 			}
         } catch(SQLException e) {
             e.printStackTrace();
