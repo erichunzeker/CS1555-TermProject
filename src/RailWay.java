@@ -16,9 +16,9 @@ public class RailWay {
 
     public static void main (String args[]) {
         System.out.println("Welcome to the SEPTA command line tool");
-        final String url = "jdbc:postgresql://localhost:5432/emh128?currentSchema=railproject";
-	    final String user = "emh128";
-	    final String password = "cs1555";
+        final String url = "jdbc:postgresql://localhost:5432/bjc76";
+	    final String user = "bjc76";
+	    final String password = "password";
         scanner = new Scanner(System.in);
         p = new ParameterizedQueries();
         PreparedStatement statement;
@@ -96,7 +96,7 @@ public class RailWay {
 	                System.out.println("Enter passenger ID to edit: ");
 	                pID = scanner.nextInt();
 	                scanner.nextLine();
-	                statement.setInt(1, pID);
+	                statement.setInt(10, pID);
 	                updateOrAddCustomer(statement);
 	    			break;
 	    		case 3: //VIEW CUSTOMER
@@ -198,7 +198,6 @@ public class RailWay {
 					System.out.println("Enter time (xx:xx:xx)");
 					String time = scanner.nextLine();
 					Time t = Time.valueOf(time);
-					System.out.println(t);
 					statement.setTime(2, t);
 
 					System.out.println("Enter route id");
@@ -207,6 +206,20 @@ public class RailWay {
 					statement.setInt(3, route_id);
 
 					ResultSet rs = statement.executeQuery();
+					SQLWarning warning = rs.getWarnings();
+					if (warning != null)
+					{
+						System.out.println("\n---Warning---\n");
+						while (warning != null)
+						{
+							System.out.println("Message: " + warning.getMessage());
+									System.out.println("SQLState: " + warning.getSQLState());
+											System.out.print("Vendor error code: ");
+													System.out.println(warning.getErrorCode());
+							System.out.println();
+									warning = warning.getNextWarning();
+						}
+					}
 					printResults(rs);
 
 					return;

@@ -311,7 +311,8 @@ public class ParameterizedQueries {
 
 
         addReservation = "UPDATE schedule SET seats_taken = seats_taken + 1\n" +
-                "\tWHERE weekday = ? AND runtime = ? AND Route_ID = ?;";
+                "\tWHERE weekday = ? AND runtime = ? AND Route_ID = ?" +
+                "RETURNING seats_taken;";
 
         //advanced searches
 
