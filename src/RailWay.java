@@ -532,18 +532,33 @@ public class RailWay {
         try {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
+			//better to handle pagination in java bc you dont have to re run query
+			int count = 0;
 
 			if (!rs.next())
 				System.out.println("Train is full or route is non existent");
 
 			else {
 				do {
+
 					for (int i = 1; i <= columnsNumber; i++) {
 						if (i > 1) System.out.print(",  ");
 						String columnValue = rs.getString(i);
 						System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
 					}
 					System.out.println("");
+
+					count++;
+
+					if(count % 10 == 0) {
+						System.out.println("1.) show more\n2.) back");
+						int c = scanner.nextInt();
+						scanner.nextLine();
+						if(c == 2)
+							break;
+					}
+
+
 				} while (rs.next());
 			}
         } catch(SQLException e) {
