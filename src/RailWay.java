@@ -541,7 +541,7 @@ public class RailWay {
 			//better to handle pagination in java bc you dont have to re run query
 			int count = 0;
 			if (!rs.next())
-				System.out.println("Train is full or route is non existent");
+				System.out.println("No results - either route doesn't exist or train is full. check availability");
 
 			else {
 				do {
