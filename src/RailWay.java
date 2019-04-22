@@ -185,7 +185,7 @@ public class RailWay {
 					weekday = scanner.nextLine();
 					statement.setString(3, weekday);
 	    			break;*/
-					System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
+					System.out.println("0.) No sort\n1.) Fewest stops\n2.) Run through most stations\n" +
 							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
 							"7.) Least total distance\n8.) Most total distance\n9.) back");
 					int thirdChoice = scanner.nextInt();
@@ -257,6 +257,9 @@ public class RailWay {
     	try {
 			PreparedStatement statement;
 			switch (selection) {
+				case 0: //single route
+					statement = connection.prepareStatement(p.singleRoute);
+					break;
 				case 1: //FEWEST STOPS
 					statement = connection.prepareStatement(p.fewestStops);
 					break;
@@ -290,7 +293,7 @@ public class RailWay {
 					return;
 				default: //INVALID INPUT
 					System.out.println("Pick a valid number\n");
-					System.out.println("1.) Fewest stops\n2.) Run through most stations\n" +
+					System.out.println("0.) No sort\n1.) Fewest stops\n2.) Run through most stations\n" +
 							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
 							"7.) Least total distance\n8.) Most total distance\n 9.) back");
 					int thirdChoice = scanner.nextInt();

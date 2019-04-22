@@ -53,7 +53,8 @@ public class ParameterizedQueries {
                 "      ON schedule.Train_ID = train.train_id\n" +
                 "    WHERE A.weekday = ? AND seats_taken < seats;";
 
-        //begin aggregate functions
+        // begin aggregate functions
+        // might have to duplicate all aggregate functions for 1.2.2
 
         fewestStops = "SELECT A.route_id, count(Stop_ID) as stop_count, schedule.runtime\n" +
                 "  FROM\n" +
