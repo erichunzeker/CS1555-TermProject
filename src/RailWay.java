@@ -639,6 +639,9 @@ public class RailWay {
 	        	stopsBeforeB.put(route, temp);
 	        }
 	        System.out.println(stopsBeforeB);
+	        for(List<Integer> list: stopsBeforeB.values()){
+	        	System.out.println(list);
+	        }
 	        //System.out.println(stops);
 
 	        switch (selection){
