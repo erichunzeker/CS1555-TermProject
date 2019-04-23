@@ -607,6 +607,13 @@ public class RailWay {
 	            stopsAfterA.put(route, temp);
 	        }
 	        System.out.println(stopsAfterA);
+	        Set<Integer> stopsA = new HashSet<Integer>();
+	        for(List<Integer> list: stopsAfterA.values()){
+	        	for(Integer val: list){
+	        		stopsA.add(val);
+	        	}
+	        }
+	        System.out.println(stopsA);
 
 	        statement = connection.prepareStatement(p.combinationStop3);
 	        statement.setInt(1, station2);
@@ -646,6 +653,10 @@ public class RailWay {
 	        	}
 	        }
 	        System.out.println(stopsB);
+
+	        System.out.println("THINGS ONLY IN BOTH");
+	        stopsA.retainAll(stopsB);
+	        System.out.println(stopsA);
 	        //System.out.println(stops);
 
 	        switch (selection){
