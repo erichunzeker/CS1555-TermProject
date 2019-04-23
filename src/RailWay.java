@@ -314,7 +314,7 @@ public class RailWay {
 							}
 						}
 					}
-					System.out.pritln(values.keySet());
+					System.out.println(values.keySet());
 					break;
 				case 1: //FEWEST STOPS
 					//statement = connection.prepareStatement(p.fewestStops);
