@@ -309,7 +309,6 @@ public class RailWay {
 						rs = statement.executeQuery();
 						while(rs.next()){
 							int temp = rs.getInt("stops");
-							System.out.println(temp);
 							if(temp != 0){
 								values.put(route, new Double(temp));
 							}
@@ -359,7 +358,6 @@ public class RailWay {
 						while(rs.next()){
 							distance = new Double(rs.getInt("distance"));
 						}
-						System.out.println(distance);
 						if(distance != 0.0){
 							statement = connection.prepareStatement(p.pricePerMile);
 							statement.setInt(1, route);
