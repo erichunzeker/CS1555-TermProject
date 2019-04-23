@@ -313,32 +313,7 @@ public class RailWay {
 					}
 					//SORT THIS BY VALUE ASCENDING
 
-					List<Integer> mapKeys = new ArrayList<>(values.keySet());
-				    List<Double> mapValues = new ArrayList<>(values.values());
-				    Collections.sort(mapValues);
-				    Collections.sort(mapKeys);
-					LinkedHashMap<Integer, Double> sortedMap =
-				        new LinkedHashMap<>();
-
-				    Iterator<Double> valueIt = mapValues.iterator();
-				    while (valueIt.hasNext()) {
-				        Double val = valueIt.next();
-				        Iterator<Integer> keyIt = mapKeys.iterator();
-
-				        while (keyIt.hasNext()) {
-				            Integer key = keyIt.next();
-				            Double comp1 = values.get(key);
-				            Double comp2 = val;
-
-				            if (comp1.equals(comp2)) {
-				                keyIt.remove();
-				                sortedMap.put(key, val);
-				                break;
-				            }
-				        }
-				    }		 
-				    System.out.println("map after sorting by values: " + sortedMap);
-					System.out.println(values);
+					System.out.println(sortHashMap(values, False));
 
 					break;
 				case 2: //RUN THROUGH MOST STATIONS
@@ -361,7 +336,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(values);
+					System.out.println(sortHashMap(values, True));
 
 					//statement = connection.prepareStatement(p.mostStations);
 					break;
@@ -392,7 +367,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(values);
+					System.out.println(sortHashMap(values, False));
 
 					//statement = connection.prepareStatement(p.lowestPrice);
 					break;
@@ -423,7 +398,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(values);
+					System.out.println(sortHashMap(values, True));
 					
 					//statement = connection.prepareStatement(p.highestPrice);
 					break;
@@ -454,7 +429,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(values);
+					System.out.println(sortHashMap(values, False));
 					
 					//statement = connection.prepareStatement(p.leastTime);
 					break;
@@ -485,7 +460,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(values);
+					System.out.println(sortHashMap(values, True));
 
 					//statement = connection.prepareStatement(p.mostTime);
 					break;
@@ -509,7 +484,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(values);
+					System.out.println(sortHashMap(values, False));
 					//statement = connection.prepareStatement(p.leastDistance);
 					break;
 				case 8: //MOST TOTAL DISTANCE
@@ -532,7 +507,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(values);
+					System.out.println(sortHashMap(values, True));
 					//statement = connection.prepareStatement(p.mostDistance);
 					break;
 				case 9:    //BACK TO findTripsSubMenu
@@ -595,6 +570,38 @@ public class RailWay {
 	    } catch (SQLException e) {
 			e.printStackTrace();
 		}
+    }
+
+    public static LinkedHashMap<Integer, Double> sortHashMap(HashMap<Integer, Double> values, boolean reverse){
+    	List<Integer> mapKeys = new ArrayList<>(values.keySet());
+	    List<Double> mapValues = new ArrayList<>(values.values());
+	    Collections.sort(mapValues);
+	    Collections.sort(mapKeys);
+		LinkedHashMap<Integer, Double> sortedMap = new LinkedHashMap<>();
+
+	    Iterator<Double> valueIt = mapValues.iterator();
+	    while (valueIt.hasNext()) {
+	        Double val = valueIt.next();
+	        Iterator<Integer> keyIt = mapKeys.iterator();
+
+	        while (keyIt.hasNext()) {
+	            Integer key = keyIt.next();
+	            if(reverse){
+		            Double comp2 = values.get(key);
+		            Double comp1 = val;
+		        }else{
+		        	Double comp1 = values.get(key);
+		            Double comp2 = val;
+		        }
+
+	            if (comp1.equals(comp2)) {
+	                keyIt.remove();
+	                sortedMap.put(key, val);
+	                break;
+	            }
+	        }
+	    }
+	    return sortedMap;
     }
 
     public static void advancedSearchesSubMenu(int selection){
