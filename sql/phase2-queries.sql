@@ -60,7 +60,34 @@ SELECT * FROM sortroute;
 -- 1.2.2 Combination Route Trip Search
 -- implement in application layer
 
-
+SELECT *
+  FROM (SELECT R.route_id, weekday, seats_taken, seats, Station_A_ID, Station_B_ID, RS.Stops_At_A, RS.Stops_At_B
+    FROM schedule S
+    INNER JOIN train T
+    ON S.Train_ID = T.train_id
+    INNER JOIN route_stop RS
+    ON S.Route_ID = RS.Route_ID
+    INNER JOIN stop
+    ON RS.Stop_ID = stop.Stop_ID
+    INNER JOIN route R
+    ON RS.Route_ID = R.route_id
+    WHERE
+      Station_A_ID = 11 AND Stops_At_A = TRUE
+      UNION ALL
+    SELECT R.route_id, weekday, seats_taken, seats, Station_A_ID, Station_B_ID, RS.Stops_At_A, RS.Stops_At_B
+      FROM schedule S
+      INNER JOIN train T
+      ON S.Train_ID = T.train_id
+      INNER JOIN route_stop RS
+      ON S.Route_ID = RS.Route_ID
+      INNER JOIN stop
+      ON RS.Stop_ID = stop.Stop_ID
+      INNER JOIN route R
+      ON RS.Route_ID = R.route_id
+      WHERE
+        Station_B_ID = 30 AND Stops_At_B = TRUE
+    ) as A
+    WHERE A.weekday = 'Sun' AND seats_taken < seats;
 
 -- 1.2.3. Note that all trip searches must account for available seats, and only
 -- show results for trains that have available seats.
