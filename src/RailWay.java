@@ -4,6 +4,8 @@ import java.util.*;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.charset.*;
+import java.util.Map.Entry;
+
 
 public class RailWay {
 
@@ -282,7 +284,7 @@ public class RailWay {
 			while(rs.next()){
 	            routes.add(rs.getInt("route_id"));
 	        }
-			Map<Integer, Double> values = new HashMap<>();
+			HashMap<Integer, Double> values = new HashMap<>();
 
 
 			switch (selection) {
@@ -310,8 +312,32 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					//sort
-					//print function
+
+					List<Integer> mapKeys = new ArrayList<>(values.keySet());
+				    List<Double> mapValues = new ArrayList<>(values.values());
+				    Collections.sort(mapValues);
+				    Collections.sort(mapKeys);
+					LinkedHashMap<Integer, Double> sortedMap =
+				        new LinkedHashMap<>();
+
+				    Iterator<Double> valueIt = mapValues.iterator();
+				    while (valueIt.hasNext()) {
+				        Double val = valueIt.next();
+				        Iterator<Integer> keyIt = mapKeys.iterator();
+
+				        while (keyIt.hasNext()) {
+				            Integer key = keyIt.next();
+				            Double comp1 = values.get(key);
+				            Double comp2 = val;
+
+				            if (comp1.equals(comp2)) {
+				                keyIt.remove();
+				                sortedMap.put(key, val);
+				                break;
+				            }
+				        }
+				    }		 
+				    System.out.println("map after sorting by values: " + sortedMap);
 					System.out.println(values);
 
 					break;
