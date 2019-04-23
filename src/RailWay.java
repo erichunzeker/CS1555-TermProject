@@ -614,7 +614,7 @@ public class RailWay {
 	            	departure.put(route, rs.getTime("runtime"));
 	            }
 	        }
-	        System.out.println(stopsAfterA);
+	        //System.out.println(stopsAfterA);
 	        Set<Integer> stopsA = new HashSet<Integer>();
 	        for(List<Integer> list: stopsAfterA.values()){
 	        	for(Integer val: list){
@@ -660,7 +660,7 @@ public class RailWay {
 	            	departure.put(route, rs.getTime("runtime"));
 	            }
 	        }
-	        System.out.println(stopsBeforeB);
+	        //System.out.println(stopsBeforeB);
 	        Set<Integer> stopsB = new HashSet<Integer>();
 	        for(List<Integer> list: stopsBeforeB.values()){
 	        	for(Integer val: list){
@@ -669,9 +669,9 @@ public class RailWay {
 	        }
 	        //System.out.println(stopsB);
 
-	        System.out.println("THINGS ONLY IN BOTH");
-	        stopsA.retainAll(stopsB);
-	        System.out.println(stopsA);
+	        //System.out.println("THINGS ONLY IN BOTH");
+	        //stopsA.retainAll(stopsB);
+	        //System.out.println(stopsA);
 	        //System.out.println(stops);
 	        ArrayList<CombinationLeg> combo = new ArrayList<CombinationLeg>();
 	        for(Integer stop: stopsA){
@@ -685,10 +685,12 @@ public class RailWay {
 		        	}
 		        }
 		   	}
+		   	/**
 		   	for(CombinationLeg leg: combo){
 		   		System.out.println(leg);
 		   	}
 		   	System.out.println(combo.size());
+		   	**/
 
 		   	HashMap<String, Double> values = new HashMap<>();
 
@@ -697,22 +699,39 @@ public class RailWay {
 					printNoSortCombinationResults(combo);
 	        		break;
 	        	case 1: //FEWEST STOPS
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getStops());
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, false), "stops");
 	        		break;
 	        	case 2: //RUN THROUGH MOST STATIONS
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getStations());
+	        		}
 	        		break;
 	        	case 3: //LOWEST PRICE
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getPrice(weekday));
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, true), "stations");
 	        		break;
 	        	case 4: //HIGHEST PRICE
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getPrice(weekday));
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, true), "price");
 	        		break;
 	        	case 5: //LEAST TOTAL TIME
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getTime(weekday));
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, false), "time");
 					break;
 	        	case 6: //MOST TOTAL TIME
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getTime(weekday));
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, true), "time");
-
 					break;
 	        	case 7: //LEAST TOTAL DISTANCE
 	        		for(CombinationLeg leg: combo){
