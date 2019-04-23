@@ -342,8 +342,23 @@ public class RailWay {
 	            routes.add(rs.getInt("route_id"));
 	        }
 	        System.out.println(routes);
+
+	        ArrayList<Integer> stops = new ArrayList<Integer>();
 	        for(int route: routes) {
-	            System.out.println(route);
+	            statement = connection.prepareStatement(p.combinationStop2);
+	            statement.setInt(1, route);
+	            statement.setInt(2, route);
+	            statement.setInt(3, route);
+	            statement.setInt(4, route);
+	            statement.setInt(5, station1);
+	            rs = statement.executeQuery();
+	            while(rs.next()){
+	            	stops.add(rs.getInt("station_b_id"));
+	            }
+	        }
+	        System.out.println(stops);
+	        for(int stop: stops){
+	        	System.out.println(stop);
 	        }
 	    } catch (SQLException e) {
 			e.printStackTrace();
