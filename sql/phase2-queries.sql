@@ -157,7 +157,7 @@ SELECT A.route_id, count(Stop_ID) as stop_count, schedule.weekday, schedule.runt
   ORDER BY stop_count DESC;
 
 -- 1.2.4.3. Lowest price
-SELECT A.Route_ID, MIN(A.pricepermile * A.distance)
+SELECT A.Route_ID, MIN(A.pricepermile * A.distance) as price
   FROM (SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats
     FROM schedule S
     INNER JOIN train T
@@ -169,7 +169,7 @@ SELECT A.Route_ID, MIN(A.pricepermile * A.distance)
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_A_ID = 11 AND Stops_At_A = TRUE
+      Station_A_ID = 2 AND Stops_At_A = TRUE
       INTERSECT
     SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats
       FROM schedule S
@@ -182,10 +182,11 @@ SELECT A.Route_ID, MIN(A.pricepermile * A.distance)
       INNER JOIN route R
       ON RS.Route_ID = R.route_id
       WHERE
-        Station_B_ID = 30 AND Stops_At_B = TRUE
+        Station_B_ID = 4 AND Stops_At_B = TRUE
     ) as A
-    WHERE weekday = 'Sun' AND seats_taken < seats
-    GROUP BY A.route_id;
+    WHERE weekday = 'Wed' AND seats_taken < seats
+    GROUP BY A.route_id
+    ORDER BY price ASC;
 
 
 -- 1.2.4.4. Highest price
