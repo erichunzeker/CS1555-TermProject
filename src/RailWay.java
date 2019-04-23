@@ -311,6 +311,7 @@ public class RailWay {
 							values.put(route, new Double(rs.getInt("stops")));
 						}
 					}
+					//SORT THIS BY VALUE ASCENDING
 					System.out.println(values);
 
 					break;
@@ -330,20 +331,125 @@ public class RailWay {
 							values.put(route, new Double(rs.getInt("stations")));
 						}
 					}
+					//SORT THIS BY VALUE DESCENDING
 					System.out.println(values);
 
 					//statement = connection.prepareStatement(p.mostStations);
 					break;
 				case 3: //LOWEST PRICE
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.distance);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(8, station2);
+						rs = statement.executeQuery();
+						Double distance = 0.0;
+						while(rs.next()){
+							distance = new Double(rs.getInt("distance"));
+						}
+						statement = connection.prepareStatement(p.pricePerMile);
+						statement.setInt(1, route);
+						statement.setString(2, weekday);
+						rs = statement.executeQuery();
+						while(rs.next()){
+							values.put(route, distance * rs.getDouble("pricepermile"));
+						}
+					}
+					//SORT THIS BY VALUE ASCENDING
+					System.out.println(values);
+
 					//statement = connection.prepareStatement(p.lowestPrice);
 					break;
 				case 4: //HIGHEST PRICE
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.distance);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(8, station2);
+						rs = statement.executeQuery();
+						Double distance = 0.0;
+						while(rs.next()){
+							distance = new Double(rs.getInt("distance"));
+						}
+						statement = connection.prepareStatement(p.pricePerMile);
+						statement.setInt(1, route);
+						statement.setString(2, weekday);
+						rs = statement.executeQuery();
+						while(rs.next()){
+							values.put(route, distance * rs.getDouble("pricepermile"));
+						}
+					}
+					//SORT THIS BY VALUE DESCENDING
+					System.out.println(values);
+					
 					//statement = connection.prepareStatement(p.highestPrice);
 					break;
 				case 5: //LEAST TOTAL TIME
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.distance);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(8, station2);
+						rs = statement.executeQuery();
+						Double distance = 0.0;
+						while(rs.next()){
+							distance = new Double(rs.getInt("distance"));
+						}
+						statement = connection.prepareStatement(p.maxSpeed);
+						statement.setInt(1, route);
+						statement.setString(2, weekday);
+						rs = statement.executeQuery();
+						while(rs.next()){
+							values.put(route, distance / new Double(rs.getInt("SPEED")));
+						}
+					}
+					//SORT THIS BY VALUE ASCENDING
+					System.out.println(values);
+					
 					//statement = connection.prepareStatement(p.leastTime);
 					break;
 				case 6: //MOST TOTAL TIME
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.distance);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(8, station2);
+						rs = statement.executeQuery();
+						Double distance = 0.0;
+						while(rs.next()){
+							distance = new Double(rs.getInt("distance"));
+						}
+						statement = connection.prepareStatement(p.maxSpeed);
+						statement.setInt(1, route);
+						statement.setString(2, weekday);
+						rs = statement.executeQuery();
+						while(rs.next()){
+							values.put(route, distance / new Double(rs.getInt("SPEED")));
+						}
+					}
+					//SORT THIS BY VALUE DESCENDING
+					System.out.println(values);
+
 					//statement = connection.prepareStatement(p.mostTime);
 					break;
 				case 7: //LEAST TOTAL DISTANCE
@@ -362,6 +468,7 @@ public class RailWay {
 							values.put(route, new Double(rs.getInt("distance")));
 						}
 					}
+					//SORT THIS BY VALUE ASCENDING
 					System.out.println(values);
 					//statement = connection.prepareStatement(p.leastDistance);
 					break;
@@ -381,6 +488,7 @@ public class RailWay {
 							values.put(route, new Double(rs.getInt("distance")));
 						}
 					}
+					//SORT THIS BY VALUE DESCENDING
 					System.out.println(values);
 					//statement = connection.prepareStatement(p.mostDistance);
 					break;
