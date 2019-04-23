@@ -639,9 +639,13 @@ public class RailWay {
 	        	stopsBeforeB.put(route, temp);
 	        }
 	        System.out.println(stopsBeforeB);
+	        Set<Integer> stopsB = new HashSet<Integer>();
 	        for(List<Integer> list: stopsBeforeB.values()){
-	        	System.out.println(list);
+	        	for(Integer val: list){
+	        		stopsB.add(val);
+	        	}
 	        }
+	        System.out.println(stopsB);
 	        //System.out.println(stops);
 
 	        switch (selection){
