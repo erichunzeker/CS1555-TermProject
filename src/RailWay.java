@@ -577,6 +577,12 @@ public class RailWay {
 	    List<Double> mapValues = new ArrayList<>(values.values());
 	    Collections.sort(mapValues);
 	    Collections.sort(mapKeys);
+
+	    if(reverse) {
+			Collections.reverse(mapValues);
+			Collections.reverse(mapKeys);
+	    }
+
 		LinkedHashMap<Integer, Double> sortedMap = new LinkedHashMap<>();
 
 	    Iterator<Double> valueIt = mapValues.iterator();
