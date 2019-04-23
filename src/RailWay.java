@@ -307,7 +307,9 @@ public class RailWay {
 						statement.setInt(7, route);
 						statement.setInt(8, station2);
 						rs = statement.executeQuery();
-						values.put(route, new Double(rs.getInt("stops")));
+						while(rs.next()){
+							values.put(route, new Double(rs.getInt("stops")));
+						}
 					}
 					System.out.println(values);
 
@@ -324,7 +326,9 @@ public class RailWay {
 						statement.setInt(7, route);
 						statement.setInt(8, station2);
 						rs = statement.executeQuery();
-						values.put(route, new Double(rs.getInt("stops")));
+						while(rs.next()){
+							values.put(route, new Double(rs.getInt("stations")));
+						}
 					}
 					System.out.println(values);
 
@@ -354,7 +358,9 @@ public class RailWay {
 						statement.setInt(7, route);
 						statement.setInt(8, station2);
 						rs = statement.executeQuery();
-						values.put(route, new Double(rs.getInt("stops")));
+						while(rs.next()){
+							values.put(route, new Double(rs.getInt("distance")));
+						}
 					}
 					System.out.println(values);
 					//statement = connection.prepareStatement(p.leastDistance);
@@ -371,7 +377,9 @@ public class RailWay {
 						statement.setInt(7, route);
 						statement.setInt(8, station2);
 						rs = statement.executeQuery();
-						values.put(route, new Double(rs.getInt("stops")));
+						while(rs.next()){
+							values.put(route, new Double(rs.getInt("distance")));
+						}
 					}
 					System.out.println(values);
 					//statement = connection.prepareStatement(p.mostDistance);
