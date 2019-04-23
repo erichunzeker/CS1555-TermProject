@@ -107,7 +107,7 @@ public class ParameterizedQueries {
                 "  ORDER BY stop_count DESC;";
 
         lowestPrice = "SELECT MIN(A.pricepermile * A.distance)\n" +
-                "  FROM (SELECT R.route_id, pricepermile, distance\n" +
+                "  FROM (SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
                 "    ON S.Train_ID = T.train_id\n" +
@@ -120,7 +120,7 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_A_ID = ? AND Stops_At_A = TRUE\n" +
                 "      INTERSECT\n" +
-                "    SELECT R.route_id, pricepermile, distance\n" +
+                "    SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats\n" +
                 "      FROM schedule S\n" +
                 "      INNER JOIN train T\n" +
                 "      ON S.Train_ID = T.train_id\n" +
@@ -133,14 +133,10 @@ public class ParameterizedQueries {
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n" +
-                "    INNER JOIN schedule\n" +
-                "      ON schedule.Route_ID = A.route_id\n" +
-                "    INNER JOIN train\n" +
-                "      ON schedule.Train_ID = train.train_id\n" +
                 "    WHERE schedule.weekday = ? AND seats_taken < seats;";
 
         highestPrice = "SELECT MAX(A.pricepermile * A.distance)\n" +
-                "  FROM (SELECT R.route_id, pricepermile, distance\n" +
+                "  FROM (SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
                 "    ON S.Train_ID = T.train_id\n" +
@@ -153,7 +149,7 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_A_ID = ? AND Stops_At_A = TRUE\n" +
                 "      INTERSECT\n" +
-                "    SELECT R.route_id, pricepermile, distance\n" +
+                "    SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats\n" +
                 "      FROM schedule S\n" +
                 "      INNER JOIN train T\n" +
                 "      ON S.Train_ID = T.train_id\n" +
@@ -166,14 +162,10 @@ public class ParameterizedQueries {
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n" +
-                "    INNER JOIN schedule\n" +
-                "      ON schedule.Route_ID = A.route_id\n" +
-                "    INNER JOIN train\n" +
-                "      ON schedule.Train_ID = train.train_id\n" +
                 "    WHERE schedule.weekday = ? AND seats_taken < seats;";
 
         leastTime = "SELECT MIN((A.distance * 60)/A.topspeed)\n" +
-                "FROM (SELECT R.route_id, pricepermile, distance, topspeed\n" +
+                "FROM (SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats\n" +
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
                 "  ON S.Train_ID = T.train_id\n" +
@@ -186,7 +178,7 @@ public class ParameterizedQueries {
                 "  WHERE\n" +
                 "    Station_A_ID = ? AND Stops_At_A = TRUE\n" +
                 "    INTERSECT\n" +
-                "  SELECT R.route_id, pricepermile, distance, topspeed\n" +
+                "  SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
                 "    ON S.Train_ID = T.train_id\n" +
@@ -199,14 +191,10 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  INNER JOIN schedule\n" +
-                "    ON schedule.Route_ID = A.route_id\n" +
-                "  INNER JOIN train\n" +
-                "    ON schedule.Train_ID = train.train_id\n" +
-                "    WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "  WHERE schedule.weekday = ? AND seats_taken < seats;";
 
         mostTime = "SELECT MAX((A.distance * 60)/A.topspeed)\n" +
-                "FROM (SELECT R.route_id, pricepermile, distance, topspeed\n" +
+                "FROM (SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats\n" +
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
                 "  ON S.Train_ID = T.train_id\n" +
@@ -219,7 +207,7 @@ public class ParameterizedQueries {
                 "  WHERE\n" +
                 "    Station_A_ID = ? AND Stops_At_A = TRUE\n" +
                 "    INTERSECT\n" +
-                "  SELECT R.route_id, pricepermile, distance, topspeed\n" +
+                "  SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
                 "    ON S.Train_ID = T.train_id\n" +
@@ -232,14 +220,10 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  INNER JOIN schedule\n" +
-                "    ON schedule.Route_ID = A.route_id\n" +
-                "  INNER JOIN train\n" +
-                "    ON schedule.Train_ID = train.train_id\n" +
-                "    WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "  WHERE schedule.weekday = ? AND seats_taken < seats;";
 
         leastDistance = "SELECT MIN(distance)\n" +
-                "FROM (SELECT R.route_id, distance\n" +
+                "FROM (SELECT R.route_id, distance, weekday, seats_taken, seats\n" +
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
                 "  ON S.Train_ID = T.train_id\n" +
@@ -252,7 +236,7 @@ public class ParameterizedQueries {
                 "  WHERE\n" +
                 "    Station_A_ID = ? AND Stops_At_A = TRUE\n" +
                 "    INTERSECT\n" +
-                "  SELECT R.route_id, distance\n" +
+                "  SELECT R.route_id, distance, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
                 "    ON S.Train_ID = T.train_id\n" +
@@ -265,14 +249,10 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  INNER JOIN schedule\n" +
-                "    ON schedule.Route_ID = A.route_id\n" +
-                "  INNER JOIN train\n" +
-                "    ON schedule.Train_ID = train.train_id\n" +
-                "    WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "  WHERE schedule.weekday = ? AND seats_taken < seats;";
 
         mostDistance = "SELECT MAX(distance)\n" +
-                "FROM (SELECT R.route_id, distance\n" +
+                "FROM (SELECT R.route_id, distance, weekday, seats_taken, seats\n" +
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
                 "  ON S.Train_ID = T.train_id\n" +
@@ -285,7 +265,7 @@ public class ParameterizedQueries {
                 "  WHERE\n" +
                 "    Station_A_ID = ? AND Stops_At_A = TRUE\n" +
                 "    INTERSECT\n" +
-                "  SELECT R.route_id, distance\n" +
+                "  SELECT R.route_id, distance, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
                 "    ON S.Train_ID = T.train_id\n" +
@@ -298,11 +278,7 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_A = TRUE\n" +
                 "  ) as A\n" +
-                "  INNER JOIN schedule\n" +
-                "    ON schedule.Route_ID = A.route_id\n" +
-                "  INNER JOIN train\n" +
-                "    ON schedule.Train_ID = train.train_id\n" +
-                "    WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "  WHERE schedule.weekday = ? AND seats_taken < seats;";
 
         //end aggregate functions
 
