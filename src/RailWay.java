@@ -665,7 +665,7 @@ public class RailWay {
 		        	}
 		        }
 		        for(Integer route: routesB){
-		        	if(stopsAfterA.get(route).contains(stop)){
+		        	if(stopsBeforeB.get(route).contains(stop)){
 		        		System.out.println("BeforeB: " + route + " has stop " + stop);
 		        	}
 		        }
