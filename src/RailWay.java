@@ -590,6 +590,7 @@ public class RailWay {
 	        }
 
 	        //System.out.println(routesA);
+	        Map<Integer, Time> departure = new HashMap<>();
 
 	        Map<Integer, List<Integer>> stopsAfterA = new HashMap<>();
 	        for(int route: routesA) {
@@ -605,6 +606,13 @@ public class RailWay {
 	            	temp.add(rs.getInt("station_b_id"));
 	            }
 	            stopsAfterA.put(route, temp);
+	            statement = connection.prepareStatement("SELECT runtime FROM schedule WHERE route_id = ? AND weekday = ?;");
+	            statement.setInt(1, route);
+	            statement.setString(2, weekday);
+	            rs = statement.executeQuery();
+	            while(rs.next()){
+	            	departure.put(route, rs.getTime("runtime"));
+	            }
 	        }
 	        System.out.println(stopsAfterA);
 	        Set<Integer> stopsA = new HashSet<Integer>();
@@ -644,6 +652,13 @@ public class RailWay {
 	        		temp.add(rs.getInt("station_a_id"));
 	        	}
 	        	stopsBeforeB.put(route, temp);
+	        	statement = connection.prepareStatement("SELECT runtime FROM schedule WHERE route_id = ? AND weekday = ?;");
+	            statement.setInt(1, route);
+	            statement.setString(2, weekday);
+	            rs = statement.executeQuery();
+	            while(rs.next()){
+	            	departure.put(route, rs.getTime("runtime"));
+	            }
 	        }
 	        System.out.println(stopsBeforeB);
 	        Set<Integer> stopsB = new HashSet<Integer>();
@@ -663,7 +678,7 @@ public class RailWay {
 		        for(Integer routeA: routesA){
 		        	if(stopsAfterA.get(routeA).contains(stop)){
 		        		for(Integer routeB: routesB){
-				        	if(stopsBeforeB.get(routeB).contains(stop)){
+				        	if(stopsBeforeB.get(routeB).contains(stop) && departure.get(routeA).toString().compareTo(departure.get(routeB).toString()) < 0){
 				        		combo.add(new CombinationLeg(station1, station2, routeA, stop, routeB));
 				        	}
 				        }
