@@ -720,7 +720,9 @@ public class RailWay {
 					printCombinedTripResults(sortCombinedHashMap(values, false), "distance");
 	        		break;
 	        	case 8: //MOST TOTAL DISTANCE
-
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getDistance());
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, true), "distance");
 					break;
 	        	case 9: //BACK TO
