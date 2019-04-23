@@ -316,7 +316,6 @@ public class RailWay {
 							}
 						}
 					}
-					System.out.println(values.keySet());
 					printSingleTripResults(values.keySet());
 					break;
 				case 1: //FEWEST STOPS
