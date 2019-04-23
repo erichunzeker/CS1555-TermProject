@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.nio.file.*;
 import java.nio.charset.*;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class RailWay {
 
@@ -356,8 +358,9 @@ public class RailWay {
 	            	stops.add(rs.getInt("station_b_id"));
 	            }
 	        }
-	        System.out.println(stops);
-	        for(int stop: stops){
+	        Set<Integer> uniqueStops = new HashSet<Integer>(stops);
+	        System.out.println(uniqueStops);
+	        for(int stop: uniqueStops){
 	        	System.out.println(stop);
 	        }
 	    } catch (SQLException e) {
