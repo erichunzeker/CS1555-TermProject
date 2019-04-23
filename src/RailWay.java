@@ -289,7 +289,32 @@ public class RailWay {
 
 			switch (selection) {
 				case 0: //single route
-					printResults(rs);
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.distance);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(8, station2);
+						rs = statement.executeQuery();
+						Double distance = 0.0;
+						while(rs.next()){
+							distance = new Double(rs.getInt("distance"));
+						}
+						if(distance != 0.0){
+							statement = connection.prepareStatement(p.maxSpeed);
+							statement.setInt(1, route);
+							statement.setString(2, weekday);
+							rs = statement.executeQuery();
+							while(rs.next()){
+								values.put(route, distance / new Double(rs.getInt("SPEED")));
+							}
+						}
+					}
+					System.out.pritln(values.keySet());
 					break;
 				case 1: //FEWEST STOPS
 					//statement = connection.prepareStatement(p.fewestStops);
