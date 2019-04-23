@@ -314,6 +314,7 @@ public class RailWay {
 					//SORT THIS BY VALUE ASCENDING
 
 					System.out.println(sortHashMap(values, false));
+					printTripResults(sortHashMap(values, false), "stops");
 
 					break;
 				case 2: //RUN THROUGH MOST STATIONS
@@ -533,7 +534,8 @@ public class RailWay {
 		}
     }
 
-    public static void findCombinationTrips(int station1, int station2, String weekday){
+
+	public static void findCombinationTrips(int station1, int station2, String weekday){
     	try {
 	    	PreparedStatement statement = connection.prepareStatement(p.combinationStop1);
 	    	statement.setInt(1, station1);
@@ -853,4 +855,22 @@ public class RailWay {
             e.printStackTrace();
         }
     }
+
+	private static void printTripResults(LinkedHashMap<Integer, Double> sortedHashMap, String metric) {
+		Iterator it = sortedHashMap.entrySet().iterator();
+		int count = 0;
+
+		while (it.hasNext()) {
+			Entry e = (Entry) it.next();
+			System.out.println("Route_ID: " + e.getKey() + metric + ": " + e.getValue());
+			count++;
+			if(count % 10 == 0) {
+				System.out.println("1.) show more\n2.) back");
+				int c = scanner.nextInt();
+				scanner.nextLine();
+				if(c == 2)
+					break;
+			}
+		}
+	}
 }
