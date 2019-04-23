@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /afs/pitt.edu/home/n/l/nlf4/public/1555_pgsql.env
+
 javac RailWay.java
 
 java -cp postgresql-42.1.3.jre6.jar:. RailWay
