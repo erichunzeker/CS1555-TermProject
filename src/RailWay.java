@@ -311,9 +311,6 @@ public class RailWay {
 					}
 					//SORT THIS BY VALUE ASCENDING
 					//sort
-
-					Map sortedMap = new TreeMap(new ValueComparator(values));
-					sortedMap.putAll(values);
 					//print function
 					System.out.println(values);
 
@@ -822,24 +819,4 @@ public class RailWay {
             e.printStackTrace();
         }
     }
-
-	static class ValueComparator implements Comparator {
-		Map map;
-
-		public ValueComparator(Map map) {
-			this.map = map;
-		}
-
-		public int compare(Object keyA, Object keyB) {
-			Comparable valueA = (Comparable) map.get(keyA);
-			Comparable valueB = (Comparable) map.get(keyB);
-			double c = (Double) valueB - (Double) valueA;
-			if(c == 0)
-				return 0;
-			else if (c > 0)
-				return 1;
-			else
-				return -1;
-		}
-	}
 }
