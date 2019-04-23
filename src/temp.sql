@@ -9,7 +9,7 @@ SELECT R.route_id
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_A_ID = 11 AND Stops_At_A = TRUE AND weekday = 'Sun' AND R.route_id not in 
+      Station_B_ID = ? AND Stops_At_B = TRUE AND weekday = ? AND R.route_id not in 
       	(SELECT R.route_id
 		  FROM schedule S
 		  INNER JOIN train T
@@ -21,7 +21,12 @@ SELECT R.route_id
 		  INNER JOIN route R
 		  ON RS.Route_ID = R.route_id
 		  WHERE
-		      Station_B_ID = 30 AND Stops_At_B = TRUE AND weekday = 'Sun');
+		      Station_A_ID = ? AND Stops_At_A = TRUE AND weekday = ?);
+
+?
+1=destination
+2=4=Weekday
+3=origin
 
 SELECT R.route_id
     FROM schedule S

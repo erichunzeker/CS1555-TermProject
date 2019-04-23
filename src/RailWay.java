@@ -658,17 +658,20 @@ public class RailWay {
 	        stopsA.retainAll(stopsB);
 	        System.out.println(stopsA);
 	        //System.out.println(stops);
+	        ArrayList<CombinationLeg> combo = new ArrayList<CombinationLeg>();
 	        for(Integer stop: stopsA){
-		        for(Integer route: routesA){
-		        	if(stopsAfterA.get(route).contains(stop)){
-		        		System.out.println("AfterA: " + route + " has stop " + stop);
+		        for(Integer routeA: routesA){
+		        	if(stopsAfterA.get(routeA).contains(stop)){
+		        		for(Integer routeB: routesB){
+				        	if(stopsBeforeB.get(routeB).contains(stop)){
+				        		combo.add(new CombinationLeg(station1, station2, routeA, stop, routeB));
+				        	}
+				        }
 		        	}
 		        }
-		        for(Integer route: routesB){
-		        	if(stopsBeforeB.get(route).contains(stop)){
-		        		System.out.println("BeforeB: " + route + " has stop " + stop);
-		        	}
-		        }
+		   	}
+		   	for(CombinationLeg leg: combo){
+		   		System.out.println(leg);
 		   	}
 
 	        switch (selection){
