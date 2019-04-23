@@ -614,7 +614,7 @@ public class RailWay {
 	            	departure.put(route, rs.getTime("runtime"));
 	            }
 	        }
-	        System.out.println(stopsAfterA);
+	        //System.out.println(stopsAfterA);
 	        Set<Integer> stopsA = new HashSet<Integer>();
 	        for(List<Integer> list: stopsAfterA.values()){
 	        	for(Integer val: list){
@@ -660,7 +660,7 @@ public class RailWay {
 	            	departure.put(route, rs.getTime("runtime"));
 	            }
 	        }
-	        System.out.println(stopsBeforeB);
+	        //System.out.println(stopsBeforeB);
 	        Set<Integer> stopsB = new HashSet<Integer>();
 	        for(List<Integer> list: stopsBeforeB.values()){
 	        	for(Integer val: list){
@@ -669,9 +669,9 @@ public class RailWay {
 	        }
 	        //System.out.println(stopsB);
 
-	        System.out.println("THINGS ONLY IN BOTH");
-	        stopsA.retainAll(stopsB);
-	        System.out.println(stopsA);
+	        //System.out.println("THINGS ONLY IN BOTH");
+	        //stopsA.retainAll(stopsB);
+	        //System.out.println(stopsA);
 	        //System.out.println(stops);
 	        ArrayList<CombinationLeg> combo = new ArrayList<CombinationLeg>();
 	        for(Integer stop: stopsA){
@@ -685,10 +685,12 @@ public class RailWay {
 		        	}
 		        }
 		   	}
+		   	/**
 		   	for(CombinationLeg leg: combo){
 		   		System.out.println(leg);
 		   	}
 		   	System.out.println(combo.size());
+		   	**/
 
 		   	HashMap<String, Double> values = new HashMap<>();
 
