@@ -320,6 +320,7 @@ public class RailWay {
 						Map.Entry pair = (Map.Entry)it.next();
 
 						valSort[count] = (Double) pair.getValue();
+						it.remove();
 						count++;
 					}
 
