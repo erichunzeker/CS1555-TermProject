@@ -106,7 +106,7 @@ public class ParameterizedQueries {
                 "  GROUP BY A.route_id, schedule.runtime\n" +
                 "  ORDER BY stop_count DESC;";
 
-        lowestPrice = "SELECT MIN(A.pricepermile * A.distance)\n" +
+        lowestPrice = "SELECT A.Route_ID, MIN(A.pricepermile * A.distance)\n" +
                 "  FROM (SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
@@ -133,9 +133,10 @@ public class ParameterizedQueries {
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n" +
-                "    WHERE weekday = ? AND seats_taken < seats;";
+                "    WHERE weekday = ? AND seats_taken < seats\n" +
+                "    GROUP BY A.route_id;";
 
-        highestPrice = "SELECT MAX(A.pricepermile * A.distance)\n" +
+        highestPrice = "SELECT A.Route_ID, MAX(A.pricepermile * A.distance)\n" +
                 "  FROM (SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
@@ -162,9 +163,10 @@ public class ParameterizedQueries {
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n" +
-                "    WHERE weekday = ? AND seats_taken < seats;";
+                "    WHERE weekday = ? AND seats_taken < seats\n" +
+                "    GROUP BY A.route_id;";
 
-        leastTime = "SELECT MIN((A.distance * 60)/A.topspeed)\n" +
+        leastTime = "SELECT A.Route_ID, MIN((A.distance * 60)/A.topspeed)\n" +
                 "FROM (SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats\n" +
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
@@ -191,9 +193,10 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  WHERE weekday = ? AND seats_taken < seats;";
+                "  WHERE weekday = ? AND seats_taken < seats\n" +
+                "  GROUP BY A.route_id;";
 
-        mostTime = "SELECT MAX((A.distance * 60)/A.topspeed)\n" +
+        mostTime = "SELECT A.Route_ID, MAX((A.distance * 60)/A.topspeed)\n" +
                 "FROM (SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats\n" +
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
@@ -220,9 +223,10 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  WHERE weekday = ? AND seats_taken < seats;";
+                "  WHERE weekday = ? AND seats_taken < seats\n" +
+                "  GROUP BY A.route_id;";
 
-        leastDistance = "SELECT MIN(distance)\n" +
+        leastDistance = "SELECT A.Route_ID, MIN(distance)\n" +
                 "FROM (SELECT R.route_id, distance, weekday, seats_taken, seats\n" +
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
@@ -249,9 +253,10 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  WHERE weekday = ? AND seats_taken < seats;";
+                "  WHERE weekday = ? AND seats_taken < seats\n" +
+                "  GROUP BY A.Route_ID";
 
-        mostDistance = "SELECT MAX(distance)\n" +
+        mostDistance = "SELECT A.Route_ID, MAX(distance)\n" +
                 "FROM (SELECT R.route_id, distance, weekday, seats_taken, seats\n" +
                 "  FROM schedule S\n" +
                 "  INNER JOIN train T\n" +
@@ -276,9 +281,10 @@ public class ParameterizedQueries {
                 "    INNER JOIN route R\n" +
                 "    ON RS.Route_ID = R.route_id\n" +
                 "    WHERE\n" +
-                "      Station_B_ID = ? AND Stops_At_A = TRUE\n" +
+                "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  WHERE weekday = ? AND seats_taken < seats;";
+                "  WHERE weekday = ? AND seats_taken < seats\n" +
+                "  GROUP BY A.Route_ID;";
 
         //end aggregate functions
 

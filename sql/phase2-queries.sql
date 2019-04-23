@@ -157,7 +157,7 @@ SELECT A.route_id, count(Stop_ID) as stop_count, schedule.weekday, schedule.runt
   ORDER BY stop_count DESC;
 
 -- 1.2.4.3. Lowest price
-SELECT MIN(A.pricepermile * A.distance)
+SELECT A.Route_ID, MIN(A.pricepermile * A.distance)
   FROM (SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats
     FROM schedule S
     INNER JOIN train T
@@ -184,12 +184,13 @@ SELECT MIN(A.pricepermile * A.distance)
       WHERE
         Station_B_ID = 30 AND Stops_At_B = TRUE
     ) as A
-    WHERE weekday = 'Sun' AND seats_taken < seats;
+    WHERE weekday = 'Sun' AND seats_taken < seats
+    GROUP BY A.route_id;
 
 
 -- 1.2.4.4. Highest price
-SELECT MAX(A.pricepermile * A.distance)
-  FROM (SELECT R.route_id, pricepermile, distance
+SELECT A.Route_ID, MAX(A.pricepermile * A.distance)
+  FROM (SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats
     FROM schedule S
     INNER JOIN train T
     ON S.Train_ID = T.train_id
@@ -202,7 +203,7 @@ SELECT MAX(A.pricepermile * A.distance)
     WHERE
       Station_A_ID = 11 AND Stops_At_A = TRUE
       INTERSECT
-    SELECT R.route_id, pricepermile, distance
+    SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats
       FROM schedule S
       INNER JOIN train T
       ON S.Train_ID = T.train_id
@@ -215,15 +216,12 @@ SELECT MAX(A.pricepermile * A.distance)
       WHERE
         Station_B_ID = 30 AND Stops_At_B = TRUE
     ) as A
-    INNER JOIN schedule
-      ON schedule.Route_ID = A.route_id
-    INNER JOIN train
-      ON schedule.Train_ID = train.train_id
-    WHERE seats_taken < seats;
+    WHERE weekday = 'Sun' AND seats_taken < seats
+    GROUP BY A.route_id;
 
 -- 1.2.4.5. Least total time
-SELECT MIN((A.distance * 60)/A.topspeed)
-FROM (SELECT R.route_id, pricepermile, distance, topspeed
+SELECT A.Route_ID, MIN((A.distance * 60)/A.topspeed)
+FROM (SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats
   FROM schedule S
   INNER JOIN train T
   ON S.Train_ID = T.train_id
@@ -236,7 +234,7 @@ FROM (SELECT R.route_id, pricepermile, distance, topspeed
   WHERE
     Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
-  SELECT R.route_id, pricepermile, distance, topspeed
+  SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats
     FROM schedule S
     INNER JOIN train T
     ON S.Train_ID = T.train_id
@@ -249,16 +247,14 @@ FROM (SELECT R.route_id, pricepermile, distance, topspeed
     WHERE
       Station_B_ID = 30 AND Stops_At_B = TRUE
   ) as A
-  INNER JOIN schedule
-    ON schedule.Route_ID = A.route_id
-  INNER JOIN train
-    ON schedule.Train_ID = train.train_id
-  WHERE seats_taken < seats;
+  WHERE weekday = 'Sun' AND seats_taken < seats
+  GROUP BY A.route_id;
+
 
 
 -- 1.2.4.6. Most total time
-SELECT MAX((A.distance * 60)/A.topspeed)
-FROM (SELECT R.route_id, pricepermile, distance, topspeed
+SELECT A.Route_ID, MAX((A.distance * 60)/A.topspeed)
+FROM (SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats
   FROM schedule S
   INNER JOIN train T
   ON S.Train_ID = T.train_id
@@ -271,7 +267,7 @@ FROM (SELECT R.route_id, pricepermile, distance, topspeed
   WHERE
     Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
-  SELECT R.route_id, pricepermile, distance, topspeed
+  SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats
     FROM schedule S
     INNER JOIN train T
     ON S.Train_ID = T.train_id
@@ -284,15 +280,12 @@ FROM (SELECT R.route_id, pricepermile, distance, topspeed
     WHERE
       Station_B_ID = 30 AND Stops_At_B = TRUE
   ) as A
-  INNER JOIN schedule
-    ON schedule.Route_ID = A.route_id
-  INNER JOIN train
-    ON schedule.Train_ID = train.train_id
-  WHERE seats_taken < seats;
+  WHERE weekday = 'Sun' AND seats_taken < seats
+  GROUP BY A.route_id;
 
 -- 1.2.4.7. Least total distance
-SELECT MIN(distance)
-FROM (SELECT R.route_id, distance
+SELECT A.Route_ID, MIN(distance)
+FROM (SELECT R.route_id, distance, weekday, seats_taken, seats
   FROM schedule S
   INNER JOIN train T
   ON S.Train_ID = T.train_id
@@ -305,7 +298,7 @@ FROM (SELECT R.route_id, distance
   WHERE
     Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
-  SELECT R.route_id, distance
+  SELECT R.route_id, distance, weekday, seats_taken, seats
     FROM schedule S
     INNER JOIN train T
     ON S.Train_ID = T.train_id
@@ -318,16 +311,13 @@ FROM (SELECT R.route_id, distance
     WHERE
       Station_B_ID = 30 AND Stops_At_B = TRUE
   ) as A
-  INNER JOIN schedule
-    ON schedule.Route_ID = A.route_id
-  INNER JOIN train
-    ON schedule.Train_ID = train.train_id
-  WHERE seats_taken < seats;
+  WHERE weekday = 'Sun' AND seats_taken < seats
+  GROUP BY A.Route_ID;
 
 
 -- 1.2.4.8. Most total distance
-SELECT MAX(distance)
-FROM (SELECT R.route_id, distance
+SELECT A.Route_ID, MAX(distance)
+FROM (SELECT R.route_id, distance, weekday, seats_taken, seats
   FROM schedule S
   INNER JOIN train T
   ON S.Train_ID = T.train_id
@@ -340,7 +330,7 @@ FROM (SELECT R.route_id, distance
   WHERE
     Station_A_ID = 11 AND Stops_At_A = TRUE
     INTERSECT
-  SELECT R.route_id, distance
+  SELECT R.route_id, distance, weekday, seats_taken, seats
     FROM schedule S
     INNER JOIN train T
     ON S.Train_ID = T.train_id
@@ -351,13 +341,10 @@ FROM (SELECT R.route_id, distance
     INNER JOIN route R
     ON RS.Route_ID = R.route_id
     WHERE
-      Station_B_ID = 30 AND Stops_At_A = TRUE
+      Station_B_ID = 30 AND Stops_At_B = TRUE
   ) as A
-  INNER JOIN schedule
-    ON schedule.Route_ID = A.route_id
-  INNER JOIN train
-    ON schedule.Train_ID = train.train_id
-  WHERE seats_taken < seats;
+  WHERE weekday = 'Sun' AND seats_taken < seats
+  GROUP BY A.Route_ID;
 
 -- 1.2.5. Add Reservation: Book a specified passenger along all legs of the specified route(s) on a given day.
 
