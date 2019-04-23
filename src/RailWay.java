@@ -7,6 +7,8 @@ import java.nio.charset.*;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 public class RailWay {
 
@@ -266,33 +268,70 @@ public class RailWay {
     public static void findSingleRouteTrips(int selection){
     	try {
 			PreparedStatement statement;
+			statement = connection.prepareStatement(p.getRoute);
+			System.out.println("Enter station 1 id");
+			int station1 = scanner.nextInt();
+			scanner.nextLine();
+			statement.setInt(1, station1);
+			System.out.println("Enter station 2 id");
+			int station2 = scanner.nextInt();
+			scanner.nextLine();
+			statement.setInt(2, station2);
+			System.out.println("Enter weekday");
+			String weekday = scanner.nextLine();
+			statement.setString(3, weekday);
+			ResultSet rs = statement.executeQuery();
+
+			ArrayList<Integer> routes = new ArrayList<Integer>();
+
+			while(rs.next()){
+	            routes.add(rs.getInt("route_id"));
+	        }
+			Map<Integer, Double> values = new HashMap<>();
+
+
 			switch (selection) {
 				case 0: //single route
-					statement = connection.prepareStatement(p.singleRoute);
+					printResults(rs);
 					break;
 				case 1: //FEWEST STOPS
-					statement = connection.prepareStatement(p.fewestStops);
+					//statement = connection.prepareStatement(p.fewestStops);
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.numberOfStops);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(4, station2);
+						rs = statement.executeQuery();
+						values.put(route, new Double(rs.getInt("stops")));
+					}
+					System.out.println(values);
+
 					break;
 				case 2: //RUN THROUGH MOST STATIONS
-					statement = connection.prepareStatement(p.mostStations);
+					//statement = connection.prepareStatement(p.mostStations);
 					break;
 				case 3: //LOWEST PRICE
-					statement = connection.prepareStatement(p.lowestPrice);
+					//statement = connection.prepareStatement(p.lowestPrice);
 					break;
 				case 4: //HIGHEST PRICE
-					statement = connection.prepareStatement(p.highestPrice);
+					//statement = connection.prepareStatement(p.highestPrice);
 					break;
 				case 5: //LEAST TOTAL TIME
-					statement = connection.prepareStatement(p.leastTime);
+					//statement = connection.prepareStatement(p.leastTime);
 					break;
 				case 6: //MOST TOTAL TIME
-					statement = connection.prepareStatement(p.mostTime);
+					//statement = connection.prepareStatement(p.mostTime);
 					break;
 				case 7: //LEAST TOTAL DISTANCE
-					statement = connection.prepareStatement(p.leastDistance);
+					//statement = connection.prepareStatement(p.leastDistance);
 					break;
 				case 8: //MOST TOTAL DISTANCE
-					statement = connection.prepareStatement(p.mostDistance);
+					//statement = connection.prepareStatement(p.mostDistance);
 					break;
 				case 9:    //BACK TO findTripsSubMenu
 					System.out.println("1.) Single Route Trip Search\n2.) Combination Route Trip Search\n" +
@@ -310,20 +349,7 @@ public class RailWay {
 					findSingleRouteTrips(thirdChoice);
 					return;
 			}
-			System.out.println("Enter station 1 id");
-			int station1 = scanner.nextInt();
-			scanner.nextLine();
-			statement.setInt(1, station1);
-			System.out.println("Enter station 2 id");
-			int station2 = scanner.nextInt();
-			scanner.nextLine();
-			statement.setInt(2, station2);
-			System.out.println("Enter weekday");
-			String weekday = scanner.nextLine();
-			statement.setString(3, weekday);
-			ResultSet rs = statement.executeQuery();
-
-			printResults(rs);
+			
 			return;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -347,7 +373,7 @@ public class RailWay {
 
 	        System.out.print(routes);
 
-	        ArrayList<Integer> stops = new ArrayList<Integer>();
+	        ArrayList<CombinationLeg> stops = new ArrayList<CombinationLeg>();
 	        for(int route: routes) {
 	            statement = connection.prepareStatement(p.combinationStop2);
 	            statement.setInt(1, route);
@@ -357,11 +383,13 @@ public class RailWay {
 	            statement.setInt(5, station1);
 	            rs = statement.executeQuery();
 	            while(rs.next()){
-	            	stops.add(rs.getInt("station_b_id"));
+	            	stops.add(new CombinationLeg(route, station1, rs.getInt("station_b_id")));
 	            }
 	        }
-	        Set<Integer> uniqueStops = new HashSet<Integer>(stops);
-	        System.out.println(uniqueStops);
+	        System.out.println(stops);
+
+	        for(CombinationLeg leg: stops){
+	        }
 	    } catch (SQLException e) {
 			e.printStackTrace();
 		}
