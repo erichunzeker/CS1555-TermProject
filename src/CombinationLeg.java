@@ -5,7 +5,7 @@ public class CombinationLeg {
 
     public int origin, destination, routeFromA, intermediatePoint, routeToB;
     public static Map<String, Double> util = new HashMap<>();
-    public ParameterizedQueries p;
+    static ParameterizedQueries p;
     public ResultSet rs;
    	static Connection connection;
    	static RailWay parent;

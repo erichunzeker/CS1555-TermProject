@@ -12,8 +12,8 @@ public class RailWay {
     static String[] tables = {"passenger", "railline", "station", "train", "stop", "route", "route_stop", "schedule", "railline_route", "station_railline"};
 	
 	static Scanner scanner;
-	static ParameterizedQueries p;
-	static Connection connection;
+	public ParameterizedQueries p;
+	public static Connection connection;
 
     public static void main (String args[]) {
         System.out.println("Welcome to the SEPTA command line tool");
