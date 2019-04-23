@@ -690,10 +690,13 @@ public class RailWay {
 		   	}
 		   	System.out.println(combo.size());
 
+		   	HashMap<String, Double> values = new HashMap<>();
+
 	        switch (selection){
 	        	case 0: //no sort
 	        		break;
 	        	case 1: //FEWEST STOPS
+
 	        		break;
 	        	case 2: //RUN THROUGH MOST STATIONS
 	        		break;
@@ -706,6 +709,10 @@ public class RailWay {
 	        	case 6: //MOST TOTAL TIME
 	        		break;
 	        	case 7: //LEAST TOTAL DISTANCE
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getDistance());
+	        		}
+	        		System.out.println(values);
 	        		break;
 	        	case 8: //MOST TOTAL DISTANCE
 	        		break;
