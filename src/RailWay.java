@@ -315,6 +315,7 @@ public class RailWay {
 						}
 					}
 					System.out.println(values.keySet());
+					printSingleTripResults(values.keySet());
 					break;
 				case 1: //FEWEST STOPS
 					//statement = connection.prepareStatement(p.fewestStops);
@@ -560,6 +561,7 @@ public class RailWay {
 			e.printStackTrace();
 		}
     }
+
 
 
 	public static void findCombinationTrips(int station1, int station2, String weekday){
@@ -900,4 +902,22 @@ public class RailWay {
 			}
 		}
 	}
+
+	private static void printSingleTripResults(Set<Integer> keySet) {
+		Iterator it = keySet.iterator();
+		int count = 0;
+
+		while (it.hasNext()) {
+			System.out.println("Route_ID: " + it.next());
+			count++;
+			if(count % 10 == 0) {
+				System.out.println("1.) show more\n2.) back");
+				int c = scanner.nextInt();
+				scanner.nextLine();
+				if(c == 2)
+					break;
+			}
+		}
+	}
+
 }
