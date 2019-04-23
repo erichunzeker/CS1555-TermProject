@@ -313,7 +313,7 @@ public class RailWay {
 					}
 					//SORT THIS BY VALUE ASCENDING
 
-					System.out.println(sortHashMap(values, false));
+					System.out.println(sortHashMap(values, true));
 
 					break;
 				case 2: //RUN THROUGH MOST STATIONS
