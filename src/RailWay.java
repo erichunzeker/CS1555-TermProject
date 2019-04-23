@@ -696,22 +696,39 @@ public class RailWay {
 	        	case 0: //no sort
 	        		break;
 	        	case 1: //FEWEST STOPS
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getStops());
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, false), "stops");
 	        		break;
 	        	case 2: //RUN THROUGH MOST STATIONS
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getStations());
+	        		}
 	        		break;
 	        	case 3: //LOWEST PRICE
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getPrice(weekday));
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, true), "stations");
 	        		break;
 	        	case 4: //HIGHEST PRICE
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getPrice(weekday));
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, true), "price");
 	        		break;
 	        	case 5: //LEAST TOTAL TIME
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getTime(weekday));
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, false), "time");
 					break;
 	        	case 6: //MOST TOTAL TIME
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getTime(weekday));
+	        		}
 					printCombinedTripResults(sortCombinedHashMap(values, true), "time");
-
 					break;
 	        	case 7: //LEAST TOTAL DISTANCE
 	        		for(CombinationLeg leg: combo){
