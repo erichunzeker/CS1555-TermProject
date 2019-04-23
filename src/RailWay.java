@@ -1,3 +1,4 @@
+import java.nio.DoubleBuffer;
 import java.sql.*;
 import java.util.*;
 import java.io.*;
@@ -311,32 +312,8 @@ public class RailWay {
 					//SORT THIS BY VALUE ASCENDING
 					//sort
 
-					Map<Integer, Double> sortedValues = new HashMap<>();
-					Double[] valSort = new Double[values.size()];
-
-					Iterator it = values.entrySet().iterator();
-					int count = 0;
-					while (it.hasNext()) {
-						Map.Entry pair = (Map.Entry)it.next();
-
-						valSort[count] = (Double) pair.getValue();
-						it.remove();
-						count++;
-					}
-
-					Arrays.sort(valSort);
-
-					for (int i = 0; i < valSort.length; i++) {
-						for (Map.Entry<Integer, Double> entry : values.entrySet()) {
-							if (entry.getValue().equals(valSort[i])) {
-								sortedValues.put(entry.getKey(), valSort[i]);
-								values.remove(entry.getKey());
-								break;
-							}
-						}
-					}
-
-					values = sortedValues;
+					Map sortedMap = new TreeMap(new ValueComparator(values));
+					sortedMap.putAll(values);
 					//print function
 					System.out.println(values);
 
@@ -845,4 +822,24 @@ public class RailWay {
             e.printStackTrace();
         }
     }
+
+	static class ValueComparator implements Comparator {
+		Map map;
+
+		public ValueComparator(Map map) {
+			this.map = map;
+		}
+
+		public int compare(Object keyA, Object keyB) {
+			Comparable valueA = (Comparable) map.get(keyA);
+			Comparable valueB = (Comparable) map.get(keyB);
+			double c = (Double) valueB - (Double) valueA;
+			if(c == 0)
+				return 0;
+			else if (c > 0)
+				return 1;
+			else
+				return -1;
+		}
+	}
 }
