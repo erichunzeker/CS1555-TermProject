@@ -5,12 +5,10 @@ public class CombinationLeg {
 
     public int origin, destination, routeFromA, intermediatePoint, routeToB;
     public static Map<String, Double> util = new HashMap<>();
-    static ParameterizedQueries p;
+    public ParameterizedQueries p;
     public ResultSet rs;
-    static final String url = "jdbc:postgresql://localhost:5432/bjc76";
-	static final String user = "bjc76";
-	static final String password = "password";
-	static Connection connection;
+   	static Connection connection;
+   	static RailWay parent;
 
     public CombinationLeg(int start, int finish, int routeA, int midPoint, int routeB) {
         origin = start;
@@ -18,11 +16,7 @@ public class CombinationLeg {
         routeFromA = routeA;
         intermediatePoint = midPoint;
         routeToB = routeB;
-        try{
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+        connection = parent.connection;
 
     }
 
@@ -44,7 +38,7 @@ public class CombinationLeg {
 				statement.setInt(8, intermediatePoint);
 				rs = statement.executeQuery();
 				while(rs.next()){
-					util.put(origin + "-" + routeFromA + "-" + intermediatePoint ,new Double(rs.getInt("distance")));
+					util.put(origin + "-" + routeFromA + "-" + intermediatePoint, new Double(rs.getInt("distance")));
 				}
 	 		}
 	 		if(!util.containsKey(intermediatePoint + "-" + routeToB + "-" + destination)) {
@@ -59,7 +53,7 @@ public class CombinationLeg {
 				statement.setInt(8, destination);
 				rs = statement.executeQuery();
 				while(rs.next()){
-					util.put(intermediatePoint + "-" + routeToB + "-" + destination ,new Double(rs.getInt("distance")));
+					util.put(intermediatePoint + "-" + routeToB + "-" + destination, new Double(rs.getInt("distance")));
 				}
 	 		}
 	 		return util.get(origin + "-" + routeFromA + "-" + intermediatePoint) + util.get(origin + "-" + routeFromA + "-" + intermediatePoint);
