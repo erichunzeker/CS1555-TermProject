@@ -330,7 +330,7 @@ public class RailWay {
 		}
     }
 
-    public static void findCombinationTrips(station1, station2, weekday){
+    public static void findCombinationTrips(int station1, int station2, String weekday){
     	try {
 	    	PreparedStatement statement = connection.prepareStatement(p.combinationStop1);
 	    	statement.setInt(1, station1);
