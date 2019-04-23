@@ -295,18 +295,30 @@ public class ParameterizedQueries {
 
         //end aggregate functions
 
-        combinationStop1 = "SELECT R.route_id, R.description\n" +
-                "  FROM schedule S\n" +
-                "  INNER JOIN train T\n" +
-                "  ON S.Train_ID = T.train_id\n" +
-                "  INNER JOIN route_stop RS\n" +
-                "  ON S.Route_ID = RS.Route_ID\n" +
-                "  INNER JOIN stop\n" +
-                "  ON RS.Stop_ID = stop.Stop_ID\n" +
-                "  INNER JOIN route R\n" +
-                "  ON RS.Route_ID = R.route_id\n" +
-                "  WHERE\n" +
-                "    Station_A_ID = ? AND Stops_At_A = TRUE AND NOT (Station_B_ID = ? AND Stops_AT_A = TRUE) AND weekday = ?;";
+        combinationStop1 = "SELECT R.route_id\n" +
+                "    FROM schedule S\n" +
+                "    INNER JOIN train T\n" +
+                "    ON S.Train_ID = T.train_id\n" +
+                "    INNER JOIN route_stop RS\n" +
+                "    ON S.Route_ID = RS.Route_ID\n" +
+                "    INNER JOIN stop\n" +
+                "    ON RS.Stop_ID = stop.Stop_ID\n" +
+                "    INNER JOIN route R\n" +
+                "    ON RS.Route_ID = R.route_id\n" +
+                "    WHERE\n" +
+                "      Station_A_ID = ? AND Stops_At_A = TRUE AND weekday = ? AND R.route_id not in \n" +
+                "          (SELECT R.route_id\n" +
+                "          FROM schedule S\n" +
+                "          INNER JOIN train T\n" +
+                "          ON S.Train_ID = T.train_id\n" +
+                "          INNER JOIN route_stop RS\n" +
+                "          ON S.Route_ID = RS.Route_ID\n" +
+                "          INNER JOIN stop\n" +
+                "          ON RS.Stop_ID = stop.Stop_ID\n" +
+                "          INNER JOIN route R\n" +
+                "          ON RS.Route_ID = R.route_id\n" +
+                "          WHERE\n" +
+                "            Station_B_ID = ? AND Stops_At_B = TRUE AND weekday = ?);";
 
         combinationStop2 = "SELECT station_b_id FROM(\n" +
                 "  WITH RECURSIVE sortroute(route_id, stops_at_a, stops_at_b, stop_id, station_a_id, station_b_id) AS (\n" +
