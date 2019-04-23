@@ -189,9 +189,10 @@ public class RailWay {
 							"7.) Least total distance\n8.) Most total distance\n9.) back");
 					int thirdChoice = scanner.nextInt();
 					scanner.nextLine();
-					findTripsSubMenuExtra(thirdChoice);
+					findSingleRouteTrips(thirdChoice);
 					return;
-	    		case 2: //COMBINATION ROUTE TRIP SEARCH
+	    		case 2: 
+	    			findCombinationTrips();
 	    			//combination
 	    			break;
 	    		case 3: //ADD RESERVATION
@@ -252,7 +253,7 @@ public class RailWay {
         }
     }
 
-    public static void findTripsSubMenuExtra(int selection){
+    public static void findSingleRouteTrips(int selection){
     	try {
 			PreparedStatement statement;
 			switch (selection) {
@@ -296,7 +297,7 @@ public class RailWay {
 							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
 							"7.) Least total distance\n8.) Most total distance\n 9.) back");
 					int thirdChoice = scanner.nextInt();
-					findTripsSubMenuExtra(thirdChoice);
+					findSingleRouteTrips(thirdChoice);
 					return;
 			}
 			System.out.println("Enter station 1 id");
@@ -315,6 +316,33 @@ public class RailWay {
 			printResults(rs);
 			return;
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+
+    public static void findCombinationTrips(){
+    	try {
+	    	PreparedStatement statement = connection.prepareStatement(p.combinationStop1);
+	    	System.out.println("Enter station 1 id");
+	    	int station1 = scanner.nextInt();
+	    	scanner.nextLine();
+	    	statement.setInt(1, station1);
+	    	System.out.println("Enter station 2 id");
+			int station2 = scanner.nextInt();
+			scanner.nextLine();
+			statement.setInt(2, station2);
+			System.out.println("Enter weekday");
+			String weekday = scanner.nextLine();
+			statement.setString(3, weekday);
+			ResultSet rs = statement.executeQuery();
+
+			ArrayList<Integer> routes = new ArrayList<Integer>();
+
+			while(rs.next()){
+	            routes.add(rs.getInt("route_id"));
+	        }
+	        System.out.println(routes);
+	    } catch (SQLException e) {
 			e.printStackTrace();
 		}
     }

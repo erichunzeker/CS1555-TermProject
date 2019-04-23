@@ -2,6 +2,7 @@ public class ParameterizedQueries {
 
     public String addCustomer, editCustomer, viewCustomer;
     public String singleRoute, fewestStops, mostStations, lowestPrice, highestPrice, leastTime, mostTime, leastDistance, mostDistance, addReservation;
+    public String combinationStop1, combinationStop2;
     public String specificStationDayTime, moreThanOneRail, sameStationDifferentStop, allTrainsPass, doNotStopAtStation, percentStops, routeSchedule, availableDayTime;
 
     public ParameterizedQueries() {
@@ -293,6 +294,44 @@ public class ParameterizedQueries {
                 "  ORDER BY distance DESC;";
 
         //end aggregate functions
+
+        combinationStop1 = "SELECT R.route_id, R.description\n" +
+                "  FROM schedule S\n" +
+                "  INNER JOIN train T\n" +
+                "  ON S.Train_ID = T.train_id\n" +
+                "  INNER JOIN route_stop RS\n" +
+                "  ON S.Route_ID = RS.Route_ID\n" +
+                "  INNER JOIN stop\n" +
+                "  ON RS.Stop_ID = stop.Stop_ID\n" +
+                "  INNER JOIN route R\n" +
+                "  ON RS.Route_ID = R.route_id\n" +
+                "  WHERE\n" +
+                "    Station_A_ID = ? AND Stops_At_A = TRUE AND NOT (Station_B_ID = ? AND Stops_AT_A = TRUE) AND weekday = ?;";
+
+        combinationStop2 = "SELECT station_b_id FROM(\n" +
+                "  WITH RECURSIVE sortroute(route_id, stops_at_a, stops_at_b, stop_id, station_a_id, station_b_id) AS (\n" +
+                "    SELECT route_id, stops_at_a, stops_at_b, stop.stop_id AS stop_id, station_a_id, station_b_id\n" +
+                "    FROM route_stop, stop\n" +
+                "    WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = ?) AND route_id = ?\n" +
+                "  UNION ALL\n" +
+                "    SELECT rs.route_id, rs.stops_at_a, rs.stops_at_b, s.stop_id, s.station_a_id, s.station_b_id\n" +
+                "    FROM sortroute sr, route_stop rs, stop s\n" +
+                "    WHERE (rs.stop_id = s.stop_id AND rs.route_id = sr.route_id AND sr.station_b_id = s.station_a_id)\n" +
+                "  )\n" +
+                "  SELECT *, ROW_NUMBER () OVER () AS row FROM sortroute) AS A\n" +
+                "WHERE row > (\n" +
+                "  SELECT row FROM(\n" +
+                "    WITH RECURSIVE sortroute(route_id, stops_at_a, stops_at_b, stop_id, station_a_id, station_b_id) AS (\n" +
+                "      SELECT route_id, stops_at_a, stops_at_b, stop.stop_id AS stop_id, station_a_id, station_b_id\n" +
+                "      FROM route_stop, stop\n" +
+                "      WHERE route_stop.stop_id = stop.stop_id AND stop.stop_id = (SELECT stop_id FROM route WHERE route_id = ?) AND route_id = ?\n" +
+                "    UNION ALL\n" +
+                "      SELECT rs.route_id, rs.stops_at_a, rs.stops_at_b, s.stop_id, s.station_a_id, s.station_b_id\n" +
+                "      FROM sortroute sr, route_stop rs, stop s\n" +
+                "      WHERE (rs.stop_id = s.stop_id AND rs.route_id = sr.route_id AND sr.station_b_id = s.station_a_id)\n" +
+                "    )\n" +
+                "    SELECT *, ROW_NUMBER () OVER () AS row FROM sortroute) AS A\n" +
+                "  WHERE station_A_id = ?) AND stops_at_b = TRUE;";
 
 
         addReservation = "UPDATE schedule SET seats_taken = seats_taken + 1\n" +
