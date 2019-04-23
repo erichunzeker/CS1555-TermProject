@@ -338,7 +338,6 @@ public class RailWay {
 					}
 					//SORT THIS BY VALUE ASCENDING
 
-					System.out.println(sortHashMap(values, false));
 					printTripResults(sortHashMap(values, false), "stops");
 
 					break;
@@ -362,7 +361,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(sortHashMap(values, true));
+					printTripResults(sortHashMap(values, true), "stations");
 
 					//statement = connection.prepareStatement(p.mostStations);
 					break;
@@ -393,7 +392,8 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(sortHashMap(values, false));
+					printTripResults(sortHashMap(values, false), "price");
+
 
 					//statement = connection.prepareStatement(p.lowestPrice);
 					break;
@@ -424,8 +424,8 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(sortHashMap(values, true));
-					
+					printTripResults(sortHashMap(values, true), "price");
+
 					//statement = connection.prepareStatement(p.highestPrice);
 					break;
 				case 5: //LEAST TOTAL TIME
@@ -455,8 +455,9 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(sortHashMap(values, false));
-					
+					printTripResults(sortHashMap(values, false), "time");
+
+
 					//statement = connection.prepareStatement(p.leastTime);
 					break;
 				case 6: //MOST TOTAL TIME
@@ -486,7 +487,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(sortHashMap(values, true));
+					printTripResults(sortHashMap(values, true), "time");
 
 					//statement = connection.prepareStatement(p.mostTime);
 					break;
@@ -510,7 +511,8 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(sortHashMap(values, false));
+					printTripResults(sortHashMap(values, false), "distance");
+
 					//statement = connection.prepareStatement(p.leastDistance);
 					break;
 				case 8: //MOST TOTAL DISTANCE
@@ -533,7 +535,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(sortHashMap(values, true));
+					printTripResults(sortHashMap(values, true), "distance");
 					//statement = connection.prepareStatement(p.mostDistance);
 					break;
 				case 9:    //BACK TO findTripsSubMenu
@@ -887,7 +889,7 @@ public class RailWay {
 
 		while (it.hasNext()) {
 			Entry e = (Entry) it.next();
-			System.out.println("Route_ID: " + e.getKey() + metric + ": " + e.getValue());
+			System.out.println("Route_ID: " + e.getKey() + ", " + metric + ": " + e.getValue());
 			count++;
 			if(count % 10 == 0) {
 				System.out.println("1.) show more\n2.) back");
