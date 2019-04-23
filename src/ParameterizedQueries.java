@@ -21,7 +21,7 @@ public class ParameterizedQueries {
         //Finding a trip between two stations
 
         singleRoute = "SELECT *\n" +
-                "  FROM (SELECT R.route_id, weekday\n" +
+                "  FROM (SELECT R.route_id, weekday, seats_taken, seats\n" +
                 "    FROM schedule S\n" +
                 "    INNER JOIN train T\n" +
                 "    ON S.Train_ID = T.train_id\n" +
@@ -34,7 +34,7 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_A_ID = ? AND Stops_At_A = TRUE\n" +
                 "      INTERSECT\n" +
-                "    SELECT R.route_id, weekday\n" +
+                "    SELECT R.route_id, weekday, seats_taken, seats\n" +
                 "      FROM schedule S\n" +
                 "      INNER JOIN train T\n" +
                 "      ON S.Train_ID = T.train_id\n" +
@@ -47,10 +47,6 @@ public class ParameterizedQueries {
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n " +
-                "    INNER JOIN schedule\n" +
-                "      ON schedule.Route_ID = A.route_id\n" +
-                "    INNER JOIN train\n" +
-                "      ON schedule.Train_ID = train.train_id\n" +
                 "    WHERE A.weekday = ? AND seats_taken < seats;";
 
         // begin aggregate functions

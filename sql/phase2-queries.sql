@@ -124,7 +124,7 @@ SELECT A.route_id, count(Stop_ID) as stop_count, schedule.weekday, schedule.runt
   ON schedule.Route_ID = A.route_id
   INNER JOIN train
   ON schedule.Train_ID = train.train_id
-  WHERE seats_taken < seats
+  WHERE schedule.weekday = 'Sun' AND seats_taken < seats
   GROUP BY A.route_id, schedule.weekday, schedule.runtime
   ORDER BY stop_count ASC;
 
