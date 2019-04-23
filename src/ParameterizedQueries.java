@@ -133,7 +133,7 @@ public class ParameterizedQueries {
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n" +
-                "    WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "    WHERE weekday = ? AND seats_taken < seats;";
 
         highestPrice = "SELECT MAX(A.pricepermile * A.distance)\n" +
                 "  FROM (SELECT R.route_id, pricepermile, distance, weekday, seats_taken, seats\n" +
@@ -162,7 +162,7 @@ public class ParameterizedQueries {
                 "      WHERE\n" +
                 "        Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "    ) as A\n" +
-                "    WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "    WHERE weekday = ? AND seats_taken < seats;";
 
         leastTime = "SELECT MIN((A.distance * 60)/A.topspeed)\n" +
                 "FROM (SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats\n" +
@@ -191,7 +191,7 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "  WHERE weekday = ? AND seats_taken < seats;";
 
         mostTime = "SELECT MAX((A.distance * 60)/A.topspeed)\n" +
                 "FROM (SELECT R.route_id, pricepermile, distance, topspeed, weekday, seats_taken, seats\n" +
@@ -220,7 +220,7 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "  WHERE weekday = ? AND seats_taken < seats;";
 
         leastDistance = "SELECT MIN(distance)\n" +
                 "FROM (SELECT R.route_id, distance, weekday, seats_taken, seats\n" +
@@ -249,7 +249,7 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_B = TRUE\n" +
                 "  ) as A\n" +
-                "  WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "  WHERE weekday = ? AND seats_taken < seats;";
 
         mostDistance = "SELECT MAX(distance)\n" +
                 "FROM (SELECT R.route_id, distance, weekday, seats_taken, seats\n" +
@@ -278,7 +278,7 @@ public class ParameterizedQueries {
                 "    WHERE\n" +
                 "      Station_B_ID = ? AND Stops_At_A = TRUE\n" +
                 "  ) as A\n" +
-                "  WHERE schedule.weekday = ? AND seats_taken < seats;";
+                "  WHERE weekday = ? AND seats_taken < seats;";
 
         //end aggregate functions
 
