@@ -343,7 +343,6 @@ public class RailWay {
 			while(rs.next()){
 	            routes.add(rs.getInt("route_id"));
 	        }
-	        System.out.println(routes);
 
 	        ArrayList<Integer> stops = new ArrayList<Integer>();
 	        for(int route: routes) {
@@ -360,9 +359,6 @@ public class RailWay {
 	        }
 	        Set<Integer> uniqueStops = new HashSet<Integer>(stops);
 	        System.out.println(uniqueStops);
-	        for(int stop: uniqueStops){
-	        	System.out.println(stop);
-	        }
 	    } catch (SQLException e) {
 			e.printStackTrace();
 		}
