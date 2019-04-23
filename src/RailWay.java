@@ -589,7 +589,7 @@ public class RailWay {
 	            routesA.add(rs.getInt("route_id"));
 	        }
 
-	        System.out.println(routesA);
+	        //System.out.println(routesA);
 
 	        Map<Integer, List<Integer>> stopsAfterA = new HashMap<>();
 	        for(int route: routesA) {
@@ -613,7 +613,7 @@ public class RailWay {
 	        		stopsA.add(val);
 	        	}
 	        }
-	        System.out.println(stopsA);
+	        //System.out.println(stopsA);
 
 	        statement = connection.prepareStatement(p.combinationStop3);
 	        statement.setInt(1, station2);
@@ -628,7 +628,7 @@ public class RailWay {
 	        	routesB.add(rs.getInt("route_id"));
 	        }
 
-	        System.out.println(routesB);
+	        //System.out.println(routesB);
 
 	        Map<Integer, List<Integer>> stopsBeforeB = new HashMap<>();
 	        for(int route: routesB){
@@ -652,12 +652,24 @@ public class RailWay {
 	        		stopsB.add(val);
 	        	}
 	        }
-	        System.out.println(stopsB);
+	        //System.out.println(stopsB);
 
 	        System.out.println("THINGS ONLY IN BOTH");
 	        stopsA.retainAll(stopsB);
 	        System.out.println(stopsA);
 	        //System.out.println(stops);
+	        for(Integer stop: stopsA){
+		        for(Integer route: routesA){
+		        	if(stopsAfterA.get(route).contains(stop)){
+		        		System.out.println("AfterA: " + route + " has stop " + stop);
+		        	}
+		        }
+		        for(Integer route: routesB){
+		        	if(stopsAfterA.get(route).contains(stop)){
+		        		System.out.println("BeforeB: " + route + " has stop " + stop);
+		        	}
+		        }
+		   	}
 
 	        switch (selection){
 	        	case 0: //no sort
