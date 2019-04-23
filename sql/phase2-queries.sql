@@ -60,8 +60,8 @@ SELECT * FROM sortroute;
 -- 1.2.2 Combination Route Trip Search
 -- implement in application layer
 
-SELECT A.route_id, A.weekday, A.seats_taken, A.seats, A.runtime, C.Station_A_ID, C.Station_B_ID, B.Stop_ID
-  FROM (SELECT R.route_id, weekday, seats_taken, seats, runtime
+SELECT A.route_id, A.weekday, A.seats_taken, A.seats, A.runtime, A.topspeed, A.pricepermile, A.distance, C.Station_A_ID, C.Station_B_ID, B.Stop_ID
+  FROM (SELECT R.route_id, weekday, seats_taken, seats, runtime, topspeed, pricepermile, distance
     FROM schedule S
     INNER JOIN train T
     ON S.Train_ID = T.train_id
@@ -74,7 +74,7 @@ SELECT A.route_id, A.weekday, A.seats_taken, A.seats, A.runtime, C.Station_A_ID,
     WHERE
       Station_A_ID = 11 AND Stops_At_A = TRUE
       UNION ALL
-    SELECT R.route_id, weekday, seats_taken, seats, runtime
+    SELECT R.route_id, weekday, seats_taken, seats, runtime, topspeed, pricepermile, distance
       FROM schedule S
       INNER JOIN train T
       ON S.Train_ID = T.train_id
@@ -93,6 +93,8 @@ SELECT A.route_id, A.weekday, A.seats_taken, A.seats, A.runtime, C.Station_A_ID,
     ON B.Stop_ID = C.Stop_ID
     WHERE A.weekday = 'Sun' AND seats_taken < seats
     ORDER BY A.route_id ASC;
+
+    -- also dump distance, speed, and ppm
 
 -- 1.2.3. Note that all trip searches must account for available seats, and only
 -- show results for trains that have available seats.

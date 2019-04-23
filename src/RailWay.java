@@ -1,14 +1,8 @@
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.nio.file.*;
 import java.nio.charset.*;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.HashMap;
 
 public class RailWay {
 
@@ -315,6 +309,33 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
+					//sort
+
+					Map<Integer, Double> sortedValues = new HashMap<>();
+					Double[] valSort = new Double[values.size()];
+
+					Iterator it = values.entrySet().iterator();
+					int count = 0;
+					while (it.hasNext()) {
+						Map.Entry pair = (Map.Entry)it.next();
+
+						valSort[count] = (Double) pair.getValue();
+						count++;
+					}
+
+					Arrays.sort(valSort);
+
+					for (int i = 0; i < valSort.length; i++) {
+						for (Map.Entry<Integer, Double> entry : values.entrySet()) {
+							if (entry.getValue().equals(valSort[i])) {
+								sortedValues.put(entry.getKey(), valSort[i]);
+								values.remove(entry.getKey());
+							}
+						}
+					}
+
+					values = sortedValues;
+					//print function
 					System.out.println(values);
 
 					break;
