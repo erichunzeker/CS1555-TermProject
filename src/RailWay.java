@@ -712,9 +712,15 @@ public class RailWay {
 	        		for(CombinationLeg leg: combo){
 	        			values.put(leg.toString(), leg.getDistance());
 	        		}
+	        		//SORT BY KEY ASCENDING
 	        		System.out.println(values);
 	        		break;
 	        	case 8: //MOST TOTAL DISTANCE
+	        		for(CombinationLeg leg: combo){
+	        			values.put(leg.toString(), leg.getDistance());
+	        		}
+	        		//SORT BY KEY DESCENDING
+	        		System.out.println(values);
 	        		break;
 	        	case 9: //BACK TO
 	        		break;
