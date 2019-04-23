@@ -64,6 +64,8 @@ SELECT * FROM sortroute;
 -- 1.2.2 Combination Route Trip Search
 -- implement in application layer
 
+
+
 -- 1.2.3. Note that all trip searches must account for available seats, and only
 -- show results for trains that have available seats.
 

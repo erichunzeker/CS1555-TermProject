@@ -79,7 +79,6 @@ public class RailWay {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void customerSubMenu(int selection){
@@ -235,18 +234,18 @@ public class RailWay {
 	        		findTripSubMenu(choice);
 	        		return;
 	    	}
-//	    	System.out.println("Enter station 1 id");
-//	        int station1 = scanner.nextInt();
-//	        scanner.nextLine();
-//	        statement.setInt(1, station1);
-//	        System.out.println("Enter station 2 id");
-//	        int station2 = scanner.nextInt();
-//	        scanner.nextLine();
-//	        statement.setInt(2, station2);
-//
-//	        ResultSet rs = statement.executeQuery();
-//
-//	        printResults(rs);
+	    	/*System.out.println("Enter station 1 id");
+	        int station1 = scanner.nextInt();
+	        scanner.nextLine();
+	        statement.setInt(1, station1);
+	        System.out.println("Enter station 2 id");
+	        int station2 = scanner.nextInt();
+	        scanner.nextLine();
+	        statement.setInt(2, station2);
+
+	        ResultSet rs = statement.executeQuery();
+
+	        printResults(rs);*/
 	        return;
 	    } catch (SQLException e) {
             e.printStackTrace();
