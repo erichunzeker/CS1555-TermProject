@@ -1,13 +1,19 @@
-DROP TABLE IF EXISTS station CASCADE;
-DROP TABLE IF EXISTS railline CASCADE;
-DROP TABLE IF EXISTS route CASCADE;
-DROP TABLE IF EXISTS schedule CASCADE;
-DROP TABLE IF EXISTS train CASCADE;
-DROP TABLE IF EXISTS passenger CASCADE;
-DROP TABLE IF EXISTS stop CASCADE;
-DROP TABLE IF EXISTS route_stop CASCADE;
+DROP TRIGGER IF EXISTS update_seats ON schedule;
+DROP TRIGGER IF EXISTS check_track ON schedule;
+
+
 DROP TABLE IF EXISTS station_railline CASCADE;
 DROP TABLE IF EXISTS railline_route CASCADE;
+DROP TABLE IF EXISTS schedule CASCADE;
+DROP TABLE IF EXISTS route_stop CASCADE;
+DROP TABLE IF EXISTS route CASCADE;
+DROP TABLE IF EXISTS stop CASCADE;
+DROP TABLE IF EXISTS train CASCADE;
+DROP TABLE IF EXISTS station CASCADE;
+DROP TABLE IF EXISTS railline CASCADE;
+DROP TABLE IF EXISTS passenger CASCADE;
+
+
 
 CREATE TABLE station (
   station_id      SERIAL,
@@ -145,7 +151,6 @@ CREATE TABLE route_stop (
 
 ---------------- Add one to seats_taken on insert --------------------
 
-DROP TRIGGER IF EXISTS update_seats ON schedule;
 
 CREATE OR REPLACE FUNCTION seats()
   RETURNS trigger AS
@@ -169,7 +174,6 @@ CREATE TRIGGER update_seats
 
 ---------------- Make sure track's empty on insert --------------------
 
-DROP TRIGGER IF EXISTS check_track ON schedule;
 
 CREATE OR REPLACE FUNCTION track()
   RETURNS trigger AS
