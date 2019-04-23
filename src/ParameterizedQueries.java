@@ -235,7 +235,7 @@ public class ParameterizedQueries {
                 "  ON R.route_id = RS.Route_ID\n" +
                 "  INNER JOIN stop S\n" +
                 "  ON RS.Stop_ID = S.Stop_ID\n" +
-                "    WHERE Station_A_ID = ? AND Stops_At_A = TRUE\n" +
+                "    WHERE Station_A_ID = ?\n" +
                 "    INTERSECT\n" +
                 "  SELECT R.route_id, R.description\n" +
                 "  FROM route R\n" +
@@ -243,7 +243,7 @@ public class ParameterizedQueries {
                 "  ON R.route_id = RS.Route_ID\n" +
                 "  INNER JOIN stop S\n" +
                 "  ON RS.Stop_ID = S.Stop_ID\n" +
-                "    WHERE Station_B_ID = ? AND Stops_At_B = TRUE) AS A\n" +
+                "    WHERE Station_B_ID = ?) AS A\n" +
                 "  INNER JOIN route_stop RS\n" +
                 "  ON RS.Route_ID = A.route_id\n" +
                 "  INNER JOIN schedule\n" +
