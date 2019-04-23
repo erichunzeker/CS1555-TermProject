@@ -313,7 +313,7 @@ public class RailWay {
 					}
 					//SORT THIS BY VALUE ASCENDING
 
-					System.out.println(sortHashMap(values, true));
+					System.out.println(sortHashMap(values, false));
 
 					break;
 				case 2: //RUN THROUGH MOST STATIONS
@@ -586,15 +586,9 @@ public class RailWay {
 
 	        while (keyIt.hasNext()) {
 	            Integer key = keyIt.next();
-	            Double comp2, comp1;
-	            if(reverse){
-		            comp2 = values.get(key);
-		            comp1 = val;
-		        }else{
-		        	comp1 = values.get(key);
-		            comp2 = val;
-		        }
-
+	            Double comp2 = values.get(key);
+	            Double comp1 = val;
+		       
 	            if (comp1.equals(comp2)) {
 	                keyIt.remove();
 	                sortedMap.put(key, val);
