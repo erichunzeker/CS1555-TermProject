@@ -305,7 +305,7 @@ public class RailWay {
 						statement.setInt(5, station1);
 						statement.setInt(6, route);
 						statement.setInt(7, route);
-						statement.setInt(4, station2);
+						statement.setInt(8, station2);
 						rs = statement.executeQuery();
 						values.put(route, new Double(rs.getInt("stops")));
 					}
@@ -313,6 +313,21 @@ public class RailWay {
 
 					break;
 				case 2: //RUN THROUGH MOST STATIONS
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.numberOfStations);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(8, station2);
+						rs = statement.executeQuery();
+						values.put(route, new Double(rs.getInt("stops")));
+					}
+					System.out.println(values);
+
 					//statement = connection.prepareStatement(p.mostStations);
 					break;
 				case 3: //LOWEST PRICE
@@ -328,9 +343,37 @@ public class RailWay {
 					//statement = connection.prepareStatement(p.mostTime);
 					break;
 				case 7: //LEAST TOTAL DISTANCE
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.distance);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(8, station2);
+						rs = statement.executeQuery();
+						values.put(route, new Double(rs.getInt("stops")));
+					}
+					System.out.println(values);
 					//statement = connection.prepareStatement(p.leastDistance);
 					break;
 				case 8: //MOST TOTAL DISTANCE
+					for(int route: routes) {
+						statement = connection.prepareStatement(p.distance);
+						statement.setInt(1, route);
+						statement.setInt(2, route);
+						statement.setInt(3, route);
+						statement.setInt(4, route);
+						statement.setInt(5, station1);
+						statement.setInt(6, route);
+						statement.setInt(7, route);
+						statement.setInt(8, station2);
+						rs = statement.executeQuery();
+						values.put(route, new Double(rs.getInt("stops")));
+					}
+					System.out.println(values);
 					//statement = connection.prepareStatement(p.mostDistance);
 					break;
 				case 9:    //BACK TO findTripsSubMenu
