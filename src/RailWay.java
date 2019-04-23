@@ -201,7 +201,7 @@ public class RailWay {
 					int station2 = scanner.nextInt();
 					scanner.nextLine();
 					System.out.println("Enter weekday");
-					String weekday = scanner.nextLine();
+					weekday = scanner.nextLine();
 	    			findCombinationTrips(station1, station2, weekday);
 	    			//combination
 	    			break;
