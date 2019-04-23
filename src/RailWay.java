@@ -176,6 +176,7 @@ public class RailWay {
     	try{
 	    	PreparedStatement statement;
 	    	String weekday;
+	    	int thirdChoice;
 	    	//NEXT LINE NOT NEEDED
 	    	//statement = connection.prepareStatement(p.singleRoute);
 	    	switch (selection){
@@ -188,22 +189,21 @@ public class RailWay {
 					System.out.println("0.) No sort\n1.) Fewest stops\n2.) Run through most stations\n" +
 							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
 							"7.) Least total distance\n8.) Most total distance\n9.) back");
-					int thirdChoice = scanner.nextInt();
+					thirdChoice = scanner.nextInt();
 					scanner.nextLine();
 					if(thirdChoice == 9)
 						return;
 					findSingleRouteTrips(thirdChoice);
 					return;
 	    		case 2: 
-	    			System.out.println("Enter station 1 id");
-			    	int station1 = scanner.nextInt();
-			    	scanner.nextLine();
-			    	System.out.println("Enter station 2 id");
-					int station2 = scanner.nextInt();
+	    			System.out.println("0.) No sort\n1.) Fewest stops\n2.) Run through most stations\n" +
+							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
+							"7.) Least total distance\n8.) Most total distance\n9.) back");
+					thirdChoice = scanner.nextInt();
 					scanner.nextLine();
-					System.out.println("Enter weekday");
-					weekday = scanner.nextLine();
-	    			findCombinationTrips(station1, station2, weekday);
+					if(thirdChoice == 9)
+						return;
+					findCombinationTrips(thirdChoice);
 	    			//combination
 	    			break;
 	    		case 3: //ADD RESERVATION
@@ -565,8 +565,17 @@ public class RailWay {
 
 
 
-	public static void findCombinationTrips(int station1, int station2, String weekday){
+	public static void findCombinationTrips(int selection){
     	try {
+
+    		System.out.println("Enter station 1 id");
+	    	int station1 = scanner.nextInt();
+	    	scanner.nextLine();
+	    	System.out.println("Enter station 2 id");
+			int station2 = scanner.nextInt();
+			scanner.nextLine();
+			System.out.println("Enter weekday");
+			String weekday = scanner.nextLine();
 	    	PreparedStatement statement = connection.prepareStatement(p.combinationStop1);
 	    	statement.setInt(1, station1);
 	    	statement.setString(2, weekday);
@@ -574,16 +583,16 @@ public class RailWay {
 			statement.setString(4, weekday);
 			ResultSet rs = statement.executeQuery();
 
-			ArrayList<Integer> routes = new ArrayList<Integer>();
+			ArrayList<Integer> routesA = new ArrayList<Integer>();
 
 			while(rs.next()){
-	            routes.add(rs.getInt("route_id"));
+	            routesA.add(rs.getInt("route_id"));
 	        }
 
-	        System.out.print(routes);
+	        System.out.println(routesA);
 
-	        ArrayList<CombinationLeg> stops = new ArrayList<CombinationLeg>();
-	        for(int route: routes) {
+	        Map<Integer, List<Integer>> stopsAfterA = new HashMap<>();
+	        for(int route: routesA) {
 	            statement = connection.prepareStatement(p.combinationStop2);
 	            statement.setInt(1, route);
 	            statement.setInt(2, route);
@@ -591,13 +600,76 @@ public class RailWay {
 	            statement.setInt(4, route);
 	            statement.setInt(5, station1);
 	            rs = statement.executeQuery();
+	            List<Integer> temp = new ArrayList<>();
 	            while(rs.next()){
-	            	stops.add(new CombinationLeg(route, station1, rs.getInt("station_b_id")));
+	            	temp.add(rs.getInt("station_b_id"));
 	            }
+	            stopsAfterA.put(route, temp);
 	        }
-	        System.out.println(stops);
+	        System.out.println(stopsAfterA);
 
-	        for(CombinationLeg leg: stops){
+	        statement = connection.prepareStatement(p.combinationStop3);
+	        statement.setInt(1, station2);
+	        statement.setString(2, weekday);
+	        statement.setInt(3, station1);
+	        statement.setString(4, weekday);
+	        rs = statement.executeQuery();
+
+	        ArrayList<Integer> routesB = new ArrayList<Integer>();
+
+	        while(rs.next()){
+	        	routesB.add(rs.getInt("route_id"));
+	        }
+
+	        System.out.println(routesB);
+
+	        Map<Integer, List<Integer>> stopsBeforeB = new HashMap<>();
+	        for(int route: routesB){
+	        	statement = connection.prepareStatement(p.combinationStop4);
+	        	statement.setInt(1, route);
+	        	statement.setInt(2, route);
+	        	statement.setInt(3, route);
+	        	statement.setInt(4, route);
+	        	statement.setInt(5, station2);
+	        	rs = statement.executeQuery();
+	       		List<Integer> temp = new ArrayList<>();
+	        	while(rs.next()){
+	        		temp.add(rs.getInt("station_a_id"));
+	        	}
+	        	stopsBeforeB.put(route, temp);
+	        }
+	        System.out.println(stopsBeforeB);
+	        //System.out.println(stops);
+
+	        switch (selection){
+	        	case 0: //no sort
+	        		break;
+	        	case 1: //FEWEST STOPS
+	        		break;
+	        	case 2: //RUN THROUGH MOST STATIONS
+	        		break;
+	        	case 3: //LOWEST PRICE
+	        		break;
+	        	case 4: //HIGHEST PRICE
+	        		break;
+	        	case 5: //LEAST TOTAL TIME
+	        		break;
+	        	case 6: //MOST TOTAL TIME
+	        		break;
+	        	case 7: //LEAST TOTAL DISTANCE
+	        		break;
+	        	case 8: //MOST TOTAL DISTANCE
+	        		break;
+	        	case 9: //BACK TO
+	        		break;
+	        	default:
+	        		System.out.println("Pick a valid number\n");
+					System.out.println("0.) No sort\n1.) Fewest stops\n2.) Run through most stations\n" +
+							"3.) Lowest price\n4.) Highest price\n5.) Least total time\n6.) Most total time\n" +
+							"7.) Least total distance\n8.) Most total distance\n 9.) back");
+					int thirdChoice = scanner.nextInt();
+					findCombinationTrips(thirdChoice);
+					return;
 	        }
 	    } catch (SQLException e) {
 			e.printStackTrace();
