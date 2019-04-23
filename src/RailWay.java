@@ -190,6 +190,8 @@ public class RailWay {
 							"7.) Least total distance\n8.) Most total distance\n9.) back");
 					int thirdChoice = scanner.nextInt();
 					scanner.nextLine();
+					if(thirdChoice == 9)
+						return;
 					findSingleRouteTrips(thirdChoice);
 					return;
 	    		case 2: 
