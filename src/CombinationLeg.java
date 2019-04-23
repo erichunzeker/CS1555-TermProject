@@ -17,6 +17,7 @@ public class CombinationLeg {
         intermediatePoint = midPoint;
         routeToB = routeB;
         connection = parent.connection;
+        p = new ParameterizedQueries();
 
     }
 

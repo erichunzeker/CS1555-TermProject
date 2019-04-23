@@ -12,7 +12,7 @@ public class RailWay {
     static String[] tables = {"passenger", "railline", "station", "train", "stop", "route", "route_stop", "schedule", "railline_route", "station_railline"};
 	
 	static Scanner scanner;
-	public ParameterizedQueries p;
+	static ParameterizedQueries p;
 	public static Connection connection;
 
     public static void main (String args[]) {
@@ -821,7 +821,6 @@ public class RailWay {
 	                station = scanner.nextInt();
 	                scanner.nextLine();
 	                statement.setInt(1, station);
-					statement.setInt(2, station);
 	    			break;
 	    		case 6: //FIND ROUTES THAT STOP AT LEAST AT XX% OF THE STATIONS THEY VISIT
 	    			statement = connection.prepareStatement(p.percentStops);
