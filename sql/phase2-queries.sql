@@ -16,7 +16,7 @@ SELECT *
 
 -- 1.2.1 Single Route Trip Search
 SELECT *
-  FROM (SELECT R.route_id, weekday
+  FROM (SELECT R.route_id, weekday, seats_taken, seats
     FROM schedule S
     INNER JOIN train T
     ON S.Train_ID = T.train_id
@@ -29,7 +29,7 @@ SELECT *
     WHERE
       Station_A_ID = 11 AND Stops_At_A = TRUE
       INTERSECT
-    SELECT R.route_id, weekday
+    SELECT R.route_id, weekday, seats_taken, seats
       FROM schedule S
       INNER JOIN train T
       ON S.Train_ID = T.train_id
@@ -42,10 +42,6 @@ SELECT *
       WHERE
         Station_B_ID = 30 AND Stops_At_B = TRUE
     ) as A
-    INNER JOIN schedule
-      ON schedule.Route_ID = A.route_id
-    INNER JOIN train
-      ON schedule.Train_ID = train.train_id
     WHERE A.weekday = 'Sun' AND seats_taken < seats;
 
 
