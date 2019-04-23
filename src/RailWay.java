@@ -673,6 +673,7 @@ public class RailWay {
 		   	for(CombinationLeg leg: combo){
 		   		System.out.println(leg);
 		   	}
+		   	System.out.println(combo.size());
 
 	        switch (selection){
 	        	case 0: //no sort
