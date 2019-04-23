@@ -696,26 +696,33 @@ public class RailWay {
 	        	case 0: //no sort
 	        		break;
 	        	case 1: //FEWEST STOPS
-
+					printCombinedTripResults(sortCombinedHashMap(values, false), "stops");
 	        		break;
 	        	case 2: //RUN THROUGH MOST STATIONS
 	        		break;
 	        	case 3: //LOWEST PRICE
+					printCombinedTripResults(sortCombinedHashMap(values, true), "stations");
 	        		break;
 	        	case 4: //HIGHEST PRICE
+					printCombinedTripResults(sortCombinedHashMap(values, true), "price");
 	        		break;
 	        	case 5: //LEAST TOTAL TIME
-	        		break;
+					printCombinedTripResults(sortCombinedHashMap(values, false), "time");
+					break;
 	        	case 6: //MOST TOTAL TIME
-	        		break;
+					printCombinedTripResults(sortCombinedHashMap(values, true), "time");
+
+					break;
 	        	case 7: //LEAST TOTAL DISTANCE
 	        		for(CombinationLeg leg: combo){
 	        			values.put(leg.toString(), leg.getDistance());
 	        		}
-	        		System.out.println(values);
+					printCombinedTripResults(sortCombinedHashMap(values, false), "distance");
 	        		break;
 	        	case 8: //MOST TOTAL DISTANCE
-	        		break;
+
+					printCombinedTripResults(sortCombinedHashMap(values, true), "distance");
+					break;
 	        	case 9: //BACK TO
 	        		break;
 	        	default:
@@ -764,6 +771,39 @@ public class RailWay {
 	    }
 	    return sortedMap;
     }
+
+	public static LinkedHashMap<String, Double> sortCombinedHashMap(HashMap<String, Double> values, Boolean reverse){
+		List<String> mapKeys = new ArrayList<>(values.keySet());
+		List<Double> mapValues = new ArrayList<>(values.values());
+		Collections.sort(mapValues);
+		Collections.sort(mapKeys);
+
+		if(reverse) {
+			Collections.reverse(mapValues);
+			Collections.reverse(mapKeys);
+		}
+
+		LinkedHashMap<String, Double> sortedMap = new LinkedHashMap<>();
+
+		Iterator<Double> valueIt = mapValues.iterator();
+		while (valueIt.hasNext()) {
+			Double val = valueIt.next();
+			Iterator<String> keyIt = mapKeys.iterator();
+
+			while (keyIt.hasNext()) {
+				String key = keyIt.next();
+				Double comp2 = values.get(key);
+				Double comp1 = val;
+
+				if (comp1.equals(comp2)) {
+					keyIt.remove();
+					sortedMap.put(key, val);
+					break;
+				}
+			}
+		}
+		return sortedMap;
+	}
 
     public static void advancedSearchesSubMenu(int selection){
     	// specificStationDayTime -     station_id, weekday, time
@@ -1021,6 +1061,24 @@ public class RailWay {
 		while (it.hasNext()) {
 			Entry e = (Entry) it.next();
 			System.out.println("Route_ID: " + e.getKey() + ", " + metric + ": " + e.getValue());
+			count++;
+			if(count % 10 == 0) {
+				System.out.println("1.) show more\n2.) back");
+				int c = scanner.nextInt();
+				scanner.nextLine();
+				if(c == 2)
+					break;
+			}
+		}
+	}
+
+	private static void printCombinedTripResults(LinkedHashMap<String, Double> sortedHashMap, String metric) {
+		Iterator it = sortedHashMap.entrySet().iterator();
+		int count = 0;
+
+		while (it.hasNext()) {
+			Entry e = (Entry) it.next();
+			System.out.println("Route Combination: " + e.getKey() + ", " + metric + ": " + e.getValue());
 			count++;
 			if(count % 10 == 0) {
 				System.out.println("1.) show more\n2.) back");
