@@ -313,7 +313,7 @@ public class RailWay {
 					}
 					//SORT THIS BY VALUE ASCENDING
 
-					System.out.println(sortHashMap(values, False));
+					System.out.println(sortHashMap(values, false));
 
 					break;
 				case 2: //RUN THROUGH MOST STATIONS
@@ -336,7 +336,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(sortHashMap(values, True));
+					System.out.println(sortHashMap(values, true));
 
 					//statement = connection.prepareStatement(p.mostStations);
 					break;
@@ -367,7 +367,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(sortHashMap(values, False));
+					System.out.println(sortHashMap(values, false));
 
 					//statement = connection.prepareStatement(p.lowestPrice);
 					break;
@@ -398,7 +398,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(sortHashMap(values, True));
+					System.out.println(sortHashMap(values, true));
 					
 					//statement = connection.prepareStatement(p.highestPrice);
 					break;
@@ -429,7 +429,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(sortHashMap(values, False));
+					System.out.println(sortHashMap(values, false));
 					
 					//statement = connection.prepareStatement(p.leastTime);
 					break;
@@ -460,7 +460,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(sortHashMap(values, True));
+					System.out.println(sortHashMap(values, true));
 
 					//statement = connection.prepareStatement(p.mostTime);
 					break;
@@ -484,7 +484,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE ASCENDING
-					System.out.println(sortHashMap(values, False));
+					System.out.println(sortHashMap(values, false));
 					//statement = connection.prepareStatement(p.leastDistance);
 					break;
 				case 8: //MOST TOTAL DISTANCE
@@ -507,7 +507,7 @@ public class RailWay {
 						}
 					}
 					//SORT THIS BY VALUE DESCENDING
-					System.out.println(sortHashMap(values, True));
+					System.out.println(sortHashMap(values, true));
 					//statement = connection.prepareStatement(p.mostDistance);
 					break;
 				case 9:    //BACK TO findTripsSubMenu
@@ -572,7 +572,7 @@ public class RailWay {
 		}
     }
 
-    public static LinkedHashMap<Integer, Double> sortHashMap(HashMap<Integer, Double> values, boolean reverse){
+    public static LinkedHashMap<Integer, Double> sortHashMap(HashMap<Integer, Double> values, Boolean reverse){
     	List<Integer> mapKeys = new ArrayList<>(values.keySet());
 	    List<Double> mapValues = new ArrayList<>(values.values());
 	    Collections.sort(mapValues);
@@ -586,12 +586,13 @@ public class RailWay {
 
 	        while (keyIt.hasNext()) {
 	            Integer key = keyIt.next();
+	            Double comp2, comp1;
 	            if(reverse){
-		            Double comp2 = values.get(key);
-		            Double comp1 = val;
+		            comp2 = values.get(key);
+		            comp1 = val;
 		        }else{
-		        	Double comp1 = values.get(key);
-		            Double comp2 = val;
+		        	comp1 = values.get(key);
+		            comp2 = val;
 		        }
 
 	            if (comp1.equals(comp2)) {
@@ -763,9 +764,9 @@ public class RailWay {
 	                                    sb.append("'" + String.format(String.valueOf(rs.getString(j))) + "',");
 	                                }else if(type.equals("bool")){ 
 	                                    if(String.valueOf(rs.getString(j)).equals("t")){
-	                                        sb.append("True,");
+	                                        sb.append("true,");
 	                                    }else{
-	                                        sb.append("False,");
+	                                        sb.append("false,");
 	                                    }
 	                                }else{
 	                                    sb.append(String.format(String.valueOf(rs.getString(j))) + ",");
