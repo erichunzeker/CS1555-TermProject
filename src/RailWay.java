@@ -342,6 +342,9 @@ public class RailWay {
 	            routes.add(rs.getInt("route_id"));
 	        }
 	        System.out.println(routes);
+	        for(int route: routes) {
+	            System.out.println(route);
+	        }
 	    } catch (SQLException e) {
 			e.printStackTrace();
 		}
