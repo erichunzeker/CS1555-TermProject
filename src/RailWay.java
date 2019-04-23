@@ -814,6 +814,7 @@ public class RailWay {
 	                station = scanner.nextInt();
 	                scanner.nextLine();
 	                statement.setInt(1, station);
+					statement.setInt(2, station);
 	    			break;
 	    		case 6: //FIND ROUTES THAT STOP AT LEAST AT XX% OF THE STATIONS THEY VISIT
 	    			statement = connection.prepareStatement(p.percentStops);
