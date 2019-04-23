@@ -331,6 +331,7 @@ public class RailWay {
 							if (entry.getValue().equals(valSort[i])) {
 								sortedValues.put(entry.getKey(), valSort[i]);
 								values.remove(entry.getKey());
+								break;
 							}
 						}
 					}
