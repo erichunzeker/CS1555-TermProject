@@ -696,6 +696,7 @@ public class RailWay {
 
 	        switch (selection){
 	        	case 0: //no sort
+					printNoSortCombinationResults(combo);
 	        		break;
 	        	case 1: //FEWEST STOPS
 	        		for(CombinationLeg leg: combo){
@@ -1117,6 +1118,23 @@ public class RailWay {
 
 		while (it.hasNext()) {
 			System.out.println("Route_ID: " + it.next());
+			count++;
+			if(count % 10 == 0) {
+				System.out.println("1.) show more\n2.) back");
+				int c = scanner.nextInt();
+				scanner.nextLine();
+				if(c == 2)
+					break;
+			}
+		}
+	}
+
+	private static void printNoSortCombinationResults(ArrayList<CombinationLeg> keySet) {
+		Iterator it = keySet.iterator();
+		int count = 0;
+
+		while (it.hasNext()) {
+			System.out.println(it.next().toString());
 			count++;
 			if(count % 10 == 0) {
 				System.out.println("1.) show more\n2.) back");
