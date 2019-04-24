@@ -251,4 +251,8 @@ public class CombinationLeg {
         }
         return 0;
  	}
+
+ 	public void clearUtil(){
+ 		util = new HashMap<>();
+ 	}
 }

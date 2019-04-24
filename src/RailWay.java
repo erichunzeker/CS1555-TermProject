@@ -685,6 +685,7 @@ public class RailWay {
 		        	}
 		        }
 		   	}
+		   	new CombinationLeg(1, 2, 3, 4, 5).clearUtil();
 		   	/**
 		   	for(CombinationLeg leg: combo){
 		   		System.out.println(leg);
