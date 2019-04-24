@@ -708,12 +708,13 @@ public class RailWay {
 	        		for(CombinationLeg leg: combo){
 	        			values.put(leg.toString(), leg.getStations());
 	        		}
+	        		printCombinedTripResults(sortCombinedHashMap(values, true), "stations");
 	        		break;
 	        	case 3: //LOWEST PRICE
 	        		for(CombinationLeg leg: combo){
 	        			values.put(leg.toString(), leg.getPrice(weekday));
 	        		}
-					printCombinedTripResults(sortCombinedHashMap(values, true), "stations");
+					printCombinedTripResults(sortCombinedHashMap(values, false), "price");
 	        		break;
 	        	case 4: //HIGHEST PRICE
 	        		for(CombinationLeg leg: combo){
